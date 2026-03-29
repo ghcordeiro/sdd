@@ -18,8 +18,8 @@ export const AGENTS: AgentDefinition[] = [
   {
     id: 'cursor',
     name: 'Cursor',
-    globalSkillsDir: join(homedir(), '.cursor', 'rules'),
-    localSkillsDir: join('.cursor', 'rules'),
+    globalSkillsDir: join(homedir(), '.cursor', 'skills'),
+    localSkillsDir: join('.cursor', 'skills'),
   },
   {
     id: 'github-copilot',
