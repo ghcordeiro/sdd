@@ -11,12 +11,12 @@ const catalogDest = resolve(__dirname, 'dist/skills-catalog');
 rmSync(catalogDest, { recursive: true, force: true });
 
 await build({
-  entryPoints: ['src/index.ts'],
+  entryPoints: [resolve(__dirname, 'src/index.ts')],
   bundle: true,
   platform: 'node',
   target: 'node22',
   format: 'esm',
-  outfile: 'dist/index.js',
+  outfile: resolve(__dirname, 'dist/index.js'),
   banner: {
     js: '#!/usr/bin/env node',
   },
@@ -35,6 +35,6 @@ await build({
 // Copiar skills-catalog para dentro de dist/
 cpSync(catalogSrc, catalogDest, { recursive: true });
 
-chmodSync('dist/index.js', '755');
+chmodSync(resolve(__dirname, 'dist/index.js'), '755');
 console.log('✓ Built dist/index.js');
 console.log('✓ Copied skills-catalog → dist/skills-catalog/');
