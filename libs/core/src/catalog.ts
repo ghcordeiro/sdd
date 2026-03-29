@@ -17,10 +17,13 @@ export interface SkillEntry {
   dir: string;
 }
 
-const CATALOG_DIR = join(
-  dirname(fileURLToPath(import.meta.url)),
-  '../../../packages/skills-catalog'
-);
+// Em dev: libs/core/src/ → ../../../packages/skills-catalog
+// Em bundle (dist/index.js): ./skills-catalog  (copiado pelo build)
+const __dir = dirname(fileURLToPath(import.meta.url));
+const CATALOG_DIR =
+  __dir.endsWith('dist')
+    ? join(__dir, 'skills-catalog')
+    : join(__dir, '../../../packages/skills-catalog');
 
 export function loadCatalog(): SkillEntry[] {
   const entries: SkillEntry[] = [];
