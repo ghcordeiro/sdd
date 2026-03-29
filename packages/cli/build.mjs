@@ -28,7 +28,7 @@ await build({
     'react',
     'chalk',
     'commander',
-    'gray-matter',
+    // gray-matter é bundled junto com @ghcordeiro/core
   ],
 });
 

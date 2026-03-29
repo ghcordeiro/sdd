@@ -1,6 +1,6 @@
 {
   "name": "@ghcordeiro/tech-lead-tools",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A curated toolkit for Tech Leads and Staff Engineers — install AI agent skills in seconds",
   "license": "MIT",
   "type": "module",
@@ -20,7 +20,6 @@
     "lint": "eslint src"
   },
   "dependencies": {
-    "@ghcordeiro/core": "*",
     "chalk": "^5.4.0",
     "commander": "^13.0.0",
     "ink": "^5.0.0",
