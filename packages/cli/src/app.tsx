@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { Box, Text, useApp } from 'ink';
 import SelectInput from 'ink-select-input';
-import { loadCatalog, installSkill, type AgentDefinition, type SkillEntry, type InstallMode } from '@ghcordeiro/core';
+import { loadCatalog, installSkill, type AgentDefinition, type InstallMode } from '@ghcordeiro/core';
 import { AgentSelector } from './components/AgentSelector.js';
-import { SkillSelector } from './components/SkillSelector.js';
 
-type Step = 'welcome' | 'agent' | 'mode' | 'skills' | 'confirm' | 'done';
+type Step = 'welcome' | 'agent' | 'mode' | 'confirm' | 'done';
 
 interface InstallResult {
   skill: string;
@@ -19,7 +18,6 @@ interface State {
   step: Step;
   agents: AgentDefinition[];
   mode?: InstallMode;
-  selectedSkills: SkillEntry[];
   results: InstallResult[];
 }
 
@@ -35,22 +33,21 @@ export function App() {
   const [state, setState] = useState<State>({
     step: 'welcome',
     agents: [],
-    selectedSkills: [],
     results: [],
   });
 
   if (state.step === 'welcome') {
     return (
       <Box flexDirection="column" gap={1} paddingY={1}>
-        <Text bold color="cyan">{'  ◆ @ghcordeiro/ai-skills'}</Text>
-        <Text dimColor>{'  Install AI agent skills for Claude Code, Cursor, Copilot, Gemini CLI & Antigravity'}</Text>
+        <Text bold color="cyan">{'  ◆ Tech Lead Tools'}</Text>
+        <Text dimColor>{'  A curated toolkit for Tech Leads and Staff Engineers'}</Text>
+        <Text dimColor>{'  '}<Text color="cyan">{catalog.length} skills</Text>{' ready to install into your AI agent'}</Text>
         <Box marginTop={1}>
-          <Text>Press <Text bold>Enter</Text> to start</Text>
+          <SelectInput
+            items={[{ label: 'Get started →', value: 'start' }]}
+            onSelect={() => setState((s) => ({ ...s, step: 'agent' }))}
+          />
         </Box>
-        <SelectInput
-          items={[{ label: 'Start →', value: 'start' }]}
-          onSelect={() => setState((s) => ({ ...s, step: 'agent' }))}
-        />
       </Box>
     );
   }
@@ -72,39 +69,30 @@ export function App() {
         <SelectInput
           items={modeItems}
           onSelect={(item) =>
-            setState((s) => ({ ...s, mode: item.value as InstallMode, step: 'skills' }))
+            setState((s) => ({ ...s, mode: item.value as InstallMode, step: 'confirm' }))
           }
         />
       </Box>
     );
   }
 
-  if (state.step === 'skills') {
-    return (
-      <Box paddingY={1}>
-        <SkillSelector
-          skills={catalog}
-          onSubmit={(selected) => setState((s) => ({ ...s, selectedSkills: selected, step: 'confirm' }))}
-        />
-      </Box>
-    );
-  }
-
   if (state.step === 'confirm') {
-    const { agents, mode, selectedSkills } = state;
+    const { agents, mode } = state;
     return (
       <Box flexDirection="column" gap={1} paddingY={1}>
-        <Text bold>Ready to install:</Text>
-        <Text>  Agents: <Text color="cyan">{agents.map((a) => a.name).join(', ')}</Text></Text>
-        <Text>  Mode:   <Text color="cyan">{mode}</Text></Text>
-        <Text>  Skills: <Text color="cyan">{selectedSkills.length}</Text></Text>
-        {selectedSkills.map((s) => (
-          <Text key={s.id} dimColor>    • {s.id}</Text>
+        <Text bold>Ready to install <Text color="cyan">{catalog.length} skills</Text> into:</Text>
+        {agents.map((a) => (
+          <Text key={a.id} dimColor>
+            {'  • '}{a.name}{'  '}
+            <Text dimColor italic>
+              ({mode === 'global' ? a.globalSkillsDir : a.localSkillsDir})
+            </Text>
+          </Text>
         ))}
         <Box marginTop={1}>
           <SelectInput
             items={[
-              { label: 'Install', value: 'install' },
+              { label: `Install all ${catalog.length} skills`, value: 'install' },
               { label: 'Cancel', value: 'cancel' },
             ]}
             onSelect={(item) => {
@@ -114,7 +102,7 @@ export function App() {
               }
               const results: InstallResult[] = [];
               for (const agent of agents) {
-                for (const skill of selectedSkills) {
+                for (const skill of catalog) {
                   const result = installSkill(skill, agent, mode!);
                   results.push({
                     skill: result.skill,
@@ -138,7 +126,6 @@ export function App() {
     const succeeded = results.filter((r) => r.success);
     const failed = results.filter((r) => !r.success);
 
-    // Group results by agent for cleaner output
     const byAgent = agents.map((agent) => ({
       agent,
       items: results.filter((r) => r.agent === agent.name),
@@ -146,7 +133,7 @@ export function App() {
 
     return (
       <Box flexDirection="column" gap={1} paddingY={1}>
-        <Text bold color="green">Installation complete</Text>
+        <Text bold color="green">✓ Installation complete</Text>
         {byAgent.map(({ agent, items }) => (
           <Box key={agent.id} flexDirection="column">
             {agents.length > 1 && (
@@ -158,15 +145,13 @@ export function App() {
                 {r.error ? <Text dimColor> — {r.error}</Text> : null}
               </Text>
             ))}
-            {items.some((r) => r.success) && (
-              <Text dimColor>
-                {'  → '}{mode === 'global' ? agent.globalSkillsDir : agent.localSkillsDir}
-              </Text>
-            )}
+            <Text dimColor>
+              {'  → '}{mode === 'global' ? agent.globalSkillsDir : agent.localSkillsDir}
+            </Text>
           </Box>
         ))}
         {failed.length > 0 && (
-          <Text color="red">{failed.length} skill(s) failed to install</Text>
+          <Text color="red">{failed.length} skill(s) failed</Text>
         )}
         <Text dimColor>{succeeded.length} skill(s) installed successfully</Text>
       </Box>

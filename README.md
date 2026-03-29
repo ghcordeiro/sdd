@@ -1,80 +1,101 @@
 <div align="center">
 
-# ai-skills
+# tech-lead-tools
 
-**A curated collection of AI agent skills — installable in seconds.**
+**A curated toolkit for Tech Leads and Staff Engineers.**
 
-Extend Claude Code, Cursor, GitHub Copilot, Gemini CLI, and Antigravity with battle-tested, domain-specific capabilities via a single interactive CLI.
+Install battle-tested AI agent skills into Claude Code, Cursor, GitHub Copilot, Gemini CLI, and Antigravity — in seconds.
 
-[![npm version](https://img.shields.io/npm/v/@ghcordeiro/ai-skills?color=crimson&label=npm)](https://www.npmjs.com/package/@ghcordeiro/ai-skills)
+[![npm version](https://img.shields.io/npm/v/@ghcordeiro/tech-lead-tools?color=crimson&label=npm)](https://www.npmjs.com/package/@ghcordeiro/tech-lead-tools)
 [![CI](https://github.com/ghcordeiro/ai-skills/actions/workflows/ci.yml/badge.svg)](https://github.com/ghcordeiro/ai-skills/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 [![Node.js ≥22](https://img.shields.io/badge/node-%3E%3D22-brightgreen)](https://nodejs.org)
 
 ```bash
-npx @ghcordeiro/ai-skills
+npx @ghcordeiro/tech-lead-tools
 ```
 
 </div>
 
 ---
 
-## What are skills?
+## What is this?
 
-Skills are structured instruction files (`SKILL.md`) that give AI coding agents deep, specialized knowledge — turning a general-purpose assistant into an expert in spec-driven development, architecture documentation, code quality, SEO, accessibility, and more.
+`tech-lead-tools` installs a curated set of AI agent skills designed for the day-to-day work of Tech Leads and Staff Engineers — spec-driven planning, architecture documentation, code quality review, ADR creation, RFC writing, and more.
 
-Each skill is a self-contained directory that gets copied directly into your agent's skills folder. No cloud dependency. No lock-in. Plain Markdown.
+All skills are installed at once, as a single toolkit. No picking and choosing — just run, select your agent, and get to work.
+
+Each skill is a self-contained `SKILL.md` file that gives your AI agent deep, specialized knowledge. Plain Markdown. No cloud dependency. No lock-in.
 
 ---
 
 ## Quick Start
 
 ```bash
-npx @ghcordeiro/ai-skills
+npx @ghcordeiro/tech-lead-tools
 ```
 
 The interactive CLI walks you through three steps:
 
 ```
-? Select your AI agent        › Claude Code
-? Install globally or local?  › Global  (~/.claude/skills/)
-? Select skills to install    › [space to toggle, enter to confirm]
+  ◆ Tech Lead Tools
+  A curated toolkit for Tech Leads and Staff Engineers
+  14 skills ready to install into your AI agent
 
-  ◉  spec-driven
-  ◉  create-adr
-  ○  create-rfc
-  ◉  code-quality-guardian
-  ○  seo
-  ...
+  Get started →
 
-✓ spec-driven          → ~/.claude/skills/spec-driven
-✓ create-adr           → ~/.claude/skills/create-adr
-✓ code-quality-guardian → ~/.claude/skills/code-quality-guardian
+? Select your AI agent(s):
+  ↑/↓ navigate  ·  Space toggle  ·  A select all  ·  Enter confirm
+
+  ◉  Claude Code
+  ○  Cursor
+  ○  GitHub Copilot
+  ○  Gemini CLI
+  ○  Antigravity
+
+? Install globally or in current project?
+  › Global  (~/ — available in all projects)
+    Local   (./ — current project only)
+
+Ready to install 14 skills into:
+  • Claude Code  (~/.claude/skills/)
+
+  › Install all 14 skills
+
+✓ Installation complete
+  ✓ spec-driven
+  ✓ c4-architect
+  ✓ create-adr
+  ✓ create-rfc
+  ✓ code-quality-guardian
+  ✓ duplication-hunter
+  ✓ best-practices
+  ✓ frontend-component-architect
+  ✓ technical-design-doc-creator
+  ✓ seo
+  ✓ accessibility
+  ✓ chrome-devtools
+  ✓ gh-fix-ci
+  ✓ cursor-subagent-creator
+  ✓ skill-architect
+  → ~/.claude/skills/
+
+14 skills installed successfully
 ```
 
 ---
 
-## Usage
-
-### Interactive
+## Non-interactive (scripts & CI)
 
 ```bash
-npx @ghcordeiro/ai-skills
-```
-
-### Non-interactive (scripts & CI)
-
-```bash
-npx @ghcordeiro/ai-skills install \
+npx @ghcordeiro/tech-lead-tools install \
   --agent claude-code \
-  --skills spec-driven,create-adr,code-quality-guardian \
   --global
 ```
 
 | Flag | Alias | Description |
 |---|---|---|
 | `--agent <id>` | `-a` | Target agent (see supported agents below) |
-| `--skills <ids>` | `-s` | Comma-separated list of skill IDs |
 | `--global` | | Install to home directory `~/` (default) |
 | `--local` | | Install to current project directory `./` |
 
@@ -92,13 +113,13 @@ npx @ghcordeiro/ai-skills install \
 
 ---
 
-## Skills Catalog
+## Skills Included
 
 ### 🏗️ Planning & Architecture
 
 | Skill | Description |
 |---|---|
-| [`spec-driven`](packages/skills-catalog/spec-driven/) | Full project & feature planning with 4 adaptive phases: **Specify → Design → Tasks → Execute**. Auto-sizes depth by complexity. Orchestrates all complementary skills below. |
+| [`spec-driven`](packages/skills-catalog/spec-driven/) | Full project & feature planning with 4 adaptive phases: **Specify → Design → Tasks → Execute**. Orchestrates all other skills. |
 | [`c4-architect`](packages/skills-catalog/c4-architect/) | Generates C4 architecture diagrams (Context, Container, Component, Sequence) from source code using PlantUML. |
 | [`frontend-component-architect`](packages/skills-catalog/frontend-component-architect/) | Evaluates React/Angular component boundaries, API design quality, state ownership, and reuse opportunities. |
 | [`technical-design-doc-creator`](packages/skills-catalog/technical-design-doc-creator/) | Creates comprehensive Technical Design Documents (TDDs) for implementation planning. |
@@ -141,7 +162,7 @@ npx @ghcordeiro/ai-skills install \
 ```
 ai-skills/
 ├── packages/
-│   ├── cli/                  # @ghcordeiro/ai-skills — published CLI
+│   ├── cli/                  # @ghcordeiro/tech-lead-tools — published CLI
 │   │   ├── src/              # TypeScript source (Ink + Commander)
 │   │   └── build.mjs         # esbuild bundler script
 │   └── skills-catalog/       # one directory per skill
@@ -165,21 +186,20 @@ ai-skills/
 
 1. Create a new directory under `packages/skills-catalog/<skill-name>/`
 2. Add a `SKILL.md` with YAML frontmatter (`name`, `description`, `license`)
-3. Optionally add `references/`, `examples/`, or `scripts/` subdirectories
-4. Open a pull request — the skill appears automatically in the CLI catalog on next release
+3. Open a pull request — the skill is automatically included in the next release
 
 ### Publishing a new version
 
 ```bash
-# 1. Bump version in packages/cli/package.json
-npm version patch -w @ghcordeiro/ai-skills
+# 1. Bump version
+npm version patch -w @ghcordeiro/tech-lead-tools
 
 # 2. Commit and push
 git add packages/cli/package.json package-lock.json
-git commit -m "chore: bump cli to x.x.x"
+git commit -m "chore: bump to x.x.x"
 git push
 
-# 3. Create a tag — triggers the full publish pipeline
+# 3. Tag — triggers the publish pipeline
 git tag vx.x.x
 git push origin vx.x.x
 ```
@@ -190,6 +210,6 @@ git push origin vx.x.x
 
 ## License
 
-The CLI (`packages/cli`) is licensed under [MIT](./LICENSE).
+MIT — see [LICENSE](./LICENSE).
 
 Individual skills may carry their own licenses — check each skill's directory for details.

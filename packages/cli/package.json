@@ -1,11 +1,11 @@
 {
-  "name": "@ghcordeiro/ai-skills",
-  "version": "0.1.3",
-  "description": "Install AI agent skills for Claude Code, Cursor, GitHub Copilot, Gemini CLI, and Antigravity",
+  "name": "@ghcordeiro/tech-lead-tools",
+  "version": "1.0.0",
+  "description": "A curated toolkit for Tech Leads and Staff Engineers — install AI agent skills in seconds",
   "license": "MIT",
   "type": "module",
   "bin": {
-    "ai-skills": "./dist/index.js"
+    "tech-lead-tools": "./dist/index.js"
   },
   "main": "./dist/index.js",
   "files": [
@@ -39,12 +39,14 @@
     "node": ">=22"
   },
   "keywords": [
+    "tech-lead",
+    "staff-engineer",
     "ai-agent",
     "claude-code",
     "cursor",
     "github-copilot",
     "gemini-cli",
-    "antigravity",
+    "toolkit",
     "skills"
   ],
   "repository": {
