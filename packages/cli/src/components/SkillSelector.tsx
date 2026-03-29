@@ -9,7 +9,8 @@ interface Props {
 
 export function SkillSelector({ skills, onSubmit }: Props) {
   const [cursor, setCursor] = useState(0);
-  const [selected, setSelected] = useState<Set<string>>(new Set());
+  // All skills pre-selected by default
+  const [selected, setSelected] = useState<Set<string>>(new Set(skills.map((s) => s.id)));
 
   useInput((input, key) => {
     if (key.upArrow) {
@@ -57,9 +58,7 @@ export function SkillSelector({ skills, onSubmit }: Props) {
           );
         })}
       </Box>
-      {selected.size > 0 && (
-        <Text dimColor>{selected.size} skill(s) selected</Text>
-      )}
+      <Text dimColor>{selected.size}/{skills.length} selected · Enter to confirm</Text>
     </Box>
   );
 }

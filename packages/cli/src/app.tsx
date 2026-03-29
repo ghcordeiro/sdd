@@ -7,12 +7,20 @@ import { SkillSelector } from './components/SkillSelector.js';
 
 type Step = 'welcome' | 'agent' | 'mode' | 'skills' | 'confirm' | 'done';
 
+interface InstallResult {
+  skill: string;
+  agent: string;
+  success: boolean;
+  destination: string;
+  error?: string;
+}
+
 interface State {
   step: Step;
-  agent?: AgentDefinition;
+  agents: AgentDefinition[];
   mode?: InstallMode;
   selectedSkills: SkillEntry[];
-  results: Array<{ skill: string; success: boolean; destination: string; error?: string }>;
+  results: InstallResult[];
 }
 
 const catalog = loadCatalog();
@@ -26,6 +34,7 @@ export function App() {
   const { exit } = useApp();
   const [state, setState] = useState<State>({
     step: 'welcome',
+    agents: [],
     selectedSkills: [],
     results: [],
   });
@@ -49,7 +58,9 @@ export function App() {
   if (state.step === 'agent') {
     return (
       <Box paddingY={1}>
-        <AgentSelector onSelect={(agent) => setState((s) => ({ ...s, agent, step: 'mode' }))} />
+        <AgentSelector
+          onSubmit={(agents) => setState((s) => ({ ...s, agents, step: 'mode' }))}
+        />
       </Box>
     );
   }
@@ -80,13 +91,13 @@ export function App() {
   }
 
   if (state.step === 'confirm') {
-    const { agent, mode, selectedSkills } = state;
+    const { agents, mode, selectedSkills } = state;
     return (
       <Box flexDirection="column" gap={1} paddingY={1}>
         <Text bold>Ready to install:</Text>
-        <Text>  Agent: <Text color="cyan">{agent!.name}</Text></Text>
-        <Text>  Mode:  <Text color="cyan">{mode}</Text></Text>
-        <Text>  Skills ({selectedSkills.length}):</Text>
+        <Text>  Agents: <Text color="cyan">{agents.map((a) => a.name).join(', ')}</Text></Text>
+        <Text>  Mode:   <Text color="cyan">{mode}</Text></Text>
+        <Text>  Skills: <Text color="cyan">{selectedSkills.length}</Text></Text>
         {selectedSkills.map((s) => (
           <Text key={s.id} dimColor>    • {s.id}</Text>
         ))}
@@ -101,15 +112,19 @@ export function App() {
                 exit();
                 return;
               }
-              const results = selectedSkills.map((skill) => {
-                const result = installSkill(skill, agent!, mode!);
-                return {
-                  skill: result.skill,
-                  success: result.success,
-                  destination: result.destination,
-                  error: result.error,
-                };
-              });
+              const results: InstallResult[] = [];
+              for (const agent of agents) {
+                for (const skill of selectedSkills) {
+                  const result = installSkill(skill, agent, mode!);
+                  results.push({
+                    skill: result.skill,
+                    agent: agent.name,
+                    success: result.success,
+                    destination: result.destination,
+                    error: result.error,
+                  });
+                }
+              }
               setState((s) => ({ ...s, results, step: 'done' }));
             }}
           />
@@ -119,24 +134,41 @@ export function App() {
   }
 
   if (state.step === 'done') {
-    const { results, agent, mode } = state;
+    const { results, agents, mode } = state;
     const succeeded = results.filter((r) => r.success);
     const failed = results.filter((r) => !r.success);
+
+    // Group results by agent for cleaner output
+    const byAgent = agents.map((agent) => ({
+      agent,
+      items: results.filter((r) => r.agent === agent.name),
+    }));
 
     return (
       <Box flexDirection="column" gap={1} paddingY={1}>
         <Text bold color="green">Installation complete</Text>
-        {succeeded.map((r) => (
-          <Text key={r.skill}>  <Text color="green">✓</Text> {r.skill}</Text>
-        ))}
-        {failed.map((r) => (
-          <Text key={r.skill}>  <Text color="red">✗</Text> {r.skill} — {r.error}</Text>
-        ))}
-        {succeeded.length > 0 && (
-          <Box marginTop={1} flexDirection="column">
-            <Text dimColor>Installed to: {mode === 'global' ? agent!.globalSkillsDir : agent!.localSkillsDir}</Text>
+        {byAgent.map(({ agent, items }) => (
+          <Box key={agent.id} flexDirection="column">
+            {agents.length > 1 && (
+              <Text bold color="cyan">  {agent.name}</Text>
+            )}
+            {items.map((r) => (
+              <Text key={`${r.agent}-${r.skill}`}>
+                {'  '}<Text color={r.success ? 'green' : 'red'}>{r.success ? '✓' : '✗'}</Text>{' '}{r.skill}
+                {r.error ? <Text dimColor> — {r.error}</Text> : null}
+              </Text>
+            ))}
+            {items.some((r) => r.success) && (
+              <Text dimColor>
+                {'  → '}{mode === 'global' ? agent.globalSkillsDir : agent.localSkillsDir}
+              </Text>
+            )}
           </Box>
+        ))}
+        {failed.length > 0 && (
+          <Text color="red">{failed.length} skill(s) failed to install</Text>
         )}
+        <Text dimColor>{succeeded.length} skill(s) installed successfully</Text>
       </Box>
     );
   }
