@@ -7,7 +7,6 @@ import { AgentSelector } from './components/AgentSelector.js';
 type Step = 'welcome' | 'agent' | 'mode' | 'confirm' | 'done';
 
 interface InstallResult {
-  skill: string;
   agent: string;
   success: boolean;
   destination: string;
@@ -22,6 +21,7 @@ interface State {
 }
 
 const catalog = loadCatalog();
+const skill = catalog[0]; // spec-driven — the only skill
 
 const modeItems = [
   { label: 'Global  (~/ — available in all projects)', value: 'global' },
@@ -41,7 +41,6 @@ export function App() {
       <Box flexDirection="column" gap={1} paddingY={1}>
         <Text bold color="cyan">{'  ◆ Tech Lead Tools'}</Text>
         <Text dimColor>{'  A curated toolkit for Tech Leads and Staff Engineers'}</Text>
-        <Text dimColor>{'  '}<Text color="cyan">{catalog.length} skills</Text>{' ready to install into your AI agent'}</Text>
         <Box marginTop={1}>
           <SelectInput
             items={[{ label: 'Get started →', value: 'start' }]}
@@ -80,39 +79,29 @@ export function App() {
     const { agents, mode } = state;
     return (
       <Box flexDirection="column" gap={1} paddingY={1}>
-        <Text bold>Ready to install <Text color="cyan">{catalog.length} skills</Text> into:</Text>
+        <Text bold>Ready to install <Text color="cyan">spec-driven</Text> into:</Text>
         {agents.map((a) => (
           <Text key={a.id} dimColor>
-            {'  • '}{a.name}{'  '}
-            <Text dimColor italic>
-              ({mode === 'global' ? a.globalSkillsDir : a.localSkillsDir})
-            </Text>
+            {'  • '}{a.name}{'  '}({mode === 'global' ? a.globalSkillsDir : a.localSkillsDir})
           </Text>
         ))}
         <Box marginTop={1}>
           <SelectInput
             items={[
-              { label: `Install all ${catalog.length} skills`, value: 'install' },
+              { label: 'Install', value: 'install' },
               { label: 'Cancel', value: 'cancel' },
             ]}
             onSelect={(item) => {
-              if (item.value === 'cancel') {
-                exit();
-                return;
-              }
-              const results: InstallResult[] = [];
-              for (const agent of agents) {
-                for (const skill of catalog) {
-                  const result = installSkill(skill, agent, mode!);
-                  results.push({
-                    skill: result.skill,
-                    agent: agent.name,
-                    success: result.success,
-                    destination: result.destination,
-                    error: result.error,
-                  });
-                }
-              }
+              if (item.value === 'cancel') { exit(); return; }
+              const results: InstallResult[] = agents.map((agent) => {
+                const result = installSkill(skill, agent, mode!);
+                return {
+                  agent: agent.name,
+                  success: result.success,
+                  destination: result.destination,
+                  error: result.error,
+                };
+              });
               setState((s) => ({ ...s, results, step: 'done' }));
             }}
           />
@@ -126,34 +115,25 @@ export function App() {
     const succeeded = results.filter((r) => r.success);
     const failed = results.filter((r) => !r.success);
 
-    const byAgent = agents.map((agent) => ({
-      agent,
-      items: results.filter((r) => r.agent === agent.name),
-    }));
-
     return (
       <Box flexDirection="column" gap={1} paddingY={1}>
         <Text bold color="green">✓ Installation complete</Text>
-        {byAgent.map(({ agent, items }) => (
-          <Box key={agent.id} flexDirection="column">
-            {agents.length > 1 && (
-              <Text bold color="cyan">  {agent.name}</Text>
-            )}
-            {items.map((r) => (
-              <Text key={`${r.agent}-${r.skill}`}>
-                {'  '}<Text color={r.success ? 'green' : 'red'}>{r.success ? '✓' : '✗'}</Text>{' '}{r.skill}
-                {r.error ? <Text dimColor> — {r.error}</Text> : null}
-              </Text>
-            ))}
-            <Text dimColor>
-              {'  → '}{mode === 'global' ? agent.globalSkillsDir : agent.localSkillsDir}
+        {results.map((r) => (
+          <Box key={r.agent} flexDirection="column">
+            <Text>
+              {'  '}<Text color={r.success ? 'green' : 'red'}>{r.success ? '✓' : '✗'}</Text>
+              {' spec-driven → '}
+              <Text dimColor>{mode === 'global' ? agents.find(a => a.name === r.agent)!.globalSkillsDir : agents.find(a => a.name === r.agent)!.localSkillsDir}</Text>
             </Text>
+            {r.error && <Text color="red">    {r.error}</Text>}
           </Box>
         ))}
-        {failed.length > 0 && (
-          <Text color="red">{failed.length} skill(s) failed</Text>
+        {failed.length === 0 && (
+          <Text dimColor>
+            {'  Includes full toolkit: accessibility, best-practices, c4-architect,\n  code-quality-guardian, create-adr, create-rfc, duplication-hunter,\n  frontend-component-architect, gh-fix-ci, seo, skill-architect,\n  chrome-devtools, cursor-subagent-creator, technical-design-doc-creator'}
+          </Text>
         )}
-        <Text dimColor>{succeeded.length} skill(s) installed successfully</Text>
+        <Text dimColor>{succeeded.length === agents.length ? 'Installed successfully' : `${failed.length} failed`}</Text>
       </Box>
     );
   }
