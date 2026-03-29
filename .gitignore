@@ -3,6 +3,8 @@ node_modules/
 
 # Build outputs
 dist/
+libs/core/src/*.js
+libs/core/src/*.js.map
 *.js.map
 
 # TypeScript cache
