@@ -1,15 +1,19 @@
 ---
 name: spec-driven
-description: Project and feature planning with 4 adaptive phases - Specify, Design, Tasks, Execute. Auto-sizes depth by complexity. Creates atomic tasks with verification criteria, atomic git commits, requirement traceability, and persistent memory across sessions. Orchestrates complementary skills: business documentation (business.md), architecture decision records (create-adr), C4 diagrams (c4-architect), stakeholder alignment (create-rfc), frontend componentization (frontend-component-architect), code reuse analysis (duplication-hunter), code review (code-quality-guardian), web best practices (best-practices), SEO (seo), and skill design (skill-architect). Stack-agnostic. Use when (1) Starting new projects (initialize vision, goals, roadmap), (2) Working with existing codebases (map stack, architecture, conventions), (3) Planning features (requirements, design, task breakdown), (4) Implementing with verification and atomic commits, (5) Quick ad-hoc tasks (bug fixes, config changes), (6) Tracking decisions/blockers/deferred ideas across sessions, (7) Pausing/resuming work. Triggers on "initialize project", "map codebase", "specify feature", "discuss feature", "design", "tasks", "implement", "validate", "verify work", "UAT", "quick fix", "quick task", "pause work", "resume work". Do NOT use for architecture decomposition analysis (use architecture skills) or technical design docs (use create-technical-design-doc).
+description: "THE single command for Tech Leads and Staff Engineers. Orchestrates the full tech-lead-tools toolkit automatically — you never invoke other skills directly. Drives project and feature work through 4 adaptive phases (Specify, Design, Tasks, Execute), auto-sizing depth by complexity. Activates the right tool at the right moment: business docs, ADRs, C4 diagrams, RFCs, TDDs, component design, duplication analysis, code review, accessibility, SEO, CI fixes, browser debugging — all wired in. Stack-agnostic. Triggers on: initialize project, map codebase, specify feature, discuss feature, design, tasks, implement, validate, verify work, UAT, quick fix, quick task, pause work, resume work."
 license: CC-BY-4.0
 metadata:
   author: Felipe Rodrigues - github.com/felipfr
-  version: 2.0.0
+  version: 3.0.0
 ---
 
 # Spec-Driven Development
 
-Plan and implement projects with precision. Granular tasks. Clear dependencies. Right tools. Zero ceremony.
+**The only command you need.** `spec-driven` is the single entry point for all engineering work — it orchestrates the complete tech-lead-tools toolkit automatically, activating the right skill at the right moment based on what the project actually needs. You never invoke other skills directly.
+
+```
+You → /spec-driven → the right tools fire automatically
+```
 
 ```
 ┌──────────┐   ┌──────────┐   ┌─────────┐   ┌─────────┐
@@ -80,18 +84,18 @@ Plan and implement projects with precision. Granular tasks. Clear dependencies. 
 
 **Existing codebase:**
 
-1. Map codebase → 7 brownfield docs + optionally `duplication-hunter`
+1. Map codebase → 7 brownfield docs → `duplication-hunter` always runs
 2. Initialize project → PROJECT.md + ROADMAP.md
 3. For each feature → same adaptive workflow
 
-**Quick mode:** Describe → Implement → Verify → Commit (for ≤3 files, one-sentence scope — no skill integrations)
+**Quick mode:** Describe → Implement → Verify → Commit (≤3 files, one-sentence scope — no toolkit activations)
 
-**Feature workflow (Large/Complex):**
+**Feature workflow (Large/Complex) — toolkit activations are automatic:**
 
-1. **Specify:** Create `business.md` first → then `spec.md` → resolve gray areas in `context.md` → optionally trigger `create-rfc` for high-stakes direction decisions
-2. **Design:** Draft `design.md` → record all architectural decisions via `create-adr` → generate C4 diagrams via `c4-architect` if system boundaries change → optionally invoke `frontend-component-architect` (frontend) or `duplication-hunter` (brownfield)
+1. **Specify:** `business.md` (always) → `spec.md` → `context.md` (gray areas) → `technical-design-doc-creator` (formal TDD needed) → `create-rfc` (high-stakes direction decision)
+2. **Design:** `design.md` → `create-adr` (every architectural decision) → `c4-architect` (system boundary changes) → `frontend-component-architect` (UI features) → `duplication-hunter` (brownfield)
 3. **Tasks:** Break into atomic tasks → `tasks.md` with dependencies
-4. **Execute (per task):** Implement → review with `code-quality-guardian` + `best-practices` (web) → record any emergent architectural decisions via `create-adr` → commit → optionally run `seo` audit (public pages)
+4. **Execute (per task):** Implement → `code-quality-guardian` (always) → `best-practices` (web) → `accessibility` (UI changes) → `seo` (public pages) → `create-adr` (emergent decisions) → commit → `gh-fix-ci` (if CI fails)
 
 ## Context Loading Strategy
 
@@ -147,33 +151,37 @@ Plan and implement projects with precision. Granular tasks. Clear dependencies. 
 
 ## Skill Integrations
 
-This skill coexists with other skills. Before specific tasks, check if complementary skills are installed and prefer them when available.
-
-The table below summarizes when each integration applies and whether it is **mandatory** (the phase does not advance without it) or **optional** (offered when context is unambiguous, user can decline):
-
-| Phase | Skill | When | Level |
-|---|---|---|---|
-| Specify | `business.md` artefact | Large/Complex features | **Mandatory** |
-| Specify | `create-rfc` | Ambiguous direction needing stakeholder alignment | Optional |
-| Specify | `skill-architect` | Project/feature being built IS a skill | Optional |
-| Design | `create-adr` | Any significant architectural decision | **Mandatory** |
-| Design | `c4-architect` | Feature changes system containers or components | **Mandatory** |
-| Design | `frontend-component-architect` | Frontend feature (React, Angular, etc.) | Optional |
-| Design | `duplication-hunter` | Brownfield project or large codebase | Optional |
-| Execute | `code-quality-guardian` | Medium/Large feature, before each commit | Contextual |
-| Execute | `best-practices` | Web project, before each commit | Contextual |
-| Execute | `seo` | Feature exposes public-facing URLs/pages | Optional |
-| Execute | `create-adr` | Unexpected architectural decision emerges | **Mandatory** |
-| Any | `mermaid-studio` | Diagram creation/rendering needed | Contextual |
-| Any | `codenavi` | Code exploration in existing repo | Contextual |
+**All skills in this toolkit are always available.** `spec-driven` is the orchestrator — it activates each skill automatically based on what the project needs. No manual checking. No opt-in prompts. The right tool fires at the right moment.
 
 > **Quick mode** is exempt from all integrations. Zero ceremony.
 
+### Activation Map
+
+| Phase | Skill | Activates when… |
+|---|---|---|
+| Specify | `business.md` artefact | Feature is Large or Complex |
+| Specify | `create-rfc` | Gray area has high-stakes direction trade-offs requiring stakeholder alignment |
+| Specify | `technical-design-doc-creator` | Feature requires a formal TDD before design begins |
+| Specify | `skill-architect` | The thing being built IS an AI skill |
+| Design | `create-adr` | Any significant architectural decision is made |
+| Design | `c4-architect` | Feature introduces or changes system boundaries (new service, API, DB, queue, inter-system flow) |
+| Design | `frontend-component-architect` | Feature includes UI components (React, Angular, Vue, etc.) |
+| Design | `duplication-hunter` | Brownfield project or large codebase — always run before designing new abstractions |
+| Execute | `code-quality-guardian` | Before every commit on Medium/Large features |
+| Execute | `best-practices` | Web project — before every commit touching HTTP, HTML, APIs, cookies, or security |
+| Execute | `accessibility` | Feature introduces or modifies user-facing UI |
+| Execute | `seo` | Feature introduces or modifies public-facing pages, routes, or metadata |
+| Execute | `create-adr` | An unexpected architectural decision emerges during implementation |
+| Execute | `gh-fix-ci` | CI pipeline fails after a commit |
+| Any | `chrome-devtools` | Browser debugging, performance profiling, or rendering issue needs investigation |
+| Any | `mermaid-studio` | Diagram creation or rendering is needed (if installed) |
+| Any | `codenavi` | Code exploration in an existing repo is needed (if installed) |
+
 ---
 
-### Business Documentation → `business.md` (new artefact)
+### Business Documentation → `business.md`
 
-**Phase:** Specify — created as the first artefact before `spec.md` for Large/Complex features.
+**Phase:** Specify — first artefact created, before `spec.md`, for Large/Complex features.
 
 Captures the feature from a business perspective: the *why* before the *how*. Written in non-technical language so any stakeholder can understand the full picture.
 
@@ -206,95 +214,125 @@ Other teams, processes, or systems that need to be aligned.
 
 ---
 
-### Architecture Decisions → create-adr
+### Architecture Decisions → `create-adr`
 
-**Phase:** Design (proactive) + Execute (reactive). **Mandatory whenever a significant architectural decision is made.**
+**Phase:** Design (proactive) + Execute (reactive). **Always activated when a significant architectural decision is made.**
 
-Before finalizing `design.md` or before committing a task that involved an architectural choice, **always** check if `create-adr` is installed. If it is, invoke it to record the decision as an ADR. If it is not installed, document the decision inline in `design.md` and recommend installing `create-adr`.
+Before finalizing `design.md`, or before committing a task that involved an architectural choice, invoke `create-adr` to record the decision as an ADR.
 
 A decision is "significant" if it involves: choice of library/framework, structural patterns, data model strategy, integration approach, security model, or trade-offs with long-term consequences. Trivial implementation choices (variable names, minor formatting) do not qualify.
 
-**Rule:** Do not advance from Design to Tasks, or commit a task in Execute, if a significant architectural decision was made and not yet recorded.
+**Rule:** Do not advance from Design to Tasks, or commit a task in Execute, if a significant architectural decision was made and not yet recorded as an ADR.
 
 ---
 
-### Architecture Diagrams → c4-architect
+### Architecture Diagrams → `c4-architect`
 
-**Phase:** Design. **Mandatory when the feature changes or introduces system-level containers or components.**
+**Phase:** Design. **Always activated when the feature introduces or changes system boundaries.**
 
-When `design.md` describes new services, APIs, databases, queues, or inter-system flows, **always** check if `c4-architect` is installed. If it is, delegate C4 diagram generation to it (Level 1 Context, Level 2 Container, Level 3 Component as applicable). If it is not installed, proceed with inline mermaid diagrams and recommend installing `c4-architect` for richer PlantUML-rendered diagrams.
+When `design.md` describes new services, APIs, databases, queues, or inter-system flows, delegate C4 diagram generation to `c4-architect` (Level 1 Context, Level 2 Container, Level 3 Component as applicable).
 
-For purely internal/isolated changes (e.g., a single module refactor with no system boundary changes), C4 diagrams are optional.
-
----
-
-### Stakeholder Alignment → create-rfc
-
-**Phase:** Specify (when gray areas involve high-impact direction decisions). Optional.
-
-When the `discuss` workflow detects that a gray area requires choosing between multiple viable directions with significant architectural or business trade-offs, **check if `create-rfc` is installed**. If it is, offer to draft an RFC before finalizing the spec so the decision can be reviewed by stakeholders. If the user declines or `create-rfc` is not installed, resolve the decision inline in `context.md` as usual.
-
-Do not offer `create-rfc` for every ambiguity — only when the stakes are high enough to warrant formal stakeholder review.
+For purely internal/isolated changes (single module refactor with no system boundary impact), skip.
 
 ---
 
-### Frontend Component Design → frontend-component-architect
+### Technical Design Document → `technical-design-doc-creator`
 
-**Phase:** Design. Optional — frontend projects only.
+**Phase:** Specify — for features that require formal documentation before design begins.
 
-When the feature involves UI components (React, Angular, Vue, etc.) and `frontend-component-architect` is installed, **offer to evaluate component boundaries** before writing `design.md`. This identifies responsibility overload, weak APIs, and missed reuse opportunities before implementation begins. If the user declines, continue with inline component design.
-
----
-
-### Code Reuse Analysis → duplication-hunter
-
-**Phase:** Design. Optional — brownfield projects or large codebases.
-
-When mapping an existing codebase or designing a feature in a brownfield project, **check if `duplication-hunter` is installed** and offer to scan for reuse opportunities before designing new abstractions. This prevents reinventing existing utilities and surfaces shared extraction candidates. If the user declines or the project is greenfield, skip.
+Activate when the feature is complex enough to warrant a TDD: new subsystems, cross-team dependencies, infrastructure changes, or public API contracts. The TDD is produced before `design.md` and feeds directly into it.
 
 ---
 
-### Code Review → code-quality-guardian
+### Stakeholder Alignment → `create-rfc`
 
-**Phase:** Execute — before committing each task in Medium/Large features. Contextual (skip in Quick mode).
+**Phase:** Specify — when the `discuss` workflow surfaces a high-stakes direction decision.
 
-After implementing a task and before running `git commit`, **check if `code-quality-guardian` is installed** and invoke it to review the changes for correctness, security, maintainability, and architecture fit. Findings are triaged as Critical (must fix before commit), Warning (address or justify), or Suggestion (optional). If not installed, perform a manual inline review checklist.
-
----
-
-### Web Standards → best-practices
-
-**Phase:** Execute — before committing tasks in web projects. Contextual (skip in Quick mode).
-
-For web projects (any feature touching HTTP handlers, HTML, APIs, cookies, or security headers), **check if `best-practices` is installed** and run it as a final gate before committing. This catches security misconfigurations, deprecated APIs, and compatibility issues. If not installed, run a manual checklist covering: HTTPS, CSP, input sanitization, secure cookies, and error handling.
+Activate when a gray area involves choosing between multiple viable architectural or business directions with significant long-term trade-offs. Draft an RFC before finalizing the spec so the decision can be reviewed by stakeholders. Do not activate for every ambiguity — only when the stakes are high enough to warrant formal alignment.
 
 ---
 
-### SEO → seo
+### Frontend Component Design → `frontend-component-architect`
 
-**Phase:** Execute — after implementing features that expose public-facing URLs or pages. Optional.
+**Phase:** Design — always activated for features involving UI components.
 
-When a feature introduces or modifies public-facing pages, routes, or metadata, **check if `seo` is installed** and offer to run an SEO audit before closing the task. This covers meta tags, structured data, sitemap updates, and crawlability. If the feature is internal (authenticated-only, APIs, dashboards), skip entirely.
-
----
-
-### Skill Building → skill-architect
-
-**Phase:** Specify. Optional — only when the project/feature being built IS a skill.
-
-When the user is building or designing a new AI skill (a `SKILL.md` file), **check if `skill-architect` is installed** and delegate the skill design process to it. It guides through Discovery → Architecture → Craft → Validate → Deliver, ensuring the skill follows quality patterns. If not installed, proceed with inline skill design.
+For any feature with React, Angular, Vue, or similar UI components, invoke `frontend-component-architect` before writing `design.md`. This identifies responsibility overload, weak APIs, and missed reuse opportunities before implementation begins.
 
 ---
 
-### Diagrams → mermaid-studio
+### Code Reuse Analysis → `duplication-hunter`
 
-Whenever the workflow requires creating or updating a diagram (architecture overviews, data flows, component diagrams, sequence diagrams, etc.), **always** check if the `mermaid-studio` skill is installed in the user's environment before proceeding. If it is installed, delegate all diagram creation and rendering to it. If it is not installed, proceed with inline mermaid code blocks as usual and recommend the user install `mermaid-studio` for richer diagram capabilities (rendering to SVG/PNG, validation, theming, etc.). Display this recommendation at most once per session.
+**Phase:** Design — always activated for brownfield projects or large codebases.
+
+Before designing new abstractions in an existing project, invoke `duplication-hunter` to surface existing utilities and shared extraction candidates. Prevents reinventing what already exists.
 
 ---
 
-### Code Exploration → codenavi
+### Code Review → `code-quality-guardian`
 
-Whenever the workflow requires exploring or discovering things in an existing repository (brownfield mapping, code reuse analysis, pattern identification, dependency tracing, etc.), **always** check if the `codenavi` skill is installed in the user's environment before proceeding. If it is installed, delegate code exploration and navigation tasks to it. If it is not installed, fall back to the built-in code analysis tools (see [code-analysis.md](references/code-analysis.md)) and recommend the user install `codenavi` for more effective codebase exploration. Display this recommendation at most once per session.
+**Phase:** Execute — before every commit on Medium/Large features.
+
+After implementing a task and before `git commit`, invoke `code-quality-guardian` to review changes for correctness, security, maintainability, and architecture fit. Findings are triaged as Critical (must fix before commit), Warning (address or justify), or Suggestion (optional).
+
+---
+
+### Web Standards → `best-practices`
+
+**Phase:** Execute — before every commit in web projects.
+
+For web projects (any feature touching HTTP handlers, HTML, APIs, cookies, or security headers), run `best-practices` as a final gate before committing. Catches security misconfigurations, deprecated APIs, and compatibility issues.
+
+---
+
+### Accessibility → `accessibility`
+
+**Phase:** Execute — always activated when the feature introduces or modifies user-facing UI.
+
+For any feature with visible UI changes, invoke `accessibility` before closing the task. Audits against WCAG 2.1 AA: keyboard navigation, screen reader support, color contrast, ARIA roles, and focus management. Skip for internal tooling, APIs, or non-visual features.
+
+---
+
+### SEO → `seo`
+
+**Phase:** Execute — activated when the feature introduces or modifies public-facing pages.
+
+When a feature adds or changes public routes, metadata, or page content, invoke `seo` before closing the task. Covers meta tags, structured data (JSON-LD), sitemap updates, and crawlability. Skip for authenticated-only features, APIs, and internal dashboards.
+
+---
+
+### CI Failures → `gh-fix-ci`
+
+**Phase:** Execute — activated automatically when CI fails after a commit.
+
+When the pipeline breaks, invoke `gh-fix-ci` immediately to inspect logs and draft a targeted fix. Do not proceed to the next task until CI is green.
+
+---
+
+### Browser Debugging → `chrome-devtools`
+
+**Phase:** Any — activated when a browser rendering, performance, or JavaScript issue needs investigation.
+
+For runtime errors, layout bugs, performance regressions, or network issues in a web project, delegate debugging to `chrome-devtools` before attempting blind fixes.
+
+---
+
+### Skill Building → `skill-architect`
+
+**Phase:** Specify — only when the thing being built IS an AI skill.
+
+When the user is building or designing a new `SKILL.md`, delegate the skill design process to `skill-architect`. It guides through Discovery → Architecture → Craft → Validate → Deliver.
+
+---
+
+### Diagrams → `mermaid-studio`
+
+Whenever the workflow requires creating or updating a diagram, check if `mermaid-studio` is installed. If it is, delegate diagram creation and rendering to it. If not, use inline mermaid code blocks.
+
+---
+
+### Code Exploration → `codenavi`
+
+Whenever the workflow requires exploring an existing repository (brownfield mapping, pattern identification, dependency tracing), check if `codenavi` is installed. If it is, delegate code exploration to it. If not, use built-in code analysis tools (see [code-analysis.md](references/code-analysis.md)).
 
 ## Knowledge Verification Chain
 
