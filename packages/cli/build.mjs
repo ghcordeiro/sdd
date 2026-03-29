@@ -28,7 +28,7 @@ await build({
     'react',
     'chalk',
     'commander',
-    // gray-matter é bundled junto com @ghcordeiro/core
+    'gray-matter', // CJS com dynamic require('fs') — não pode ser bundlado em ESM
   ],
 });
 
