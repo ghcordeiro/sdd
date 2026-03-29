@@ -13,6 +13,7 @@ export async function installCommand({ agentId, skillIds, mode }: InstallOptions
     console.error(chalk.red(`Unknown agent: ${agentId}`));
     console.error(`Available: claude-code, cursor, github-copilot, gemini-cli, antigravity`);
     process.exit(1);
+    return;
   }
 
   const catalog = loadCatalog();
