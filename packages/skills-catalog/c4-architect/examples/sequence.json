@@ -1,0 +1,26 @@
+{
+  "level": 4,
+  "title": "Checkout Flow - E-Commerce Platform",
+  "elements": [
+    { "alias": "customer", "name": "Customer", "type": "actor", "stereotype": "actor" },
+    { "alias": "spa", "name": "Web App", "type": "participant" },
+    { "alias": "api_gw", "name": "API Gateway", "type": "participant" },
+    { "alias": "order_svc", "name": "Order Service", "type": "participant" },
+    { "alias": "payment_gw", "name": "Stripe", "type": "participant", "stereotype": "participant" },
+    { "alias": "rabbitmq", "name": "RabbitMQ", "type": "queue", "stereotype": "queue" },
+    { "alias": "email_svc", "name": "Email Service", "type": "participant" }
+  ],
+  "relations": [
+    { "from": "customer", "to": "spa", "label": "Click 'Place Order'", "activate": true },
+    { "from": "spa", "to": "api_gw", "label": "POST /orders", "activate": true },
+    { "from": "api_gw", "to": "order_svc", "label": "createOrder()", "activate": true },
+    { "from": "order_svc", "to": "payment_gw", "label": "charge(amount, card)", "activate": true },
+    { "from": "payment_gw", "to": "order_svc", "label": "paymentConfirmed", "return": true, "deactivate": true },
+    { "from": "order_svc", "to": "rabbitmq", "label": "publish(order.created)", "async": true },
+    { "from": "rabbitmq", "to": "email_svc", "label": "order.created event", "async": true, "activate": true },
+    { "from": "email_svc", "to": "customer", "label": "Order confirmation email", "async": true, "deactivate": true },
+    { "from": "order_svc", "to": "api_gw", "label": "201 Created", "return": true, "deactivate": true },
+    { "from": "api_gw", "to": "spa", "label": "Order response", "return": true, "deactivate": true },
+    { "from": "spa", "to": "customer", "label": "Show confirmation page", "return": true, "deactivate": true }
+  ]
+}

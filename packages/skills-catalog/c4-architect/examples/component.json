@@ -1,0 +1,87 @@
+{
+  "level": 3,
+  "title": "Component Diagram - Order Service",
+  "layout": "LEFT_RIGHT",
+  "elements": [
+    {
+      "alias": "api_gw",
+      "name": "API Gateway",
+      "type": "Container",
+      "description": "Routes requests",
+      "tech": "Node.js"
+    },
+    {
+      "alias": "order_ctrl",
+      "name": "Order Controller",
+      "type": "Component",
+      "description": "Handles HTTP endpoints for orders",
+      "tech": "FastAPI Router"
+    },
+    {
+      "alias": "order_validator",
+      "name": "Order Validator",
+      "type": "Component",
+      "description": "Validates order data and business rules",
+      "tech": "Pydantic"
+    },
+    {
+      "alias": "order_repo",
+      "name": "Order Repository",
+      "type": "Component",
+      "description": "Data access layer for orders",
+      "tech": "SQLAlchemy"
+    },
+    {
+      "alias": "payment_adapter",
+      "name": "Payment Adapter",
+      "type": "Component",
+      "description": "Integrates with external payment gateway",
+      "tech": "Stripe SDK"
+    },
+    {
+      "alias": "notification_adapter",
+      "name": "Notification Adapter",
+      "type": "Component",
+      "description": "Publishes order events to message broker",
+      "tech": "Pika (AMQP)"
+    },
+    {
+      "alias": "postgres",
+      "name": "Database",
+      "type": "ContainerDb",
+      "description": "Stores orders",
+      "tech": "PostgreSQL"
+    },
+    {
+      "alias": "rabbitmq",
+      "name": "Message Broker",
+      "type": "ContainerQueue",
+      "description": "Event bus",
+      "tech": "RabbitMQ"
+    },
+    {
+      "alias": "payment_gw",
+      "name": "Payment Gateway",
+      "type": "System_Ext",
+      "description": "Processes payments",
+      "tech": "Stripe"
+    }
+  ],
+  "boundaries": [
+    {
+      "alias": "order_svc",
+      "label": "Order Service [Python / FastAPI]",
+      "elements": ["order_ctrl", "order_validator", "order_repo", "payment_adapter", "notification_adapter"]
+    }
+  ],
+  "relations": [
+    { "from": "api_gw", "to": "order_ctrl", "label": "Routes order requests", "protocol": "HTTPS/JSON" },
+    { "from": "order_ctrl", "to": "order_validator", "label": "Validates input" },
+    { "from": "order_ctrl", "to": "order_repo", "label": "Persists orders" },
+    { "from": "order_ctrl", "to": "payment_adapter", "label": "Charges payment" },
+    { "from": "order_ctrl", "to": "notification_adapter", "label": "Emits order events" },
+    { "from": "order_repo", "to": "postgres", "label": "SQL queries", "protocol": "SQL" },
+    { "from": "payment_adapter", "to": "payment_gw", "label": "Charge request", "protocol": "HTTPS/REST" },
+    { "from": "notification_adapter", "to": "rabbitmq", "label": "Publishes events", "protocol": "AMQP" }
+  ]
+}

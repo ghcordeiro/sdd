@@ -1,0 +1,112 @@
+{
+  "level": 2,
+  "title": "Container Diagram - E-Commerce Platform",
+  "layout": "TOP_DOWN",
+  "elements": [
+    {
+      "alias": "customer",
+      "name": "Customer",
+      "type": "Person",
+      "description": "Buys products online"
+    },
+    {
+      "alias": "spa",
+      "name": "Web Application",
+      "type": "Container",
+      "description": "Product catalog, cart, checkout",
+      "tech": "React / TypeScript"
+    },
+    {
+      "alias": "mobile",
+      "name": "Mobile App",
+      "type": "Container",
+      "description": "Native mobile shopping experience",
+      "tech": "React Native"
+    },
+    {
+      "alias": "api_gw",
+      "name": "API Gateway",
+      "type": "Container",
+      "description": "Routes requests, handles auth",
+      "tech": "Node.js / Express"
+    },
+    {
+      "alias": "auth_svc",
+      "name": "Auth Service",
+      "type": "Container",
+      "description": "User authentication and authorization",
+      "tech": "Go"
+    },
+    {
+      "alias": "order_svc",
+      "name": "Order Service",
+      "type": "Container",
+      "description": "Manages order lifecycle",
+      "tech": "Python / FastAPI"
+    },
+    {
+      "alias": "catalog_svc",
+      "name": "Catalog Service",
+      "type": "Container",
+      "description": "Product information and search",
+      "tech": "Node.js / Express"
+    },
+    {
+      "alias": "postgres",
+      "name": "Database",
+      "type": "ContainerDb",
+      "description": "Stores orders, users, products",
+      "tech": "PostgreSQL"
+    },
+    {
+      "alias": "redis",
+      "name": "Cache",
+      "type": "ContainerDb",
+      "description": "Session and query cache",
+      "tech": "Redis"
+    },
+    {
+      "alias": "rabbitmq",
+      "name": "Message Broker",
+      "type": "ContainerQueue",
+      "description": "Async event processing",
+      "tech": "RabbitMQ"
+    },
+    {
+      "alias": "payment_gw",
+      "name": "Payment Gateway",
+      "type": "System_Ext",
+      "description": "Processes payments",
+      "tech": "Stripe"
+    },
+    {
+      "alias": "email_svc",
+      "name": "Email Service",
+      "type": "System_Ext",
+      "description": "Transactional emails",
+      "tech": "SendGrid"
+    }
+  ],
+  "boundaries": [
+    {
+      "alias": "ecommerce",
+      "label": "E-Commerce Platform",
+      "elements": ["spa", "mobile", "api_gw", "auth_svc", "order_svc", "catalog_svc", "postgres", "redis", "rabbitmq"]
+    }
+  ],
+  "relations": [
+    { "from": "customer", "to": "spa", "label": "Browses", "protocol": "HTTPS" },
+    { "from": "customer", "to": "mobile", "label": "Browses", "protocol": "HTTPS" },
+    { "from": "spa", "to": "api_gw", "label": "API calls", "protocol": "HTTPS/JSON" },
+    { "from": "mobile", "to": "api_gw", "label": "API calls", "protocol": "HTTPS/JSON" },
+    { "from": "api_gw", "to": "auth_svc", "label": "Validates tokens", "protocol": "gRPC" },
+    { "from": "api_gw", "to": "order_svc", "label": "Order operations", "protocol": "HTTPS/JSON" },
+    { "from": "api_gw", "to": "catalog_svc", "label": "Product queries", "protocol": "HTTPS/JSON" },
+    { "from": "order_svc", "to": "postgres", "label": "Reads/writes orders", "protocol": "SQL" },
+    { "from": "catalog_svc", "to": "postgres", "label": "Reads products", "protocol": "SQL" },
+    { "from": "auth_svc", "to": "redis", "label": "Session cache", "protocol": "Redis Protocol" },
+    { "from": "order_svc", "to": "rabbitmq", "label": "Publishes events", "protocol": "AMQP" },
+    { "from": "order_svc", "to": "payment_gw", "label": "Processes payments", "protocol": "HTTPS/REST" },
+    { "from": "rabbitmq", "to": "email_svc", "label": "Sends notifications", "protocol": "AMQP/HTTPS" }
+  ]
+}

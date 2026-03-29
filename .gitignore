@@ -1,0 +1,38 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+*.js.map
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Nx cache
+.nx/cache
+.nx/workspace-data
+
+# npm
+package-lock.json
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+npm-debug.log*
+
+# Editor
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Skill install metadata (local, não pertence ao repo)
+**/.skill-meta.json

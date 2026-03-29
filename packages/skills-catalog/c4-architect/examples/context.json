@@ -1,0 +1,53 @@
+{
+  "level": 1,
+  "title": "System Context - E-Commerce Platform",
+  "layout": "TOP_DOWN",
+  "elements": [
+    {
+      "alias": "customer",
+      "name": "Customer",
+      "type": "Person",
+      "description": "Buys products online"
+    },
+    {
+      "alias": "admin",
+      "name": "Admin User",
+      "type": "Person",
+      "description": "Manages catalog and orders"
+    },
+    {
+      "alias": "ecommerce",
+      "name": "E-Commerce Platform",
+      "type": "System",
+      "description": "Handles product catalog, orders, and payments"
+    },
+    {
+      "alias": "payment_gw",
+      "name": "Payment Gateway",
+      "type": "System_Ext",
+      "description": "Processes credit card payments",
+      "tech": "Stripe"
+    },
+    {
+      "alias": "email_svc",
+      "name": "Email Service",
+      "type": "System_Ext",
+      "description": "Sends transactional emails",
+      "tech": "SendGrid"
+    },
+    {
+      "alias": "shipping",
+      "name": "Shipping Provider",
+      "type": "System_Ext",
+      "description": "Calculates rates and tracks packages",
+      "tech": "Correios API"
+    }
+  ],
+  "relations": [
+    { "from": "customer", "to": "ecommerce", "label": "Browses and buys products", "protocol": "HTTPS" },
+    { "from": "admin", "to": "ecommerce", "label": "Manages catalog and orders", "protocol": "HTTPS" },
+    { "from": "ecommerce", "to": "payment_gw", "label": "Processes payments", "protocol": "HTTPS/REST" },
+    { "from": "ecommerce", "to": "email_svc", "label": "Sends order confirmations", "protocol": "HTTPS/REST" },
+    { "from": "ecommerce", "to": "shipping", "label": "Calculates shipping rates", "protocol": "HTTPS/REST" }
+  ]
+}
