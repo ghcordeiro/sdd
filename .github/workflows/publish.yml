@@ -77,14 +77,15 @@ jobs:
           fi
           echo "✓ Versão validada: $PKG"
 
-  # ── 4. Publish → GitHub Packages ─────────────────────────────────────────
-  publish-github:
-    name: Publish to GitHub Packages
+  # ── 4. Publish → npmjs.com ────────────────────────────────────────────────
+  publish:
+    name: Publish to npm
     needs: verify-version
     runs-on: ubuntu-latest
+    environment: npm                  # usa o environment criado no GitHub
     permissions:
       contents: read
-      packages: write   # permissão para escrever no GitHub Packages
+      id-token: write                 # necessário para npm provenance
 
     steps:
       - uses: actions/checkout@v4
@@ -92,8 +93,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-          registry-url: 'https://npm.pkg.github.com'
-          scope: '@ghcordeiro'
+          registry-url: 'https://registry.npmjs.org'
           cache: 'npm'
 
       - name: Install dependencies
@@ -105,8 +105,8 @@ jobs:
           name: cli-dist
           path: packages/cli/dist/
 
-      - name: Publish to GitHub Packages
-        run: npm publish --access public
+      - name: Publish @ghcordeiro/ai-skills
+        run: npm publish --access public --provenance
         working-directory: packages/cli
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}   # automático, sem configuração
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_SECRET }}    # secret do environment npm
