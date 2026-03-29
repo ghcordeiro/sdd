@@ -3,6 +3,7 @@ node_modules/
 
 # Build outputs
 dist/
+packages/cli/README.md
 libs/core/src/*.js
 libs/core/src/*.js.map
 *.js.map

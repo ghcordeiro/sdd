@@ -1,5 +1,5 @@
 import { build } from 'esbuild';
-import { chmodSync, cpSync, rmSync } from 'fs';
+import { chmodSync, copyFileSync, cpSync, rmSync } from 'fs';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -35,6 +35,10 @@ await build({
 // Copiar skills-catalog para dentro de dist/
 cpSync(catalogSrc, catalogDest, { recursive: true });
 
+// Copiar README da raiz do monorepo para o pacote (exibido no npmjs.com)
+copyFileSync(resolve(__dirname, '../../README.md'), resolve(__dirname, 'README.md'));
+
 chmodSync(resolve(__dirname, 'dist/index.js'), '755');
 console.log('✓ Built dist/index.js');
 console.log('✓ Copied skills-catalog → dist/skills-catalog/');
+console.log('✓ Copied README.md → packages/cli/README.md');

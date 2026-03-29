@@ -1,6 +1,6 @@
 {
   "name": "@ghcordeiro/ai-skills",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Install AI agent skills for Claude Code, Cursor, GitHub Copilot, Gemini CLI, and Antigravity",
   "license": "MIT",
   "type": "module",
@@ -10,7 +10,8 @@
   "main": "./dist/index.js",
   "files": [
     "dist",
-    "build.mjs"
+    "build.mjs",
+    "README.md"
   ],
   "scripts": {
     "build": "node build.mjs",
