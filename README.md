@@ -195,18 +195,25 @@ ai-skills/
 ### Publishing a new version
 
 ```bash
-# Patch release (x.y.Z)
-npm run release:patch
-
-# Minor release (x.Y.0)
-npm run release:minor
-
-# Major release (X.0.0)
-npm run release:major
+# Preview release result locally (optional)
+npm run release:dry-run
 ```
 
-Each script automates: version bump + commit + push + `vX.Y.Z` tag.
-The publish pipeline then runs automatically: `type-check → build → verify version tag → publish to npm`.
+Releases are fully automated with `semantic-release` on every push to `main`.
+It automatically:
+
+- analyzes Conventional Commits (`feat`, `fix`, `BREAKING CHANGE`)
+- calculates the next version
+- updates `packages/cli/package.json` + `package-lock.json`
+- creates `CHANGELOG.md`
+- creates git tag + GitHub release
+- publishes `@ghcordeiro/sdd` to npm with provenance
+
+Examples:
+
+- `fix: ...` → patch release
+- `feat: ...` → minor release
+- `feat!: ...` or `BREAKING CHANGE:` → major release
 
 ### Troubleshooting release
 
@@ -216,7 +223,8 @@ The publish pipeline then runs automatically: `type-check → build → verify v
 - provenance/repository mismatch (`E422`):
   - ensure `packages/cli/package.json` `repository.url` points to the same GitHub repo used by Actions
 - publish workflow not triggered:
-  - verify tag format is `vX.Y.Z` and matches `packages/cli/package.json` version exactly
+  - ensure commit was pushed to `main`
+  - ensure commit follows Conventional Commits so `semantic-release` can determine a version bump
 
 ---
 

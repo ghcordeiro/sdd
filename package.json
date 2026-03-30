@@ -13,17 +13,23 @@
     "lint": "nx run-many --target=lint",
     "dev": "tsx packages/cli/src/index.ts",
     "generate:registry": "tsx scripts/generate-registry.ts",
-    "release:patch": "npm version patch -w @ghcordeiro/sdd --no-git-tag-version && VERSION=$(node -p \"require('./packages/cli/package.json').version\") && git add packages/cli/package.json package-lock.json && git commit -m \"chore(release): bump @ghcordeiro/sdd para ${VERSION}\" && git push origin main && git tag v${VERSION} && git push origin v${VERSION}",
-    "release:minor": "npm version minor -w @ghcordeiro/sdd --no-git-tag-version && VERSION=$(node -p \"require('./packages/cli/package.json').version\") && git add packages/cli/package.json package-lock.json && git commit -m \"chore(release): bump @ghcordeiro/sdd para ${VERSION}\" && git push origin main && git tag v${VERSION} && git push origin v${VERSION}",
-    "release:major": "npm version major -w @ghcordeiro/sdd --no-git-tag-version && VERSION=$(node -p \"require('./packages/cli/package.json').version\") && git add packages/cli/package.json package-lock.json && git commit -m \"chore(release): bump @ghcordeiro/sdd para ${VERSION}\" && git push origin main && git tag v${VERSION} && git push origin v${VERSION}"
+    "release": "semantic-release",
+    "release:dry-run": "semantic-release --dry-run"
   },
   "devDependencies": {
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/commit-analyzer": "^13.0.1",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^11.0.6",
+    "@semantic-release/npm": "^12.0.2",
+    "@semantic-release/release-notes-generator": "^14.1.0",
     "@nx/js": "^20.0.0",
     "nx": "^20.0.0",
     "typescript": "^5.7.0",
     "tsx": "^4.19.0",
     "prettier": "^3.4.0",
-    "eslint": "^9.0.0"
+    "eslint": "^9.0.0",
+    "semantic-release": "^24.2.9"
   },
   "engines": {
     "node": ">=22"

@@ -1,11 +1,14 @@
 import { Command } from 'commander';
+import { readFileSync } from 'fs';
 import { render } from 'ink';
 import React from 'react';
 import { App } from './app.js';
 import { installCommand } from './commands/install.js';
 
 const program = new Command();
-const CLI_VERSION = '1.0.0';
+const CLI_VERSION = JSON.parse(
+  readFileSync(new URL('../package.json', import.meta.url), 'utf8')
+).version as string;
 
 program
   .name('sdd')
