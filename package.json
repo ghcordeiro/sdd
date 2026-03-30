@@ -12,7 +12,10 @@
     "test": "nx run-many --target=test",
     "lint": "nx run-many --target=lint",
     "dev": "tsx packages/cli/src/index.ts",
-    "generate:registry": "tsx scripts/generate-registry.ts"
+    "generate:registry": "tsx scripts/generate-registry.ts",
+    "release:patch": "npm version patch -w @ghcordeiro/sdd --no-git-tag-version && VERSION=$(node -p \"require('./packages/cli/package.json').version\") && git add packages/cli/package.json package-lock.json && git commit -m \"chore(release): bump @ghcordeiro/sdd para ${VERSION}\" && git push origin main && git tag v${VERSION} && git push origin v${VERSION}",
+    "release:minor": "npm version minor -w @ghcordeiro/sdd --no-git-tag-version && VERSION=$(node -p \"require('./packages/cli/package.json').version\") && git add packages/cli/package.json package-lock.json && git commit -m \"chore(release): bump @ghcordeiro/sdd para ${VERSION}\" && git push origin main && git tag v${VERSION} && git push origin v${VERSION}",
+    "release:major": "npm version major -w @ghcordeiro/sdd --no-git-tag-version && VERSION=$(node -p \"require('./packages/cli/package.json').version\") && git add packages/cli/package.json package-lock.json && git commit -m \"chore(release): bump @ghcordeiro/sdd para ${VERSION}\" && git push origin main && git tag v${VERSION} && git push origin v${VERSION}"
   },
   "devDependencies": {
     "@nx/js": "^20.0.0",

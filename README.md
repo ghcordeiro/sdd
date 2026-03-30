@@ -38,49 +38,45 @@ npx @ghcordeiro/sdd
 The interactive CLI walks you through three steps:
 
 ```
-  ◆ SDD
-  Spec-Driven Development toolkit for AI agents
-  14 skills ready to install into your AI agent
+──────────────────────────────────────────
+ ◆ SDD
+   Spec-Driven Development toolkit for AI agents
+──────────────────────────────────────────
 
-  Get started →
+  step 1 of 3 · Select agents
+  ━━━━━━━━━━━━━──────────────────────────
 
-? Select your AI agent(s):
-  ↑/↓ navigate  ·  Space toggle  ·  A select all  ·  Enter confirm
+  Which AI agent(s) do you use?
 
-  ◉  Claude Code
-  ○  Cursor
-  ○  GitHub Copilot
-  ○  Gemini CLI
-  ○  Antigravity
+  › ○  Claude Code
+    ○  Cursor
+    ○  GitHub Copilot
+    ○  Gemini CLI
+    ○  Antigravity
 
-? Install globally or in current project?
-  › Global  (~/ — available in all projects)
-    Local   (./ — current project only)
+  ↑↓ navigate  ·  space toggle  ·  a select all  ·  enter confirm
 
-Ready to install 14 skills into:
-  • Claude Code  (~/.claude/skills/)
+  step 2 of 3 · Install scope
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━─────────────
 
-  › Install all 14 skills
+  Where should spec-driven be installed?
 
-✓ Installation complete
-  ✓ spec-driven
-  ✓ c4-architect
-  ✓ create-adr
-  ✓ create-rfc
-  ✓ code-quality-guardian
-  ✓ duplication-hunter
-  ✓ best-practices
-  ✓ frontend-component-architect
-  ✓ technical-design-doc-creator
-  ✓ seo
-  ✓ accessibility
-  ✓ chrome-devtools
-  ✓ gh-fix-ci
-  ✓ cursor-subagent-creator
-  ✓ skill-architect
-  → ~/.claude/skills/
+  › ◉  Global    available across all your projects
+    ○  Local     this project only
 
-14 skills installed successfully
+  step 3 of 3 · Confirm
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Ready to install spec-driven
+
+  Agent  Gemini CLI
+  Scope  Global
+         ~/.gemini/skills
+
+  › Enter to install     c to cancel
+
+  ✓ spec-driven installed
+  → ~/.gemini/skills
 ```
 
 ---
@@ -199,20 +195,18 @@ ai-skills/
 ### Publishing a new version
 
 ```bash
-# 1. Bump version
-npm version patch -w @ghcordeiro/sdd
+# Patch release (x.y.Z)
+npm run release:patch
 
-# 2. Commit and push
-git add packages/cli/package.json package-lock.json
-git commit -m "chore: bump to x.x.x"
-git push
+# Minor release (x.Y.0)
+npm run release:minor
 
-# 3. Tag — triggers the publish pipeline
-git tag vx.x.x
-git push origin vx.x.x
+# Major release (X.0.0)
+npm run release:major
 ```
 
-**Pipeline:** `type-check → build → verify version tag → publish to npm`
+Each script automates: version bump + commit + push + `vX.Y.Z` tag.
+The publish pipeline then runs automatically: `type-check → build → verify version tag → publish to npm`.
 
 ### Troubleshooting release
 
