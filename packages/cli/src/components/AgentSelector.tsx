@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Box, Text, useInput } from 'ink';
 import { AGENTS, type AgentDefinition } from '@ghcordeiro/core';
+import { Header } from './Header.js';
+import { StepIndicator } from './StepIndicator.js';
 
 interface Props {
   onSubmit: (agents: AgentDefinition[]) => void;
@@ -29,35 +31,48 @@ export function AgentSelector({ onSubmit }: Props) {
       } else {
         setSelected(new Set(AGENTS.map((a) => a.id)));
       }
-    } else if (key.return) {
-      if (selected.size === 0) return;
+    } else if (key.return && selected.size > 0) {
       onSubmit(AGENTS.filter((a) => selected.has(a.id)));
     }
   });
 
   return (
-    <Box flexDirection="column" gap={1}>
-      <Text bold>Select your AI agent(s):</Text>
-      <Text dimColor>↑/↓ navigate  ·  Space toggle  ·  A select all  ·  Enter confirm</Text>
-      <Box flexDirection="column">
+    <Box flexDirection="column">
+      <Header />
+      <StepIndicator current={1} total={3} label="Select agents" />
+
+      <Box paddingLeft={2} marginBottom={1}>
+        <Text>Which AI agent(s) do you use?</Text>
+      </Box>
+
+      <Box flexDirection="column" paddingLeft={2}>
         {AGENTS.map((agent, i) => {
           const isActive = i === cursor;
           const isChecked = selected.has(agent.id);
           return (
             <Box key={agent.id}>
-              <Text color={isActive ? 'cyan' : undefined}>
-                {isActive ? '>' : ' '}
-                {' '}
+              <Text color={isActive ? 'cyan' : undefined} bold={isActive}>
+                {isActive ? '› ' : '  '}
                 {isChecked ? '◉' : '○'}
                 {'  '}
-                <Text bold={isActive}>{agent.name}</Text>
+                {agent.name}
               </Text>
             </Box>
           );
         })}
       </Box>
+
+      <Box paddingLeft={2} marginTop={1}>
+        <Text dimColor>↑↓ navigate  ·  space toggle  ·  a select all  ·  enter confirm</Text>
+      </Box>
+
       {selected.size > 0 && (
-        <Text dimColor>{selected.size} agent(s) selected · Enter to continue</Text>
+        <Box paddingLeft={2} marginTop={1}>
+          <Text color="cyan">
+            {selected.size} agent{selected.size !== 1 ? 's' : ''} selected
+          </Text>
+          <Text dimColor>  ·  press enter to continue</Text>
+        </Box>
       )}
     </Box>
   );

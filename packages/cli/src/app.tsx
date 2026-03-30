@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Box, Text, useApp } from 'ink';
-import SelectInput from 'ink-select-input';
 import { loadCatalog, installSkill, type AgentDefinition, type InstallMode } from '@ghcordeiro/core';
 import { AgentSelector } from './components/AgentSelector.js';
+import { ModeSelector } from './components/ModeSelector.js';
+import { ConfirmStep } from './components/ConfirmStep.js';
+import { Header } from './components/Header.js';
+import { useState } from 'react';
 
-type Step = 'welcome' | 'agent' | 'mode' | 'confirm' | 'done';
+type Step = 'agent' | 'mode' | 'confirm' | 'done';
 
 interface InstallResult {
   agent: string;
@@ -21,92 +24,61 @@ interface State {
 }
 
 const catalog = loadCatalog();
-const skill = catalog[0]; // spec-driven — the only skill
+const skill = catalog[0]; // spec-driven — the only entry point
 
-const modeItems = [
-  { label: 'Global  (~/ — available in all projects)', value: 'global' },
-  { label: 'Local   (./ — current project only)', value: 'local' },
+const HOW_TO_STEPS = [
+  'Open your AI agent (Claude Code, Cursor…)',
+  'Start a new conversation or open a project',
+  'Type  /spec-driven  and press Enter',
+  'Describe the feature you want to build',
+  'The skill guides you through structured planning',
 ];
+
+const RULE = '─'.repeat(34);
 
 export function App() {
   const { exit } = useApp();
   const [state, setState] = useState<State>({
-    step: 'welcome',
+    step: 'agent',
     agents: [],
     results: [],
   });
 
-  if (state.step === 'welcome') {
-    return (
-      <Box flexDirection="column" gap={1} paddingY={1}>
-        <Text bold color="cyan">{'  ◆ Tech Lead Tools'}</Text>
-        <Text dimColor>{'  A curated toolkit for Tech Leads and Staff Engineers'}</Text>
-        <Box marginTop={1}>
-          <SelectInput
-            items={[{ label: 'Get started →', value: 'start' }]}
-            onSelect={() => setState((s) => ({ ...s, step: 'agent' }))}
-          />
-        </Box>
-      </Box>
-    );
-  }
-
   if (state.step === 'agent') {
     return (
-      <Box paddingY={1}>
-        <AgentSelector
-          onSubmit={(agents) => setState((s) => ({ ...s, agents, step: 'mode' }))}
-        />
-      </Box>
+      <AgentSelector
+        onSubmit={(agents) => setState((s) => ({ ...s, agents, step: 'mode' }))}
+      />
     );
   }
 
   if (state.step === 'mode') {
     return (
-      <Box flexDirection="column" gap={1} paddingY={1}>
-        <Text bold>Install globally or in current project?</Text>
-        <SelectInput
-          items={modeItems}
-          onSelect={(item) =>
-            setState((s) => ({ ...s, mode: item.value as InstallMode, step: 'confirm' }))
-          }
-        />
-      </Box>
+      <ModeSelector
+        onSubmit={(mode) => setState((s) => ({ ...s, mode, step: 'confirm' }))}
+      />
     );
   }
 
   if (state.step === 'confirm') {
-    const { agents, mode } = state;
     return (
-      <Box flexDirection="column" gap={1} paddingY={1}>
-        <Text bold>Ready to install <Text color="cyan">spec-driven</Text> into:</Text>
-        {agents.map((a) => (
-          <Text key={a.id} dimColor>
-            {'  • '}{a.name}{'  '}({mode === 'global' ? a.globalSkillsDir : a.localSkillsDir})
-          </Text>
-        ))}
-        <Box marginTop={1}>
-          <SelectInput
-            items={[
-              { label: 'Install', value: 'install' },
-              { label: 'Cancel', value: 'cancel' },
-            ]}
-            onSelect={(item) => {
-              if (item.value === 'cancel') { exit(); return; }
-              const results: InstallResult[] = agents.map((agent) => {
-                const result = installSkill(skill, agent, mode!);
-                return {
-                  agent: agent.name,
-                  success: result.success,
-                  destination: result.destination,
-                  error: result.error,
-                };
-              });
-              setState((s) => ({ ...s, results, step: 'done' }));
-            }}
-          />
-        </Box>
-      </Box>
+      <ConfirmStep
+        agents={state.agents}
+        mode={state.mode!}
+        onCancel={() => exit()}
+        onConfirm={() => {
+          const results: InstallResult[] = state.agents.map((agent) => {
+            const result = installSkill(skill, agent, state.mode!);
+            return {
+              agent: agent.name,
+              success: result.success,
+              destination: result.destination,
+              error: result.error,
+            };
+          });
+          setState((s) => ({ ...s, results, step: 'done' }));
+        }}
+      />
     );
   }
 
@@ -116,24 +88,83 @@ export function App() {
     const failed = results.filter((r) => !r.success);
 
     return (
-      <Box flexDirection="column" gap={1} paddingY={1}>
-        <Text bold color="green">✓ Installation complete</Text>
-        {results.map((r) => (
-          <Box key={r.agent} flexDirection="column">
-            <Text>
-              {'  '}<Text color={r.success ? 'green' : 'red'}>{r.success ? '✓' : '✗'}</Text>
-              {' spec-driven → '}
-              <Text dimColor>{mode === 'global' ? agents.find(a => a.name === r.agent)!.globalSkillsDir : agents.find(a => a.name === r.agent)!.localSkillsDir}</Text>
-            </Text>
-            {r.error && <Text color="red">    {r.error}</Text>}
+      <Box flexDirection="column">
+        <Header />
+
+        {/* Success / failure */}
+        <Box paddingLeft={2} marginBottom={2}>
+          {failed.length === 0 ? (
+            <>
+              <Text color="green" bold>✓ </Text>
+              <Text bold>spec-driven installed</Text>
+            </>
+          ) : (
+            <>
+              <Text color={succeeded.length > 0 ? 'green' : 'red'} bold>
+                {succeeded.length > 0 ? '✓ ' : '✗ '}
+              </Text>
+              <Text bold>spec-driven</Text>
+              {succeeded.length > 0 && (
+                <Text dimColor>  ({failed.length} agent{failed.length !== 1 ? 's' : ''} failed)</Text>
+              )}
+            </>
+          )}
+        </Box>
+
+        {failed.length > 0 && (
+          <Box flexDirection="column" paddingLeft={2} marginBottom={1}>
+            {failed.map((r) => (
+              <Box key={r.agent}>
+                <Text color="red">✗ </Text>
+                <Text>{r.agent}</Text>
+                {r.error && <Text dimColor>  {r.error}</Text>}
+              </Box>
+            ))}
           </Box>
-        ))}
-        {failed.length === 0 && (
-          <Text dimColor>
-            {'  Includes full toolkit: accessibility, best-practices, c4-architect,\n  code-quality-guardian, create-adr, create-rfc, duplication-hunter,\n  frontend-component-architect, gh-fix-ci, seo, skill-architect,\n  chrome-devtools, cursor-subagent-creator, technical-design-doc-creator'}
-          </Text>
         )}
-        <Text dimColor>{succeeded.length === agents.length ? 'Installed successfully' : `${failed.length} failed`}</Text>
+
+        {/* How to use */}
+        <Box paddingLeft={2} marginBottom={0}>
+          <Text bold>How to use it</Text>
+        </Box>
+        <Box paddingLeft={2} marginBottom={1}>
+          <Text dimColor>{RULE}</Text>
+        </Box>
+
+        <Box flexDirection="column" paddingLeft={2} marginBottom={1}>
+          {HOW_TO_STEPS.map((step, i) => (
+            <Box key={i}>
+              <Text dimColor>{String(i + 1) + '.  '}</Text>
+              <Text>{step}</Text>
+            </Box>
+          ))}
+        </Box>
+
+        <Box paddingLeft={2} marginBottom={1}>
+          <Text dimColor>{RULE}</Text>
+        </Box>
+
+        {/* Tip */}
+        <Box paddingLeft={2}>
+          <Text color="cyan">Tip  </Text>
+          <Text dimColor>/spec-driven works best at the start of a new task.</Text>
+        </Box>
+
+        {/* Installed paths */}
+        {succeeded.length > 0 && (
+          <Box flexDirection="column" paddingLeft={2} marginTop={1}>
+            {agents
+              .filter((a) => results.find((r) => r.agent === a.name)?.success)
+              .map((a) => (
+                <Box key={a.id}>
+                  <Text dimColor>
+                    {'→ '}
+                    {mode === 'global' ? a.globalSkillsDir : a.localSkillsDir}
+                  </Text>
+                </Box>
+              ))}
+          </Box>
+        )}
       </Box>
     );
   }
