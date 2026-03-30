@@ -5,11 +5,12 @@ import { App } from './app.js';
 import { installCommand } from './commands/install.js';
 
 const program = new Command();
+const CLI_VERSION = '1.0.0';
 
 program
-  .name('ai-skills')
-  .description('Install AI agent skills for Claude Code, Cursor, GitHub Copilot, Gemini CLI, and Antigravity')
-  .version('0.1.0');
+  .name('sdd')
+  .description('Install Spec-Driven Development skills for Claude Code, Cursor, GitHub Copilot, Gemini CLI, and Antigravity')
+  .version(CLI_VERSION);
 
 program
   .command('install', { isDefault: true })
@@ -32,5 +33,15 @@ program
       render(React.createElement(App));
     }
   });
+
+program.addHelpText(
+  'after',
+  `
+Examples:
+  sdd
+  sdd install --agent claude-code --skills spec-driven --global
+  sdd install --agent cursor --skills spec-driven --local
+`
+);
 
 program.parse();

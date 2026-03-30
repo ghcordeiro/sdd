@@ -1,7 +1,7 @@
 {
   "name": "@ghcordeiro/sdd",
   "version": "1.0.0",
-  "description": "Spec-Driven Development toolkit for AI agents. Install AI agent skills in seconds",
+  "description": "Spec-Driven Development toolkit for AI agents. Install production-ready skills in seconds.",
   "license": "MIT",
   "type": "module",
   "bin": {
@@ -39,8 +39,8 @@
     "node": ">=22"
   },
   "keywords": [
-    "tech-lead",
-    "staff-engineer",
+    "spec-driven-development",
+    "sdd",
     "ai-agent",
     "claude-code",
     "cursor",
@@ -51,6 +51,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/ghcordeiro/sdd"
+    "url": "git+https://github.com/ghcordeiro/sdd.git"
+  },
+  "homepage": "https://github.com/ghcordeiro/sdd#readme",
+  "bugs": {
+    "url": "https://github.com/ghcordeiro/sdd/issues"
   }
 }

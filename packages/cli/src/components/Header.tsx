@@ -9,10 +9,10 @@ export function Header() {
       <Text color="cyan" dimColor>{RULE}</Text>
       <Box gap={1} paddingLeft={1}>
         <Text color="cyan" bold>◆</Text>
-        <Text bold>Tech Lead Tools</Text>
+        <Text bold>SDD</Text>
       </Box>
       <Box paddingLeft={3}>
-        <Text dimColor>Spec-driven workflows for engineers</Text>
+        <Text dimColor>Spec-Driven Development toolkit for AI agents</Text>
       </Box>
       <Text color="cyan" dimColor>{RULE}</Text>
     </Box>
