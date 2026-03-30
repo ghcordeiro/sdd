@@ -15,6 +15,7 @@
   ],
   "scripts": {
     "build": "node build.mjs",
+    "prepublishOnly": "node build.mjs",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "dev": "tsx src/index.ts",
     "lint": "eslint src"
