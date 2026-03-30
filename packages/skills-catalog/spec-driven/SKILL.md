@@ -136,10 +136,15 @@ Humans set intentions, constraints, and approvals. Agents execute, generate, and
 
 **Feature workflow (Large/Complex) — toolkit activations are automatic:**
 
+0. **[Pre-Specify] Linear check** *(condicional — skipped em Quick mode)*: Verifica MCP Linear, pergunta ao usuário se há issue ID, busca contexto via `toolkit/linear/instructions.md` Hook 1. Armazena `LINEAR_ISSUE_ID` na sessão.
 1. **Specify:** `spec.md` (System Process Context first → user stories → ACs) → `context.md` (gray areas) → `business.md` (if external stakeholder alignment needed) → `technical-design-doc-creator` (formal TDD needed) → `create-rfc` (high-stakes direction decision)
 2. **Plan:** `plan.md` → **ADR(s) for every architectural decision** (always) → **C4 diagrams with user validation** (always — L1+L2 default, sequence optional) → `frontend-component-architect` (UI features) → `duplication-hunter` (brownfield)
 3. **Tasks:** TDAD — write test tasks before implementation tasks → `tasks.md` with dependencies
-4. **Implement (per task):** Implement (Builder mode) → Verify against spec ACs (Verifier mode) → `code-quality-guardian` (always) → `best-practices` (web) → `accessibility` (UI changes) → `seo` (public pages) → `create-adr` (emergent decisions) → commit → `gh-fix-ci` (if CI fails)
+
+[GATE — usuário aprova tasks.md]
+
+4. **[Post-Tasks] Linear sync** *(condicional — só se `LINEAR_ISSUE_ID` foi fornecido no step 0)*: Atualiza descrição do issue pai + cria sub-issues via `toolkit/linear/instructions.md` Hook 2.
+5. **Implement (per task):** Implement (Builder mode) → Verify against spec ACs (Verifier mode) → `code-quality-guardian` (always) → `best-practices` (web) → `accessibility` (UI changes) → `seo` (public pages) → `create-adr` (emergent decisions) → commit → `gh-fix-ci` (if CI fails)
 
 ## Context Loading Strategy
 
@@ -230,6 +235,8 @@ The following are **mandatory outputs** of the Plan phase for Medium/Large/Compl
 | Any | `chrome-devtools` | Browser debugging, performance profiling, or rendering issue needs investigation |
 | Any | `mermaid-studio` | Diagram creation or rendering is needed (if installed) |
 | Any | `codenavi` | Code exploration in an existing repo is needed (if installed) |
+| Pre-Specify | `linear` (toolkit) | Usuário usa Linear E MCP está configurado — busca contexto do issue antes do spec |
+| Post-Tasks  | `linear` (toolkit) | Issue Linear foi fornecido — sincroniza spec+plan+tasks ao Linear após gate de Tasks |
 
 ---
 
@@ -405,6 +412,28 @@ Whenever the workflow requires creating or updating a diagram, check if `mermaid
 ### Code Exploration → `codenavi`
 
 Whenever the workflow requires exploring an existing repository (brownfield mapping, pattern identification, dependency tracing), check if `codenavi` is installed. If it is, delegate code exploration to it. If not, use built-in code analysis tools (see [code-analysis.md](references/code-analysis.md)).
+
+---
+
+### Linear Integration → `linear`
+
+**Phase:** Pre-Specify (pull) + Post-Tasks (push) — ambos condicionais ao usuário confirmar uso do Linear.
+
+> **Quick mode é isento.** Hooks do Linear não rodam em Quick mode.
+
+**Pre-Specify hook** — antes da fase Specify: verifica se o MCP está acessível via `get_authenticated_user`, pergunta ao usuário se tem um issue Linear para a feature e, se sim, busca o issue via `get_issue` para enriquecer a conversa de spec com requisitos e contexto já capturados. O ID do issue (e seu UUID interno) são armazenados por toda a sessão.
+
+**Post-Tasks hook** — após aprovação do `tasks.md`: lê `spec.md`, `plan.md` e `tasks.md` e então:
+1. Atualiza a descrição do issue pai no Linear com resumo estruturado (Objetivo, Fluxo resumido, Requisitos principais, Decisões de arquitetura, NFRs, Fora de escopo, Ordem de execução).
+2. Cria um sub-issue por task do `tasks.md`, com título `[TASK-ID] — [task title]` e descrição populada com os campos What / Where / Done-when da task.
+3. Atualiza a tabela Sub-issues do issue pai com links para cada sub-issue criado.
+
+**Formato:** `toolkit/linear/instructions.md`
+
+**Skip conditions:**
+- Usuário diz "não" ao Linear → ambos os hooks silenciados para toda a sessão.
+- MCP não configurado → informa o usuário com link de setup, skipa ambos os hooks, SDD continua normalmente.
+- Tasks phase foi skipada (escopo pequeno) → Post-Tasks hook não se aplica; somente o Pre-Specify hook pode ter rodado.
 
 ## Knowledge Verification Chain
 
