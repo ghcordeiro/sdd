@@ -1,6 +1,7 @@
 ---
 name: code-quality-guardian
 description: Reviews code changes for correctness, security, maintainability, architecture fit, and test coverage risks in large codebases. Use when reviewing pull requests, validating recent edits, or when the user asks for a quality review.
+license: MIT
 ---
 
 # Code Quality Guardian

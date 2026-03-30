@@ -1,6 +1,10 @@
 ---
 name: duplication-hunter
 description: Detects exact and semantic code duplication, then recommends low-risk shared abstractions and incremental migration steps. Use when new modules/components/utilities are added, or when repeated patterns appear across the codebase.
+license: CC-BY-4.0
+metadata:
+  author: Guilherme Cordeiro - github.com/ghcordeiro
+  version: '1.0.0'
 ---
 
 # Duplication Hunter

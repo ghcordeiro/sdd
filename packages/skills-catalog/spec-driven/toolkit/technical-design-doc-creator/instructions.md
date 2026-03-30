@@ -1,6 +1,11 @@
 ---
 description: Creates comprehensive Technical Design Documents (TDD) with mandatory and optional sections through interactive discovery. Use when user asks to "write a design doc", "create a TDD", "technical spec", "architecture document", "RFC", "design proposal", or needs to document a technical decision before implementation. Do NOT use for README files, API docs, or general documentation (use docs-writer instead).
 name: technical-design-doc-creator
+license: CC-BY-4.0
+metadata:
+  author: Tech Leads Club - github.com/tech-leads-club
+  source: https://github.com/tech-leads-club/agent-skills/tree/main/packages/skills-catalog/skills/(creation)/create-technical-design-doc
+  source-license: CC-BY-4.0 (per upstream repository dual-licensing note for SKILL.md content)
 ---
 
 # Technical Design Doc Creator

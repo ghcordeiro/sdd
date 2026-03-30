@@ -1,6 +1,10 @@
 ---
 name: frontend-component-architect
 description: Evaluates frontend componentization quality, including responsibility boundaries, component API design, state ownership, and reuse opportunities. Use when creating or changing screens/components in React, Angular, or similar frontend stacks.
+license: CC-BY-4.0
+metadata:
+  author: Guilherme Cordeiro - github.com/ghcordeiro
+  version: '1.0.0'
 ---
 
 # Frontend Component Architect

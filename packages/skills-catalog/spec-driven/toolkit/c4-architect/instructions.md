@@ -1,6 +1,10 @@
 ---
 name: c4-architect
 description: Analyze codebases and generate C4 architecture diagrams as PlantUML, then render PNG/SVG images.
+license: CC-BY-4.0
+metadata:
+  author: Guilherme Cordeiro - github.com/ghcordeiro
+  version: '1.0.0'
 ---
 
 # C4 Architecture Diagrams

@@ -123,41 +123,41 @@ npx @ghcordeiro/sdd --help
 
 | Skill | Description |
 |---|---|
-| [`spec-driven`](packages/skills-catalog/spec-driven/) | Full project & feature planning with 4 adaptive phases: **Specify → Design → Tasks → Execute**. Orchestrates all other skills. |
-| [`c4-architect`](packages/skills-catalog/c4-architect/) | Generates C4 architecture diagrams (Context, Container, Component, Sequence) from source code using PlantUML. |
-| [`frontend-component-architect`](packages/skills-catalog/frontend-component-architect/) | Evaluates React/Angular component boundaries, API design quality, state ownership, and reuse opportunities. |
-| [`technical-design-doc-creator`](packages/skills-catalog/technical-design-doc-creator/) | Creates comprehensive Technical Design Documents (TDDs) for implementation planning. |
+| [`spec-driven`](packages/skills-catalog/spec-driven/) | Full project & feature planning with 4 adaptive phases: **Specify → Plan → Tasks → Implement**. Orchestrates all other skills. |
+| [`c4-architect`](packages/skills-catalog/spec-driven/toolkit/c4-architect/) | Generates C4 architecture diagrams (Context, Container, Component, Sequence) from source code using PlantUML. |
+| [`frontend-component-architect`](packages/skills-catalog/spec-driven/toolkit/frontend-component-architect/) | Evaluates React/Angular component boundaries, API design quality, state ownership, and reuse opportunities. |
+| [`technical-design-doc-creator`](packages/skills-catalog/spec-driven/toolkit/technical-design-doc-creator/) | Creates comprehensive Technical Design Documents (TDDs) for implementation planning. |
 
 ### 📋 Decision & Documentation
 
 | Skill | Description |
 |---|---|
-| [`create-adr`](packages/skills-catalog/create-adr/) | Creates immutable Architecture Decision Records (ADRs) in MADR, Nygard, or Y-Statement format. |
-| [`create-rfc`](packages/skills-catalog/create-rfc/) | Creates structured Request for Comments (RFCs) to drive stakeholder alignment before committing to a direction. |
+| [`create-adr`](packages/skills-catalog/spec-driven/toolkit/create-adr/) | Creates immutable Architecture Decision Records (ADRs) in MADR, Nygard, or Y-Statement format. |
+| [`create-rfc`](packages/skills-catalog/spec-driven/toolkit/create-rfc/) | Creates structured Request for Comments (RFCs) to drive stakeholder alignment before committing to a direction. |
 
 ### 🔍 Code Quality
 
 | Skill | Description |
 |---|---|
-| [`code-quality-guardian`](packages/skills-catalog/code-quality-guardian/) | Reviews code for correctness, security, maintainability, and architecture fit — findings triaged as Critical / Warning / Suggestion. |
-| [`duplication-hunter`](packages/skills-catalog/duplication-hunter/) | Detects exact and semantic code duplication and recommends low-risk shared abstractions with migration steps. |
-| [`best-practices`](packages/skills-catalog/best-practices/) | Audits web projects for security misconfigurations, deprecated APIs, and modern code quality standards. |
+| [`code-quality-guardian`](packages/skills-catalog/spec-driven/toolkit/code-quality-guardian/) | Reviews code for correctness, security, maintainability, and architecture fit — findings triaged as Critical / Warning / Suggestion. |
+| [`duplication-hunter`](packages/skills-catalog/spec-driven/toolkit/duplication-hunter/) | Detects exact and semantic code duplication and recommends low-risk shared abstractions with migration steps. |
+| [`best-practices`](packages/skills-catalog/spec-driven/toolkit/best-practices/) | Audits web projects for security misconfigurations, deprecated APIs, and modern code quality standards. |
 
 ### 🌐 Web & Frontend
 
 | Skill | Description |
 |---|---|
-| [`seo`](packages/skills-catalog/seo/) | Optimizes pages for search visibility — meta tags, structured data (JSON-LD), sitemaps, and crawlability. |
-| [`accessibility`](packages/skills-catalog/accessibility/) | Audits and improves web accessibility following WCAG 2.1 AA guidelines. |
-| [`chrome-devtools`](packages/skills-catalog/chrome-devtools/) | Browser debugging, performance profiling, and automation via Chrome DevTools. |
+| [`seo`](packages/skills-catalog/spec-driven/toolkit/seo/) | Optimizes pages for search visibility — meta tags, structured data (JSON-LD), sitemaps, and crawlability. |
+| [`accessibility`](packages/skills-catalog/spec-driven/toolkit/accessibility/) | Audits and improves web accessibility following WCAG 2.1 AA guidelines. |
+| [`chrome-devtools`](packages/skills-catalog/spec-driven/toolkit/chrome-devtools/) | Browser debugging, performance profiling, and automation via Chrome DevTools. |
 
 ### ⚙️ Tooling & Automation
 
 | Skill | Description |
 |---|---|
-| [`gh-fix-ci`](packages/skills-catalog/gh-fix-ci/) | Diagnoses and fixes failing GitHub Actions CI checks by inspecting logs and drafting targeted fixes. |
-| [`cursor-subagent-creator`](packages/skills-catalog/cursor-subagent-creator/) | Creates Cursor-specific AI subagents with isolated context for complex multi-step workflows. |
-| [`skill-architect`](packages/skills-catalog/skill-architect/) | Expert guide for designing and building new AI agent skills from scratch. |
+| [`gh-fix-ci`](packages/skills-catalog/spec-driven/toolkit/gh-fix-ci/) | Diagnoses and fixes failing GitHub Actions CI checks by inspecting logs and drafting targeted fixes. |
+| [`cursor-subagent-creator`](packages/skills-catalog/spec-driven/toolkit/cursor-subagent-creator/) | Creates Cursor-specific AI subagents with isolated context for complex multi-step workflows. |
+| [`skill-architect`](packages/skills-catalog/spec-driven/toolkit/skill-architect/) | Expert guide for designing and building new AI agent skills from scratch. |
 
 ---
 
@@ -243,6 +243,25 @@ This project's `spec-driven` skill is inspired by prior work from the community 
 - [Martin Fowler — Spec-Driven Development: 3 Tools](https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html)
 - [DS Academy — Spec-Driven Development series (parts 1-5)](https://blog.dsacademy.com.br/spec-driven-development-a-nova-arquitetura-de-engenharia-de-software-na-era-dos-agentes-de-ia-parte-1/)
 - [Microsoft Learn — Spec-Driven Development with GitHub Spec Kit](https://learn.microsoft.com/pt-br/training/modules/spec-driven-development-github-spec-kit-greenfield-intro/)
+
+**Toolkit skill provenance**
+
+| Skill | Credits | GitHub source | GitHub local | License |
+|---|---|---|---|---|
+| `accessibility` | External (`web-quality-skills`), adapted locally | [web-accessibility upstream](https://github.com/tech-leads-club/agent-skills/tree/main/packages/skills-catalog/skills/(quality)/web-accessibility) | [sdd/accessibility](https://github.com/ghcordeiro/sdd/tree/main/packages/skills-catalog/spec-driven/toolkit/accessibility) | `MIT` |
+| `best-practices` | External (`web-quality-skills`), adapted locally | [web-best-practices upstream](https://github.com/tech-leads-club/agent-skills/tree/main/packages/skills-catalog/skills/(quality)/web-best-practices) | [sdd/best-practices](https://github.com/ghcordeiro/sdd/tree/main/packages/skills-catalog/spec-driven/toolkit/best-practices) | `MIT` |
+| `c4-architect` | Local author (`ghcordeiro`) | — | [sdd/c4-architect](https://github.com/ghcordeiro/sdd/tree/main/packages/skills-catalog/spec-driven/toolkit/c4-architect) | `CC-BY-4.0` |
+| `chrome-devtools` | External (upstream match), adapted locally | [chrome-devtools upstream](https://github.com/tech-leads-club/agent-skills/tree/main/packages/skills-catalog/skills/(tooling)/chrome-devtools) | [sdd/chrome-devtools](https://github.com/ghcordeiro/sdd/tree/main/packages/skills-catalog/spec-driven/toolkit/chrome-devtools) | `MIT` |
+| `code-quality-guardian` | Credit undeclared in metadata; maintained locally | — | [sdd/code-quality-guardian](https://github.com/ghcordeiro/sdd/tree/main/packages/skills-catalog/spec-driven/toolkit/code-quality-guardian) | `MIT` |
+| `create-adr` | External (Tech Leads Club), adapted locally | [create-adr upstream](https://github.com/tech-leads-club/agent-skills/tree/main/packages/skills-catalog/skills/(creation)/create-adr) | [sdd/create-adr](https://github.com/ghcordeiro/sdd/tree/main/packages/skills-catalog/spec-driven/toolkit/create-adr) | `CC-BY-4.0` |
+| `create-rfc` | External (Tech Leads Club), adapted locally | [create-rfc upstream](https://github.com/tech-leads-club/agent-skills/tree/main/packages/skills-catalog/skills/(creation)/create-rfc) | [sdd/create-rfc](https://github.com/ghcordeiro/sdd/tree/main/packages/skills-catalog/spec-driven/toolkit/create-rfc) | `CC-BY-4.0` |
+| `cursor-subagent-creator` | External (Tech Leads Club), adapted locally | [cursor-subagent-creator upstream](https://github.com/tech-leads-club/agent-skills/tree/main/packages/skills-catalog/skills/(creation)/cursor-subagent-creator) | [sdd/cursor-subagent-creator](https://github.com/ghcordeiro/sdd/tree/main/packages/skills-catalog/spec-driven/toolkit/cursor-subagent-creator) | `CC-BY-4.0` |
+| `duplication-hunter` | Local author (`ghcordeiro`) | — | [sdd/duplication-hunter](https://github.com/ghcordeiro/sdd/tree/main/packages/skills-catalog/spec-driven/toolkit/duplication-hunter) | `CC-BY-4.0` |
+| `frontend-component-architect` | Local author (`ghcordeiro`) | — | [sdd/frontend-component-architect](https://github.com/ghcordeiro/sdd/tree/main/packages/skills-catalog/spec-driven/toolkit/frontend-component-architect) | `CC-BY-4.0` |
+| `gh-fix-ci` | External (Tech Leads Club), adapted locally | [gh-fix-ci upstream](https://github.com/tech-leads-club/agent-skills/tree/main/packages/skills-catalog/skills/(tooling)/gh-fix-ci) | [sdd/gh-fix-ci](https://github.com/ghcordeiro/sdd/tree/main/packages/skills-catalog/spec-driven/toolkit/gh-fix-ci) | `Apache-2.0` |
+| `seo` | External (`web-quality-skills`), adapted locally | [seo upstream](https://github.com/tech-leads-club/agent-skills/tree/main/packages/skills-catalog/skills/(quality)/seo) | [sdd/seo](https://github.com/ghcordeiro/sdd/tree/main/packages/skills-catalog/spec-driven/toolkit/seo) | `MIT` |
+| `skill-architect` | External (Felipe Rodrigues / Tech Leads Club), adapted locally | [skill-architect upstream](https://github.com/tech-leads-club/agent-skills/tree/main/packages/skills-catalog/skills/(creation)/skill-architect) | [sdd/skill-architect](https://github.com/ghcordeiro/sdd/tree/main/packages/skills-catalog/spec-driven/toolkit/skill-architect) | `CC-BY-4.0` |
+| `technical-design-doc-creator` | External (Tech Leads Club), adapted locally | [create-technical-design-doc upstream](https://github.com/tech-leads-club/agent-skills/tree/main/packages/skills-catalog/skills/(creation)/create-technical-design-doc) | [sdd/technical-design-doc-creator](https://github.com/ghcordeiro/sdd/tree/main/packages/skills-catalog/spec-driven/toolkit/technical-design-doc-creator) | `CC-BY-4.0` |
 
 ---
 
