@@ -1,3 +1,9 @@
+## [1.0.4](https://github.com/ghcordeiro/sdd/compare/v1.0.3...v1.0.4) (2026-03-30)
+
+### Bug Fixes
+
+* **cli:** add prepublishOnly to guarantee dist is built before publish ([c161a8d](https://github.com/ghcordeiro/sdd/commit/c161a8dd077240c17fe30ca05a5a15ecf69432f6))
+
 ## [1.0.3](https://github.com/ghcordeiro/sdd/compare/v1.0.2...v1.0.3) (2026-03-30)
 
 ### Bug Fixes

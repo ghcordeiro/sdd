@@ -1,6 +1,6 @@
 {
   "name": "@ghcordeiro/sdd",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Spec-Driven Development toolkit for AI agents. Install production-ready skills in seconds.",
   "license": "MIT",
   "type": "module",
