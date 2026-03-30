@@ -107,7 +107,7 @@ jobs:
           name: cli-dist
           path: packages/cli/
 
-      - name: Publish @ghcordeiro/tech-lead-tools
+      - name: Publish @ghcordeiro/sdd
         run: npm publish --access public --provenance
         working-directory: packages/cli
         env:

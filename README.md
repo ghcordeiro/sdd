@@ -1,18 +1,18 @@
 <div align="center">
 
-# tech-lead-tools
+# sdd
 
-**A curated toolkit for Tech Leads and Staff Engineers.**
+**Spec-Driven Development toolkit for AI agents.**
 
-Install battle-tested AI agent skills into Claude Code, Cursor, GitHub Copilot, Gemini CLI, and Antigravity — in seconds.
+Install battle-tested SDD skills into Claude Code, Cursor, GitHub Copilot, Gemini CLI, and Antigravity — in seconds.
 
-[![npm version](https://img.shields.io/npm/v/@ghcordeiro/tech-lead-tools?color=crimson&label=npm)](https://www.npmjs.com/package/@ghcordeiro/tech-lead-tools)
-[![CI](https://github.com/ghcordeiro/tech-lead-tools/actions/workflows/ci.yml/badge.svg)](https://github.com/ghcordeiro/tech-lead-tools/actions/workflows/ci.yml)
+[![npm version](https://img.shields.io/npm/v/@ghcordeiro/sdd?color=crimson&label=npm)](https://www.npmjs.com/package/@ghcordeiro/sdd)
+[![CI](https://github.com/ghcordeiro/sdd/actions/workflows/ci.yml/badge.svg)](https://github.com/ghcordeiro/sdd/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 [![Node.js ≥22](https://img.shields.io/badge/node-%3E%3D22-brightgreen)](https://nodejs.org)
 
 ```bash
-npx @ghcordeiro/tech-lead-tools
+npx @ghcordeiro/sdd
 ```
 
 </div>
@@ -21,7 +21,7 @@ npx @ghcordeiro/tech-lead-tools
 
 ## What is this?
 
-`tech-lead-tools` installs a curated set of AI agent skills designed for the day-to-day work of Tech Leads and Staff Engineers — spec-driven planning, architecture documentation, code quality review, ADR creation, RFC writing, and more.
+`sdd` installs a curated set of AI agent skills for Spec-Driven Development — spec-driven planning, architecture documentation, ADR creation, C4 diagrams, code quality review, RFC writing, and more.
 
 All skills are installed at once, as a single toolkit. No picking and choosing — just run, select your agent, and get to work.
 
@@ -32,14 +32,14 @@ Each skill is a self-contained `SKILL.md` file that gives your AI agent deep, sp
 ## Quick Start
 
 ```bash
-npx @ghcordeiro/tech-lead-tools
+npx @ghcordeiro/sdd
 ```
 
 The interactive CLI walks you through three steps:
 
 ```
-  ◆ Tech Lead Tools
-  A curated toolkit for Tech Leads and Staff Engineers
+  ◆ SDD
+  Spec-Driven Development toolkit for AI agents
   14 skills ready to install into your AI agent
 
   Get started →
@@ -88,7 +88,7 @@ Ready to install 14 skills into:
 ## Non-interactive (scripts & CI)
 
 ```bash
-npx @ghcordeiro/tech-lead-tools install \
+npx @ghcordeiro/sdd install \
   --agent claude-code \
   --global
 ```
@@ -162,7 +162,7 @@ npx @ghcordeiro/tech-lead-tools install \
 ```
 ai-skills/
 ├── packages/
-│   ├── cli/                  # @ghcordeiro/tech-lead-tools — published CLI
+│   ├── cli/                  # @ghcordeiro/sdd — CLI publicado no npm
 │   │   ├── src/              # TypeScript source (Ink + Commander)
 │   │   └── build.mjs         # esbuild bundler script
 │   └── skills-catalog/       # one directory per skill
@@ -192,7 +192,7 @@ ai-skills/
 
 ```bash
 # 1. Bump version
-npm version patch -w @ghcordeiro/tech-lead-tools
+npm version patch -w @ghcordeiro/sdd
 
 # 2. Commit and push
 git add packages/cli/package.json package-lock.json

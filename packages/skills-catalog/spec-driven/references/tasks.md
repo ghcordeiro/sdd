@@ -2,7 +2,7 @@
 
 **Goal**: Break into GRANULAR, ATOMIC tasks. Clear dependencies. Right tools. Parallel execution plan.
 
-**Skip this phase when:** There are ≤3 obvious steps. In that case, tasks are implicit — go straight to Execute and list them inline in your implementation plan.
+**Skip this phase when:** There are ≤3 obvious steps. In that case, tasks are implicit — go straight to Implement and list them inline in your implementation plan.
 
 ## Why Granular Tasks?
 
@@ -39,7 +39,7 @@
 
 ### 1. Review Design
 
-Read `.specs/[feature]/design.md` before creating tasks.
+Read `.specs/[feature]/plan.md` before creating tasks.
 
 ### 2. Break Into Atomic Tasks
 
@@ -47,6 +47,25 @@ Read `.specs/[feature]/design.md` before creating tasks.
 
 - ✅ "Create UserService interface" (one file, one concept)
 - ❌ "Implement user management" (too vague, multiple files)
+
+### 2.5. TDAD — Write Test Tasks First (Medium/Large/Complex)
+
+Before writing implementation tasks, write the test task(s) that will verify each implementation task. This is **Test-Driven Agentic Development (TDAD)**: the test definition is written while the spec's acceptance criteria are fresh, before any implementation bias sets in.
+
+For each implementation task T[N], create a paired `T[N]-test` task:
+
+- **What**: Write the test(s) that prove T[N]'s "Done when" criteria — derive directly from the WHEN/THEN ACs in `spec.md`
+- **Where**: `[test directory]/[matching path].test.[ext]`
+- **Depends on**: The interface/type from the previous task (not the implementation of T[N] itself)
+- **Done when**: Tests are written, run, and **FAIL** (red state) — they will pass after T[N] implements
+
+The execution order is always: `T[N]-test` (write + run red) → `T[N]` (implement to green).
+
+**If you can't write a test from the AC, the AC is too vague.** Return to `spec.md` and sharpen the criterion before continuing.
+
+**Auto-sizing:** TDAD is applied on Medium/Large/Complex features. On Small scope or Quick mode, skip.
+
+---
 
 ### 3. Define Dependencies
 
@@ -72,7 +91,7 @@ Group tasks into phases. Identify what can run in parallel.
 ```markdown
 # [Feature] Tasks
 
-**Design**: `.specs/[feature]/design.md`
+**Design**: `.specs/[feature]/plan.md`
 **Status**: Draft | Approved | In Progress | Done
 
 ---
@@ -119,6 +138,7 @@ T8 → T9
 **Depends on**: None
 **Reuses**: `src/existing/BaseInterface.ts`
 **Requirement**: [FEAT]-01
+**Test task**: T1-test (write failing tests first — WHEN/THEN from spec.md)
 
 **Tools**:
 
@@ -196,7 +216,11 @@ T8 → T9
 
 ## Parallel Execution Map
 
-Visual representation of what can run simultaneously:
+Visual representation of what can run simultaneously.
+
+> **TDAD note:** When TDAD is active, test tasks (`T[N]-test`) appear in the execution plan immediately before their implementation task (`T[N]`). They always run sequentially: test task first (establishes red state), then implementation task (reaches green). Test tasks cannot be parallelized with their paired implementation task.
+
+
 
 ```
 
@@ -239,6 +263,8 @@ Before approving tasks, verify they are granular enough:
 ## Tips
 
 - **[P] = Parallel OK** — Mark tasks that can run simultaneously
+- **TDAD = spec materializes as tests** — The WHEN/THEN ACs from spec.md become the test assertions; if you can't write the test from the AC, the AC is too vague — go back and sharpen it
+- **Test task before implementation task** — T[N]-test always runs first (red), T[N] makes it green
 - **Reuses = Token saver** — Always reference existing code
 - **Tools per task** — MCPs and Skills prevent wrong approaches
 - **Dependencies are gates** — Clear what blocks what

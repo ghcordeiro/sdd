@@ -1,11 +1,11 @@
 {
-  "name": "@ghcordeiro/tech-lead-tools",
-  "version": "1.0.8",
+  "name": "@ghcordeiro/sdd",
+  "version": "1.0.0",
   "description": "A curated toolkit for Tech Leads and Staff Engineers — install AI agent skills in seconds",
   "license": "MIT",
   "type": "module",
   "bin": {
-    "tech-lead-tools": "./dist/index.js"
+    "sdd": "./dist/index.js"
   },
   "main": "./dist/index.js",
   "files": [
@@ -51,6 +51,6 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/ghcordeiro/tech-lead-tools"
+    "url": "https://github.com/ghcordeiro/sdd"
   }
 }

@@ -1,6 +1,6 @@
-# Execute: Validate & Verify
+# Implement: Validate & Verify
 
-**Goal**: Verify implementation meets spec AND coding principles. This is NOT a separate phase — verification is part of every task's completion within Execute.
+**Goal**: Verify implementation meets spec AND coding principles. This is NOT a separate phase — verification is part of every task's completion within Implement.
 
 **Two levels of verification:**
 
@@ -23,7 +23,9 @@ Go through tasks.md:
 - [ ] All tasks marked done?
 - [ ] Any blocked or partial?
 
-### 2. Verify Acceptance Criteria
+### 2. Verify Acceptance Criteria (Verifier mode)
+
+**Switch mode:** When checking acceptance criteria, the agent is in Verifier mode (see Builder-Verifier in [implement.md](implement.md)). Read each WHEN/THEN criterion from `spec.md` as a specification to test against — not as a description of what was built. Ask: "Would this criterion pass if I had no knowledge of the implementation?"
 
 For each user story in spec.md:
 

@@ -1,8 +1,12 @@
-# Execute
+# Implement
 
 **Goal**: Implement ONE task at a time. Surgical changes. Verify. Commit. Repeat.
 
 This is where code gets written. Every task follows the same cycle: plan → implement → verify → commit. Verification is built into every task, not a separate phase.
+
+---
+
+> **Builder-Verifier Pattern:** During implementation, the agent operates in two distinct modes. In **Builder mode** (Steps 3–4), the focus is solely on producing code that satisfies the task definition. In **Verifier mode** (Steps 5–6), the agent switches perspective — reads the acceptance criteria from `spec.md` as if it were a separate reviewer — and checks the produced code against each WHEN/THEN criterion. This context switch is deliberate: it catches the gaps that a builder mindset tends to overlook.
 
 ---
 
@@ -42,15 +46,15 @@ If listing steps reveals >5 steps or complex dependencies, STOP and create a for
 
 ### 1. Pick Task
 
-From tasks.md (if exists) or from the execution plan above. User specifies ("implement T3") or suggest next available.
+From `tasks.md` (if exists) or from the execution plan above. User specifies ("implement T3") or suggest next available.
 
 ### 2. Verify Dependencies
 
-If tasks.md exists, check dependencies. If using inline plan, follow the order listed.
+If `tasks.md` exists, check dependencies. If using inline plan, follow the order listed.
 
 ❌ If blocked: "T3 depends on T2 which isn't done. Should I do T2 first?"
 
-### 3. State Implementation Plan
+### 3. State Implementation Plan (Builder mode begins)
 
 Before writing code:
 
@@ -69,9 +73,11 @@ Success: [how to verify]
   - Touch ONLY listed files
   - No scope creep
 
-### 5. Verify "Done When"
+### 5. Verify "Done When" (Verifier mode begins)
 
-Check all criteria before marking done.
+Switch mode: load the WHEN/THEN acceptance criteria from `spec.md` for this user story. Check each criterion as a verifier — not the builder who just wrote the code. Ask: "Would this criterion pass if I had no knowledge of the implementation?"
+
+Confirm each AC from `spec.md` is traceable to the changes in this commit.
 
 ### 6. Self-Check
 
@@ -162,7 +168,7 @@ During implementation, you will notice things that could be improved, refactored
 
 ### 9. Update Task Status
 
-Mark task complete in tasks.md. Update requirement traceability in spec.md if requirement IDs are used.
+Mark task complete in `tasks.md`. Update requirement traceability in `spec.md` if requirement IDs are used.
 
 ---
 
@@ -180,14 +186,14 @@ Mark task complete in tasks.md. Update requirement traceability in spec.md if re
 - **Files to touch**: [list ONLY these]
 - **Success criteria**: [how to verify]
 
-### Implementation
+### Implementation (Builder mode)
 
 [Do the work]
 
-### Verification
+### Verification (Verifier mode)
 
-- [x] Done when criterion 1
-- [x] Done when criterion 2
+- [x] WHEN/THEN criterion 1 from spec.md → [PASS/FAIL]
+- [x] WHEN/THEN criterion 2 from spec.md → [PASS/FAIL]
 - [x] No unnecessary changes made
 - [x] Matches existing patterns
 
@@ -199,6 +205,8 @@ Mark task complete in tasks.md. Update requirement traceability in spec.md if re
 ## Tips
 
 - **One task at a time** — Focus prevents errors
+- **Builder → Verifier** — Always switch mode before verifying; builder bias is real
+- **WHEN/THEN = test** — Each acceptance criterion is a test; if it passes, the task is done
 - **Tools matter** — Wrong MCP = wrong approach
 - **Reuses save tokens** — Copy patterns, don't reinvent
 - **Check before commit** — Verify all criteria, then commit

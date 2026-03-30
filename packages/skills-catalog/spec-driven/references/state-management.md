@@ -87,6 +87,7 @@ Capture in-progress thoughts and action items that don't fit in active tasks.
 | Scope creep captured             | Add to Deferred Ideas                  |
 | In-progress thought              | Add to Todos                           |
 | Session end                      | Update "Last Updated" + "Current Work" |
+| Constitution is amended          | Add row to Constitution Amendments + create ADR |
 
 ## Size Management (Hybrid Strategy)
 
@@ -107,6 +108,20 @@ Capture in-progress thoughts and action items that don't fit in active tasks.
 - Decisions have clear rationale?
 - Blockers include resolution path?
 - Learnings are actionable?
+
+---
+
+## Constitution Amendments
+
+Track any changes to `CONSTITUTION.md` here. These should be rare — the constitution is immutable by design.
+
+```markdown
+## Constitution Amendments
+
+| Amendment | Decision | ADR | Date |
+| --------- | -------- | --- | ---- |
+| [What changed] | [Why] | [ADR-NNN](docs/adr/NNN-*.md) | [YYYY-MM-DD] |
+```
 
 ---
 
