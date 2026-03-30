@@ -1,3 +1,9 @@
+## [1.1.0](https://github.com/ghcordeiro/sdd/compare/v1.0.4...v1.1.0) (2026-03-30)
+
+### Features
+
+* **spec-driven:** add Linear MCP toolkit with pre-specify and post-tasks hooks ([37023bf](https://github.com/ghcordeiro/sdd/commit/37023bf45d43f73967a3602d651ebe96cb36419c))
+
 ## [1.0.4](https://github.com/ghcordeiro/sdd/compare/v1.0.3...v1.0.4) (2026-03-30)
 
 ### Bug Fixes
