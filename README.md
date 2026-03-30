@@ -228,6 +228,24 @@ Examples:
 
 ---
 
+## Inspiration & Credits
+
+This project's `spec-driven` skill is inspired by prior work from the community and published references on Spec-Driven Development.
+
+**Original work**
+
+- `tlc-spec-driven` by [Felipe Rodrigues](https://github.com/felipfr) — [Tech Lead's Club](https://github.com/tech-leads-club)
+- Source: [tech-leads-club/agent-skills](https://github.com/tech-leads-club/agent-skills/tree/main/packages/skills-catalog/skills/(development)/tlc-spec-driven)
+- License: `CC-BY-4.0`
+
+**SDD references**
+
+- [Martin Fowler — Spec-Driven Development: 3 Tools](https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html)
+- [DS Academy — Spec-Driven Development series (parts 1-5)](https://blog.dsacademy.com.br/spec-driven-development-a-nova-arquitetura-de-engenharia-de-software-na-era-dos-agentes-de-ia-parte-1/)
+- [Microsoft Learn — Spec-Driven Development with GitHub Spec Kit](https://learn.microsoft.com/pt-br/training/modules/spec-driven-development-github-spec-kit-greenfield-intro/)
+
+---
+
 ## License
 
 MIT — see [LICENSE](./LICENSE).
