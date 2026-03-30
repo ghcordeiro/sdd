@@ -90,14 +90,22 @@ Ready to install 14 skills into:
 ```bash
 npx @ghcordeiro/sdd install \
   --agent claude-code \
+  --skills spec-driven \
   --global
 ```
 
 | Flag | Alias | Description |
 |---|---|---|
 | `--agent <id>` | `-a` | Target agent (see supported agents below) |
+| `--skills <ids>` | `-s` | Comma-separated skill IDs (e.g. `spec-driven`) |
 | `--global` | | Install to home directory `~/` (default) |
 | `--local` | | Install to current project directory `./` |
+
+You can always inspect the full CLI help with:
+
+```bash
+npx @ghcordeiro/sdd --help
+```
 
 ---
 
@@ -205,6 +213,16 @@ git push origin vx.x.x
 ```
 
 **Pipeline:** `type-check → build → verify version tag → publish to npm`
+
+### Troubleshooting release
+
+- `npm ci` fails with lockfile mismatch:
+  - run `npm install` locally to sync `package-lock.json`
+  - commit `package-lock.json` before tagging
+- provenance/repository mismatch (`E422`):
+  - ensure `packages/cli/package.json` `repository.url` points to the same GitHub repo used by Actions
+- publish workflow not triggered:
+  - verify tag format is `vX.Y.Z` and matches `packages/cli/package.json` version exactly
 
 ---
 
