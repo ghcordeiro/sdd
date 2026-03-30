@@ -20,12 +20,14 @@ Generate architecture documentation from source code using C4:
 
 ## Engine and examples
 
-- Engine: `~/.cursor/skills/c4-architect/scripts/c4_engine.py`
+The engine and examples are bundled **in the same directory as this file** (`toolkit/c4-architect/`):
+
+- Engine: `scripts/c4_engine.py`
 - Examples:
-  - `~/.cursor/skills/c4-architect/examples/context.json`
-  - `~/.cursor/skills/c4-architect/examples/container.json`
-  - `~/.cursor/skills/c4-architect/examples/component.json`
-  - `~/.cursor/skills/c4-architect/examples/sequence.json`
+  - `examples/context.json`
+  - `examples/container.json`
+  - `examples/component.json`
+  - `examples/sequence.json`
 
 ## Required workflow
 
@@ -43,8 +45,10 @@ plantuml -tsvg docs/architecture/*.puml
 
 ## Generate command
 
+Resolve `<toolkit-dir>` to the directory where this `instructions.md` file lives (e.g. `~/.claude/skills/spec-driven/toolkit/c4-architect` or the repo path if running locally).
+
 ```bash
-echo '<JSON_OBJECT>' | python3 ~/.cursor/skills/c4-architect/scripts/c4_engine.py
+echo '<JSON_OBJECT>' | python3 <toolkit-dir>/scripts/c4_engine.py
 ```
 
 ## Notes
