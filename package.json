@@ -17,19 +17,20 @@
     "release:dry-run": "semantic-release --dry-run"
   },
   "devDependencies": {
+    "@nx/js": "^20.0.0",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/commit-analyzer": "^13.0.1",
     "@semantic-release/git": "^10.0.1",
     "@semantic-release/github": "^11.0.6",
     "@semantic-release/npm": "^12.0.2",
     "@semantic-release/release-notes-generator": "^14.1.0",
-    "@nx/js": "^20.0.0",
-    "nx": "^20.0.0",
-    "typescript": "^5.7.0",
-    "tsx": "^4.19.0",
-    "prettier": "^3.4.0",
+    "conventional-changelog-conventionalcommits": "^9.3.1",
     "eslint": "^9.0.0",
-    "semantic-release": "^24.2.9"
+    "nx": "^20.0.0",
+    "prettier": "^3.4.0",
+    "semantic-release": "^24.2.9",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0"
   },
   "engines": {
     "node": ">=22"
