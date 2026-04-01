@@ -214,7 +214,7 @@ The following are **mandatory outputs** of the Plan phase for Medium/Large/Compl
 | Output | What | How |
 |---|---|---|
 | **ADR(s)** | One ADR per significant architectural decision | Use `toolkit/create-adr/instructions.md` format. Placed in `docs/adr/`. Required before advancing to Tasks. |
-| **C4 Diagrams** | Architecture diagrams with user-selected levels | Agent validates with user: offer L1 (Context), L2 (Container), L3 (Component). Default: L1+L2. Sequence diagram is optional and always feature-scoped. Use `toolkit/c4-architect/instructions.md` format. |
+| **C4 Diagrams** | Architecture diagrams with user-selected levels | Agent validates with user: offer L1 (Context), L2 (Container), L3 (Component). Default: L1+L2. Sequence diagram is optional and always feature-scoped. Use `@toolkit/c4-architect` (`toolkit/c4-architect/instructions.md`). **PNG geração obrigatória** — toolkit não está completo sem os `.png` em `docs/architecture/`. |
 
 ### Activation Map (Conditional)
 
@@ -311,7 +311,14 @@ Default: 1 + 2 (press Enter to confirm)
 
 **The Sequence diagram is always feature-scoped** — it documents the specific flow triggered by this feature, not the entire system. It is generated after structural diagrams (L1/L2/L3) so the sequence has components to reference.
 
-**Format:** `toolkit/c4-architect/instructions.md`. Diagrams are placed in `docs/architecture/`.
+**Toolkit:** `@toolkit/c4-architect` (`toolkit/c4-architect/instructions.md`). Diagrams are placed in `docs/architecture/`.
+
+**PNG geração é obrigatória.** Para cada diagrama:
+1. Gere o `.puml` via `c4_engine.py`
+2. Renderize com `plantuml -tpng docs/architecture/*.puml` (instale com `brew install graphviz plantuml` se ausente)
+3. Referencie o PNG no `plan.md` com `![Title](docs/architecture/<nome>.png)`
+
+O toolkit não está completo sem os `.png` confirmados em disco.
 
 ---
 

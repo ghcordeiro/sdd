@@ -34,14 +34,28 @@ The engine and examples are bundled **in the same directory as this file** (`too
 1. Discover architecture from repository files (`README.md`, compose/k8s, app entrypoints, ORM/migrations, queues).
 2. Build JSON contract for each required C4 level.
 3. Generate `.puml` files in `docs/architecture/`.
-4. Render image docs:
+4. **[OBRIGATÓRIO] Render PNG — o toolkit não termina sem este passo:**
 
-```bash
-plantuml -tpng docs/architecture/*.puml
-plantuml -tsvg docs/architecture/*.puml
-```
+   ```bash
+   plantuml -tpng docs/architecture/*.puml
+   plantuml -tsvg docs/architecture/*.puml
+   ```
 
-5. Return generated file paths and a concise architecture summary.
+   Se PlantUML não estiver instalado, instale **antes de continuar**:
+
+   ```bash
+   brew install graphviz plantuml
+   ```
+
+   Confirme que os arquivos `.png` foram criados em `docs/architecture/` antes de prosseguir.
+
+5. Referencie cada PNG no documento (`plan.md` ou onde for incorporado):
+
+   ```markdown
+   ![Diagram Title](docs/architecture/<nome>.png)
+   ```
+
+6. Return generated file paths and a concise architecture summary.
 
 ## Generate command
 
@@ -54,8 +68,4 @@ echo '<JSON_OBJECT>' | python3 <toolkit-dir>/scripts/c4_engine.py
 ## Notes
 
 - Include format must be `!include <C4/C4_Context>` and equivalents.
-- If PlantUML is missing on macOS:
-
-```bash
-brew install graphviz plantuml
-```
+- PNG rendering is not optional — do not return control to the calling phase until PNGs are confirmed on disk.

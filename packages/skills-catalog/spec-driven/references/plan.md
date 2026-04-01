@@ -56,7 +56,19 @@ Default: 1 + 2. Select all that apply, or press Enter for the default.
 
 Wait for user selection before generating. If the user skips or says "default", produce L1 + L2.
 
-Use the format from `toolkit/c4-architect/instructions.md`. Generate mermaid diagrams inline in plan.md under the "Architecture Diagrams" section, then save `.puml` files to `docs/architecture/` if the toolchain is available.
+Use **obrigatoriamente** o toolkit `@toolkit/c4-architect` (leia `toolkit/c4-architect/instructions.md`). Para cada nível selecionado:
+
+1. Construa o JSON de entrada conforme os exemplos em `toolkit/c4-architect/examples/`.
+2. Passe o JSON pelo engine: `echo '<JSON>' | python3 <toolkit-dir>/scripts/c4_engine.py > docs/architecture/<nome>.puml`
+3. Renderize PNG (obrigatório — não pule esta etapa):
+   ```bash
+   plantuml -tpng docs/architecture/*.puml
+   plantuml -tsvg docs/architecture/*.puml
+   ```
+   Se PlantUML não estiver instalado, instale-o **antes de continuar**: `brew install graphviz plantuml`
+4. Referencie cada PNG gerado no `plan.md` com `![Diagram Title](docs/architecture/<nome>.png)`
+
+**O toolkit não está completo sem os PNGs gerados.** Não avance para a seção de componentes sem confirmar que os arquivos `.png` existem em `docs/architecture/`.
 
 **The Sequence diagram is always feature-scoped** — it documents the flow triggered by this specific feature, not the entire system. Generate it after the structural diagrams (L1/L2/L3) so the sequence has components to reference.
 
@@ -124,19 +136,19 @@ graph TD
 
 ### Context (L1)
 
-[C4 Context diagram — system and external relationships]
+![Context Diagram](docs/architecture/[feature]-context.png)
 
 ### Container (L2) *(if selected)*
 
-[C4 Container diagram — runtime components]
+![Container Diagram](docs/architecture/[feature]-container.png)
 
 ### Component (L3) *(if selected)*
 
-[C4 Component diagram — internal structure]
+![Component Diagram](docs/architecture/[feature]-component.png)
 
 ### Sequence: [Feature Name] *(if selected)*
 
-[Sequence diagram scoped to this feature's flow]
+![Sequence Diagram](docs/architecture/[feature]-sequence.png)
 
 ---
 
