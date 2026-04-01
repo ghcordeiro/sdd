@@ -1,3 +1,9 @@
+## [1.2.0](https://github.com/ghcordeiro/sdd/compare/v1.1.0...v1.2.0) (2026-04-01)
+
+### Features
+
+* **c4-architect:** make PNG rendering mandatory in Plan phase ([a4b4543](https://github.com/ghcordeiro/sdd/commit/a4b4543180f6ef9e63a167a640158ad0ac591d9b))
+
 ## [1.1.0](https://github.com/ghcordeiro/sdd/compare/v1.0.4...v1.1.0) (2026-03-30)
 
 ### Features
