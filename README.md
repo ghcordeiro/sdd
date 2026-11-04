@@ -227,7 +227,7 @@ sdd/
 │   └── core/                 # shared logic (catalog, installer, agent definitions)
 ├── .github/workflows/
 │   ├── ci.yml                # type-check on every push to main
-│   └── publish.yml           # build + publish on version tag
+│   └── publish.yml           # semantic-release on push to main (npm Trusted Publishing)
 ├── package.json              # npm workspaces root
 └── nx.json
 ```
@@ -254,7 +254,7 @@ It automatically:
 
 - analyzes Conventional Commits (`feat`, `fix`, `BREAKING CHANGE`)
 - calculates the next version
-- updates `packages/cli/package.json` + `package-lock.json`
+- updates `packages/cli/package.json` + `package-lock.json` + `plugin.json` (Kiro Power)
 - creates `CHANGELOG.md`
 - creates git tag + GitHub release
 - publishes `@ghcordeiro/sdd` to npm with provenance
@@ -265,11 +265,40 @@ Examples:
 - `feat: ...` → minor release
 - `feat!: ...` or `BREAKING CHANGE:` → major release
 
+### npm authentication — Trusted Publishing (OIDC)
+
+There is **no npm token** in this repo. `publish.yml` authenticates to npm with [Trusted Publishing](https://docs.npmjs.com/trusted-publishers): GitHub Actions exchanges a short-lived OIDC token with the registry on each run.
+
+| Setting | Value |
+|---|---|
+| npm package → Settings → Trusted Publisher | GitHub Actions · `ghcordeiro/sdd` · workflow `publish.yml` · environment `npm` · **Allow `npm publish`** |
+| Workflow permission | `id-token: write` on the release job |
+| GitHub environment | `npm` (no secrets needed) |
+| Tooling | npm ≥ 11.5.1 (the workflow upgrades it), `semantic-release` ≥ 25 / `@semantic-release/npm` ≥ 13 |
+
+Rules:
+
+- Do **not** add `NPM_TOKEN` / `NODE_AUTH_TOKEN`, and do not set `registry-url` in `actions/setup-node` — both switch npm back to token auth.
+- The trusted publisher is bound to the **filename** `publish.yml`. Renaming the workflow or the `npm` environment breaks publishing until the npm setting is updated.
+- Publishing access can stay on "Require two-factor authentication and disallow bypass 2fa tokens" — trusted publishers keep working.
+
+### Recovering a release that tagged but did not publish
+
+If `semantic-release` created the tag but `npm publish` failed, the next push will not retry it (the tag already exists). Publish the existing tag from Actions:
+
+```bash
+gh workflow run publish.yml -f tag=vX.Y.Z
+```
+
+This checks out the tag, publishes it to npm with provenance, and creates the GitHub release if missing.
+
 ### Troubleshooting release
 
 - `npm ci` fails with lockfile mismatch:
   - run `npm install` locally to sync `package-lock.json`
   - commit `package-lock.json` before tagging
+- `ENONPMTOKEN` / `EINVALIDNPMTOKEN` / `EOTP`:
+  - npm is not using OIDC — check the trusted publisher settings above and that no token or `registry-url` was added to the workflow
 - provenance/repository mismatch (`E422`):
   - ensure `packages/cli/package.json` `repository.url` points to the same GitHub repo used by Actions
 - publish workflow not triggered:
