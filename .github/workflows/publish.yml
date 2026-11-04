@@ -1,10 +1,17 @@
 name: Publish
 
+# npm auth uses Trusted Publishing (OIDC) — no NPM token. The trusted publisher
+# on npmjs.com is bound to this filename (publish.yml) and the `npm` environment.
 on:
   push:
     branches:
       - main
   workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Recovery only: existing tag to publish (e.g. v1.3.0). Leave empty to run semantic-release.'
+        required: false
+        default: ''
 
 jobs:
   release:
@@ -22,13 +29,18 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: ${{ inputs.tag && format('refs/tags/{0}', inputs.tag) || github.ref }}
 
+      # No registry-url: it writes a token-based .npmrc that conflicts with OIDC.
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '22'
           cache: 'npm'
-          registry-url: 'https://registry.npmjs.org'
+
+      # Trusted Publishing needs npm >= 11.5.1; Node 22 ships npm 10.
+      - name: Upgrade npm
+        run: npm install -g npm@latest
 
       - name: Install dependencies
         run: npm ci
@@ -43,8 +55,19 @@ jobs:
         run: node packages/cli/build.mjs
 
       - name: Run semantic-release
+        if: ${{ !inputs.tag }}
         run: npm run release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_SECRET }}
-          NPM_CONFIG_PROVENANCE: true
+
+      # Recovery: semantic-release created the tag but failed at npm publish.
+      - name: Publish existing tag
+        if: ${{ inputs.tag }}
+        working-directory: packages/cli
+        run: npm publish --access public --provenance
+
+      - name: Create GitHub release for existing tag
+        if: ${{ inputs.tag }}
+        run: gh release view "${{ inputs.tag }}" >/dev/null 2>&1 || gh release create "${{ inputs.tag }}" --verify-tag --title "${{ inputs.tag }}" --generate-notes
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
