@@ -7,6 +7,7 @@
 Install battle-tested SDD skills into Claude Code, Cursor, GitHub Copilot, Gemini CLI, Antigravity, and Kiro — in seconds.
 
 [![npm version](https://img.shields.io/npm/v/@ghcordeiro/sdd?color=crimson&label=npm)](https://www.npmjs.com/package/@ghcordeiro/sdd)
+[![npm downloads](https://img.shields.io/npm/dt/@ghcordeiro/sdd?color=crimson&label=downloads)](https://www.npmjs.com/package/@ghcordeiro/sdd)
 [![CI](https://github.com/ghcordeiro/sdd/actions/workflows/ci.yml/badge.svg)](https://github.com/ghcordeiro/sdd/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 [![Node.js ≥22](https://img.shields.io/badge/node-%3E%3D22-brightgreen)](https://nodejs.org)
