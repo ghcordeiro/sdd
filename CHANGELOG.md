@@ -1,3 +1,9 @@
+## [1.4.0](https://github.com/ghcordeiro/sdd/compare/v1.3.0...v1.4.0) (2026-11-04)
+
+### Features
+
+* **toolkit:** add playwright (web + mobile web) and mobile (native iOS/Android) toolkits ([9aa3158](https://github.com/ghcordeiro/sdd/commit/9aa3158945a448ad046e7924d99ce3a848a478b6))
+
 ## [1.3.0](https://github.com/ghcordeiro/sdd/compare/v1.2.0...v1.3.0) (2026-11-04)
 
 ### Features
