@@ -26,6 +26,8 @@ User provides a clear, one-sentence description. If vague, ask for specifics:
 - ❌ "Fix the login" → Ask: "What's broken? What should happen instead?"
 - ✅ "Fix: login button returns 401 because token refresh skips expired check"
 
+**Bug with unknown cause?** Find the root cause first with [debug.md](debug.md), then continue here. Quick mode is for bugs whose cause is known.
+
 ### 2. Pre-Implementation Check
 
 Before writing code, state:

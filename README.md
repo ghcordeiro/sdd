@@ -155,6 +155,20 @@ The file needs no extra tooling, and it never stores secrets or credentials. Edi
 
 ## Skills Included
 
+### 🧭 Built-in workflows (loaded on demand)
+
+`spec-driven` is a small router: each workflow below is a separate file loaded only when its trigger fires. If your agent already has an equivalent skill (e.g. `systematic-debugging`, `security-review`, `using-git-worktrees`), the host skill is used instead and the sdd file is never loaded.
+
+| Workflow | Fires when |
+|---|---|
+| Spec readiness check | Before the Specify gate on Large/Complex features — a fresh subagent lists what a builder would still need to ask |
+| Root-cause debugging | A bug, failing test, or unexpected behavior shows up |
+| Security review | A change touches auth, external input, secrets, crypto, payments, PII, paths, or shell/SQL |
+| Branch & finish | Start of Implement (branch/worktree + green baseline) and end of feature (PR, merge, keep, discard) |
+| Parallel subagents | `tasks.md` has independent "Parallel OK" tasks and the agent supports subagents |
+| Review response | PR or reviewer comments arrive — each one is verified before it is applied |
+| Learning loop | Phase gates and corrections — see [Learning & Companion Tools](#learning--companion-tools) |
+
 ### 🏗️ Planning & Architecture
 
 | Skill | Description |

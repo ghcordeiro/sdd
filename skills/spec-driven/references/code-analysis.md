@@ -4,6 +4,8 @@ Use graceful degradation for code search and structural analysis.
 
 ## Tool Priority
 
+**Codebase graph first (if available):** if the host has a knowledge-graph skill/tool (e.g. `graphify`) or a `graphify-out/` directory exists, query it for architecture, module relationships, and "what calls X" before reading files one by one. It costs far fewer tokens than broad file reads.
+
 1. **ast-grep** (`sg`) - Structural pattern-based search
 2. **ripgrep** (`rg`) - Fast context-aware text search
 3. **grep** - Standard text search (always available)

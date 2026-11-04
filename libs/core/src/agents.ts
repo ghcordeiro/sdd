@@ -6,6 +6,8 @@ export interface AgentDefinition {
   name: string;
   globalSkillsDir: string;
   localSkillsDir: string;
+  /** Project dir for the skill's cursor-rules/*.mdc (local installs only). */
+  localRulesDir?: string;
 }
 
 export const AGENTS: AgentDefinition[] = [
@@ -20,6 +22,7 @@ export const AGENTS: AgentDefinition[] = [
     name: 'Cursor',
     globalSkillsDir: join(homedir(), '.cursor', 'skills'),
     localSkillsDir: join('.cursor', 'skills'),
+    localRulesDir: join('.cursor', 'rules'),
   },
   {
     id: 'github-copilot',

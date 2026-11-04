@@ -16,6 +16,18 @@ Behavioral bias, not checklist. Read before every implementation.
 
 ## During Implementation
 
+### Smallest Complete Change
+
+Take the first option that fully solves the task:
+
+1. Does it need to exist? Skip features and options nobody asked for — name them in one line instead.
+2. Already in this codebase (helper, component, pattern)? Reuse it the way the surrounding code does.
+3. Standard library or platform feature? Use it.
+4. An installed dependency? Use it. Never add a dependency for a few lines.
+5. Otherwise: the minimum code that works.
+
+Be lazy about the solution, never about completeness: update every caller, test, and fixture the change breaks. Never cut validation at trust boundaries, error handling that prevents data loss, security, or accessibility.
+
 ### Simplicity
 
 - No features beyond what was asked

@@ -51,6 +51,8 @@ From spec.md edge cases:
 # project test command
 ```
 
+Run them now, in this session, and paste the summary line (passed/failed counts). A validation report without fresh command output is not a validation. Failures are reported as failures — never rounded up to "mostly passing".
+
 ### 5. Code Quality Check (MANDATORY)
 
 For each changed file, verify against [coding-principles.md](coding-principles.md):

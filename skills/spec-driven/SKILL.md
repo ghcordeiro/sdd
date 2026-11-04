@@ -1,6 +1,6 @@
 ---
 name: spec-driven
-description: "THE single command for Tech Leads and Staff Engineers. Orchestrates the full sdd toolkit automatically — you never invoke other skills directly. Drives project and feature work through 4 adaptive phases (Specify, Plan, Tasks, Implement), auto-sizing depth by complexity. Activates the right tool at the right moment: business docs, ADRs (mandatory in Plan), C4 diagrams (mandatory in Plan with user validation), RFCs, TDDs, component design, duplication analysis, code review, accessibility, SEO, CI fixes, browser debugging — all wired in. Stack-agnostic. Triggers on: initialize project, map codebase, specify feature, discuss feature, plan, tasks, implement, validate, verify work, UAT, quick fix, quick task, pause work, resume work."
+description: "THE single command for Tech Leads and Staff Engineers. Orchestrates the full sdd toolkit automatically — you never invoke other skills directly. Drives project and feature work through 4 adaptive phases (Specify, Plan, Tasks, Implement), auto-sizing depth by complexity, loading only the guidance each step needs. Wires in ADRs and C4 diagrams (mandatory in Plan), RFCs, TDDs, business docs, component design, duplication analysis, code and security review, root-cause debugging, parallel subagent execution, branch/PR finishing, accessibility, SEO, CI fixes, browser debugging, and a cross-project learning loop. Stack-agnostic. Triggers on: initialize project, map codebase, specify feature, discuss feature, plan, tasks, implement, validate, verify work, UAT, quick fix, bug fix, debug, review feedback, pause work, resume work, remember this."
 license: CC-BY-4.0
 metadata:
   author: Guilherme Cordeiro - github.com/ghcordeiro
@@ -9,16 +9,12 @@ metadata:
     - sdd-reference: "Martin Fowler — martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html"
     - sdd-reference: "DS Academy — blog.dsacademy.com.br — Spec-Driven Development series, parts 1–5"
     - sdd-reference: "Microsoft Learn — learn.microsoft.com/pt-br/training/modules/spec-driven-development-github-spec-kit-greenfield-intro/"
-  version: 4.0.0
+  version: 4.1.0
 ---
 
 # Spec-Driven Development
 
-**The only command you need.** `spec-driven` is the single entry point for all engineering work — it orchestrates the complete sdd toolkit automatically, activating the right skill at the right moment based on what the project actually needs. You never invoke other skills directly.
-
-```
-You → /spec-driven → the right tools fire automatically
-```
+**The only command you need.** `spec-driven` is the single entry point for all engineering work. It routes each step to the right guidance file and loads **only** that file. You never invoke other skills directly.
 
 ```
 ┌──────────┐   ┌──────────┐   ┌─────────┐   ┌───────────┐
@@ -30,464 +26,169 @@ You → /spec-driven → the right tools fire automatically
 ▲ Each arrow is a phase gate — human approval required before advancing
 ```
 
+## Loading Rule (read first)
+
+This file is a router. Everything else is loaded **on demand**:
+
+- Load a `references/*.md` file only when its trigger in the tables below applies.
+- Load a `toolkit/*/instructions.md` file only when the Activation Map says it fires — never "just in case".
+- **Host skill first:** before loading a toolkit or reference file, check whether the host agent already has an equivalent skill or command (table below). If it does, use the host's and skip the file — never load both.
+- Never load several feature specs, architecture docs, or archived documents at once.
+
 ## Auto-Sizing: The Core Principle
 
-**The complexity determines the depth, not a fixed pipeline.** Before starting any feature, assess its scope and apply only what's needed:
+**The complexity determines the depth, not a fixed pipeline.** Assess scope before starting any feature:
 
 | Scope       | What                     | Specify                                                 | Plan                                            | Tasks                         | Implement                                             |
 | ----------- | ------------------------ | ------------------------------------------------------- | ----------------------------------------------- | ----------------------------- | ----------------------------------------------------- |
 | **Small**   | ≤3 files, one sentence   | **Quick mode** — skip pipeline entirely                 | -                                               | -                             | -                                                     |
 | **Medium**  | Clear feature, <10 tasks | Spec (brief)                                            | Skip — plan inline                              | Skip — tasks implicit         | Implement + verify                                    |
-| **Large**   | Multi-component feature  | Full spec + requirement IDs                             | Architecture + components + ADRs + C4           | Full breakdown + dependencies | Implement + verify per task                           |
-| **Complex** | Ambiguity, new domain    | Full spec + [discuss gray areas](references/discuss.md) | [Research](references/plan.md) + architecture + ADRs + C4 | Breakdown + parallel plan     | Implement + [interactive UAT](references/validate.md) |
+| **Large**   | Multi-component feature  | Full spec + requirement IDs + readiness check           | Architecture + components + ADRs + C4           | Full breakdown + dependencies | Branch + implement + verify per task                  |
+| **Complex** | Ambiguity, new domain    | Full spec + [discuss gray areas](references/discuss.md) | [Research](references/plan.md) + architecture + ADRs + C4 | Breakdown + parallel plan     | Branch + implement + [interactive UAT](references/validate.md) |
 
 **Rules:**
 
 - **Specify and Implement are always required** — you always need to know WHAT and DO it
 - **Plan is skipped** when the change is straightforward (no architectural decisions, no new patterns)
 - **Tasks is skipped** when there are ≤3 obvious steps (they become implicit in Implement)
-- **Discuss is triggered within Specify** only when the agent detects ambiguous gray areas that need user input
-- **Interactive UAT is triggered within Implement** only for user-facing features with complex behavior
-- **Quick mode** is the express lane — for bug fixes, config changes, and small tweaks
-- **Phase gates are non-negotiable** — every phase boundary (Specify → Plan, Plan → Tasks, Tasks → Implement) requires explicit human approval before advancing. This is the SDD checkpoint, not a suggestion.
+- **Discuss** triggers within Specify only for ambiguous gray areas; **Interactive UAT** within Implement only for complex user-facing behavior
+- **Quick mode** is the express lane — bug fixes with known cause, config changes, small tweaks
+- **Phase gates are non-negotiable** — Specify → Plan, Plan → Tasks, Tasks → Implement each need explicit human approval
+- **Spec wins** — if code and spec diverge, fix the code; if the spec was wrong, update the spec first. Why: [philosophy.md](references/philosophy.md)
 
-**Safety valve:** Even when Tasks is skipped, Implement ALWAYS starts by listing atomic steps inline (see [implement.md](references/implement.md)). If that listing reveals >5 steps or complex dependencies, STOP and create a formal `tasks.md` — the Tasks phase was wrongly skipped.
-
----
-
-## SDD Philosophy
-
-Spec-Driven Development rests on three axioms:
-
-**1. Specifications are the source of truth — code is disposable.**
-The spec defines what the system must do. Code is how we satisfy it today. If code and spec diverge, the spec wins — update the code to match the spec. If the spec was wrong, update the spec first, then re-derive the code. The `.specs/` directory is the authoritative system model. Code can always be regenerated; a lost spec cannot.
-
-**2. Engineers define WHAT; agents handle HOW.**
-Humans set intentions, constraints, and approvals. Agents execute, generate, and verify. The phase gates are where human intention is affirmed before agent execution begins. This is not ceremony — it is the control structure that prevents agentic drift. Without gates, agents optimize locally and lose the plot globally.
-
-**3. The constitution is immutable; everything else evolves.**
-`CONSTITUTION.md` captures project laws that survive every session — architectural rules, security constraints, technology boundaries. All other artifacts (specs, plans, tasks) are living documents updated as requirements change. Constitution violations are always bugs; spec changes are normal iteration.
-
----
-
-### SDD Maturity Levels
-
-| Level | Name | What it means |
-|---|---|---|
-| 1 | **Spec-First** | Specs written before code, but code can drift from spec over time |
-| 2 | **Spec-Anchored** | Spec updated before implementation; code is audited against spec (**default target**) |
-| 3 | **Spec-as-Source** | Specs are the canonical system model; code is regenerated/derived from them |
-
-**This skill targets Level 2 by default.** All teams should operate at Level 2 minimum.
-
-**Leveling up:**
-- Level 1 → 2: Enforce phase gates. Never update code without confirming the spec is current first.
-- Level 2 → 3: Pair all implementation tasks with TDAD test tasks. Achieve spec-to-test-to-code traceability end to end.
-
----
+**Safety valve:** Even when Tasks is skipped, Implement ALWAYS starts by listing atomic steps inline. If that reveals >5 steps or complex dependencies, STOP and create `tasks.md`.
 
 ## Project Structure
 
 ```
 .specs/
-├── project/
-│   ├── CONSTITUTION.md # Immutable project laws (architectural, security, coding standards)
-│   ├── PROJECT.md      # Vision & goals
-│   ├── ROADMAP.md      # Features & milestones
-│   └── STATE.md        # Memory: decisions, blockers, lessons, todos, deferred ideas
-├── codebase/           # Brownfield analysis (existing projects)
-│   ├── STACK.md
-│   ├── ARCHITECTURE.md
-│   ├── CONVENTIONS.md
-│   ├── STRUCTURE.md
-│   ├── TESTING.md
-│   ├── INTEGRATIONS.md
-│   └── CONCERNS.md
-├── features/           # Feature specifications
-│   └── [feature]/
-│       ├── business.md # [Optional] Business context for external stakeholders
-│       ├── spec.md     # Requirements with traceable IDs + System Process Context
-│       ├── context.md  # User decisions for gray areas (only when discuss is triggered)
-│       ├── plan.md     # Architecture, components, ADRs + C4 diagrams (Large/Complex)
-│       └── tasks.md    # Atomic tasks with TDAD test pairs (Large/Complex)
-└── quick/              # Ad-hoc tasks (quick mode)
-    └── NNN-slug/
-        ├── TASK.md
-        └── SUMMARY.md
+├── project/        CONSTITUTION.md · PROJECT.md · ROADMAP.md · STATE.md (project memory)
+├── codebase/       STACK · ARCHITECTURE · CONVENTIONS · STRUCTURE · TESTING · INTEGRATIONS · CONCERNS (.md)
+├── features/[feature]/
+│                   business.md (opt) · spec.md · context.md (opt) · plan.md · tasks.md
+└── quick/NNN-slug/ TASK.md · SUMMARY.md
+docs/adr/           ADRs (mandatory in Plan)
+docs/architecture/  C4 diagrams + PNGs (mandatory in Plan)
+~/.sdd/LEARNINGS.md cross-project memory (global)
 ```
-
-**Cross-project learnings:** `~/.sdd/LEARNINGS.md` (global — preferences, stack, mistakes to avoid, projects; see [learnings.md](references/learnings.md))
-**Architecture decisions:** `docs/adr/` (created during Plan phase — mandatory)
-**Architecture diagrams:** `docs/architecture/` (C4 diagrams from Plan phase)
 
 ## Workflow
 
-**New project:**
+**New project:** Initialize → `CONSTITUTION.md` + `PROJECT.md` + `ROADMAP.md` → per feature: Specify → (Plan) → (Tasks) → Implement.
+**Existing codebase:** Map codebase (7 docs, `duplication-hunter` always runs) → Initialize → same per-feature flow.
+**Quick mode:** Describe → Implement → Verify → Commit. No toolkit activations.
 
-1. Initialize project → `CONSTITUTION.md` + `PROJECT.md` + `ROADMAP.md`
-2. For each feature → Specify → (Plan) → (Tasks) → Implement (depth auto-sized)
+**Feature workflow (Large/Complex):**
 
-**Existing codebase:**
+0. **Pre-Specify:** Linear check (if the user uses Linear) · recall learnings
+1. **Specify:** `spec.md` → `context.md` (gray areas) → `business.md` / TDD / RFC (only if triggered) → readiness check → **GATE**
+2. **Plan:** `plan.md` → ADRs (always) → C4 + PNGs (always) → component design / duplication analysis (if triggered) → **GATE**
+3. **Tasks:** TDAD — test tasks before implementation tasks → `tasks.md` with dependencies and parallel phases → **GATE** → Linear sync (if used)
+4. **Implement:** branch/worktree → per task: Builder → Verifier (evidence) → reviews (if triggered) → atomic commit → finish branch → CI
 
-1. Map codebase → 7 brownfield docs → `duplication-hunter` always runs
-2. Initialize project → `CONSTITUTION.md` + `PROJECT.md` + `ROADMAP.md`
-3. For each feature → same adaptive workflow
+## Context Loading
 
-**Quick mode:** Describe → Implement → Verify → Commit (≤3 files, one-sentence scope — no toolkit activations)
+**Base load (always, small):** `CONSTITUTION.md` · `PROJECT.md` · `STATE.md` (each a no-op if absent). `ROADMAP.md` when planning features. `~/.sdd/LEARNINGS.md` at the start of Specify, Plan, and resume.
 
-**Feature workflow (Large/Complex) — toolkit activations are automatic:**
+**On demand:** codebase docs (existing project) · `CONCERNS.md` (touching flagged areas) · the current feature's `spec.md` / `context.md` / `plan.md` / `tasks.md` only.
 
-0. **[Pre-Specify] Linear check** *(condicional — skipped em Quick mode)*: Verifica MCP Linear, pergunta ao usuário se há issue ID, busca contexto via `toolkit/linear/instructions.md` Hook 1. Armazena `LINEAR_ISSUE_ID` na sessão.
-1. **Specify:** `spec.md` (System Process Context first → user stories → ACs) → `context.md` (gray areas) → `business.md` (if external stakeholder alignment needed) → `technical-design-doc-creator` (formal TDD needed) → `create-rfc` (high-stakes direction decision)
-2. **Plan:** `plan.md` → **ADR(s) for every architectural decision** (always) → **C4 diagrams with user validation** (always — L1+L2 default, sequence optional) → `frontend-component-architect` (UI features) → `duplication-hunter` (brownfield)
-3. **Tasks:** TDAD — write test tasks before implementation tasks → `tasks.md` with dependencies
+**Target:** <40k tokens of loaded context. Monitor per [context-limits.md](references/context-limits.md).
 
-[GATE — usuário aprova tasks.md]
+## Commands → Reference Files
 
-4. **[Post-Tasks] Linear sync** *(condicional — só se `LINEAR_ISSUE_ID` foi fornecido no step 0)*: Atualiza descrição do issue pai + cria sub-issues via `toolkit/linear/instructions.md` Hook 2.
-5. **Implement (per task):** Implement (Builder mode) → Verify against spec ACs (Verifier mode) → `code-quality-guardian` (always) → `best-practices` (web) → `accessibility` (UI changes) → `seo` (public pages) → `create-adr` (emergent decisions) → commit → `gh-fix-ci` (if CI fails)
-
-## Context Loading Strategy
-
-**Base load (~17k tokens, always):**
-
-- `CONSTITUTION.md` (if exists — immutable project laws; no-op if absent)
-- `PROJECT.md` (if exists)
-- `ROADMAP.md` (when planning/working on features)
-- `STATE.md` (persistent memory)
-- `~/.sdd/LEARNINGS.md` (cross-project memory — at start of Specify, Plan, and resume; no-op if absent)
-
-**On-demand load:**
-
-- Codebase docs (when working in existing project)
-- `CONCERNS.md` (when planning features that touch flagged areas, estimating risk, or modifying fragile components)
-- `spec.md` (when working on specific feature)
-- `context.md` (when planning or implementing from user decisions)
-- `plan.md` (when implementing from plan)
-- `tasks.md` (when executing tasks)
-
-**Never load simultaneously:**
-
-- Multiple feature specs
-- Multiple architecture docs
-- Archived documents
-
-**Target:** <40k tokens total context
-**Reserve:** 160k+ tokens for work, reasoning, outputs
-**Monitoring:** Display status when >40k (see [context-limits.md](references/context-limits.md))
-
-**Note on CONSTITUTION.md absence:** If `CONSTITUTION.md` does not exist, treat as no-op on load. Prompt creation only during project initialization.
-
-## Commands
-
-**Project-level:**
-| Trigger Pattern | Reference |
-|----------------|-----------|
+| Trigger | Load |
+|---|---|
 | Initialize project, setup project | [project-init.md](references/project-init.md) |
 | Create constitution, project laws, coding standards | [constitution.md](references/constitution.md) |
 | Create roadmap, plan features | [roadmap.md](references/roadmap.md) |
-| Map codebase, analyze existing code | [brownfield-mapping.md](references/brownfield-mapping.md) |
-| Document concerns, find tech debt, what's risky | [concerns.md](references/concerns.md) |
+| Map codebase, analyze existing code | [brownfield-mapping.md](references/brownfield-mapping.md) + [code-analysis.md](references/code-analysis.md) |
+| Document concerns, tech debt, what's risky | [concerns.md](references/concerns.md) |
 | Record decision, log blocker, add todo | [state-management.md](references/state-management.md) |
-| Remember preference, learn this, always/never do X | [learnings.md](references/learnings.md) |
-| Pause work, end session | [session-handoff.md](references/session-handoff.md) |
-| Resume work, continue | [session-handoff.md](references/session-handoff.md) |
-
-**Feature-level (auto-sized):**
-| Trigger Pattern | Reference |
-|----------------|-----------|
+| Remember this, learn this, always/never do X | [learnings.md](references/learnings.md) |
+| Pause work, end session, resume, continue | [session-handoff.md](references/session-handoff.md) |
 | Specify feature, define requirements | [specify.md](references/specify.md) |
-| Discuss feature, capture context, how should this work | [discuss.md](references/discuss.md) |
+| Business context for non-technical stakeholders | [business.md](references/business.md) |
+| Discuss feature, gray areas, how should this work | [discuss.md](references/discuss.md) |
 | Plan feature, architecture | [plan.md](references/plan.md) |
-| Break into tasks, create tasks | [tasks.md](references/tasks.md) |
-| Implement task, build, execute | [implement.md](references/implement.md) |
-| Validate, verify, test, UAT, walk me through it | [validate.md](references/validate.md) |
-| Quick fix, quick task, small change, bug fix | [quick-mode.md](references/quick-mode.md) |
+| Break into tasks | [tasks.md](references/tasks.md) |
+| Implement task, build, execute | [implement.md](references/implement.md) + [coding-principles.md](references/coding-principles.md) |
+| Start/finish feature branch, open PR, merge | [branch-workflow.md](references/branch-workflow.md) |
+| Run parallel tasks with subagents | [parallel-execution.md](references/parallel-execution.md) |
+| Validate, verify, test, UAT | [validate.md](references/validate.md) |
+| Bug, failing test, unexpected behavior, debug | [debug.md](references/debug.md) |
+| PR comments, review feedback | [review-response.md](references/review-response.md) |
+| Quick fix, quick task, small change | [quick-mode.md](references/quick-mode.md) |
+| Why SDD, maturity levels, why this gate | [philosophy.md](references/philosophy.md) |
+
+## Activation Map (toolkit — load only when it fires)
+
+Quick mode is exempt from all activations.
+
+| Phase | Toolkit file | Fires when… |
+|---|---|---|
+| Pre-Specify / Post-Tasks | `toolkit/linear/instructions.md` | User confirms they use Linear and the MCP is reachable (Hook 1 pulls the issue; Hook 2 syncs after the Tasks gate). User says no → silence both for the session |
+| Specify | `toolkit/technical-design-doc-creator/instructions.md` | Formal TDD needed: new subsystem, cross-team dependency, infra change, public API contract. Load only the `sections/` files the TDD uses |
+| Specify | `toolkit/create-rfc/instructions.md` | A gray area has high-stakes direction trade-offs needing stakeholder sign-off |
+| Specify | `toolkit/skill-architect/instructions.md` | The thing being built IS an AI skill |
+| Plan | `toolkit/create-adr/instructions.md` | **Always** — one ADR per significant decision (library, structural pattern, data model, integration, security model, long-term trade-off). Also in Implement for emergent decisions |
+| Plan | `toolkit/c4-architect/instructions.md` | **Always** for Medium+ — user picks levels (default L1+L2), PNGs mandatory. Details in [plan.md](references/plan.md) |
+| Plan | `toolkit/frontend-component-architect/instructions.md` | Feature includes UI components |
+| Plan | `toolkit/duplication-hunter/instructions.md` | Brownfield or large codebase, before designing new abstractions |
+| Implement | `toolkit/code-quality-guardian/instructions.md` | Before every commit on Medium/Large features |
+| Implement | [security.md](references/security.md) | Change touches auth, external input, secrets, crypto, payments, PII, paths, shell/SQL |
+| Implement | `toolkit/best-practices/instructions.md` | Web project: HTTP, HTML, APIs, cookies, security headers |
+| Implement | `toolkit/accessibility/instructions.md` | User-facing UI is added or changed |
+| Implement | `toolkit/seo/instructions.md` | Public pages, routes, or metadata change |
+| Implement | `toolkit/gh-fix-ci/instructions.md` | CI fails after a push — do not start the next task until green |
+| Any | `toolkit/chrome-devtools/instructions.md` | Browser rendering, performance, network, or JS runtime issue |
+
+## Host Skill First
+
+If the host agent has one of these, use it **instead of** the sdd file (do not load both):
+
+| Need | Host skill/command examples | sdd fallback |
+|---|---|---|
+| Root-cause debugging | `systematic-debugging` | [debug.md](references/debug.md) |
+| Test-first implementation | `test-driven-development` | TDAD in [tasks.md](references/tasks.md) |
+| Evidence before "done" | `verification-before-completion` | Verifier mode in [implement.md](references/implement.md) |
+| Code review | `code-review`, `requesting-code-review` | `code-quality-guardian` |
+| Security review | `security-review` | [security.md](references/security.md) |
+| Responding to review | `receiving-code-review` | [review-response.md](references/review-response.md) |
+| Branch / worktree / finish | `using-git-worktrees`, `finishing-a-development-branch` | [branch-workflow.md](references/branch-workflow.md) |
+| Parallel subagents | `subagent-driven-development`, `dispatching-parallel-agents` | [parallel-execution.md](references/parallel-execution.md) |
+| Diagrams beyond C4 (flow, sequence, state, ER) | `archify`, `mermaid-studio` | inline Mermaid in `plan.md` |
+| Code exploration | `graphify`, `codenavi` | [code-analysis.md](references/code-analysis.md) |
+
+The host's skill replaces the sdd file's *method*, never the sdd *outputs*: specs, ADRs, C4 PNGs, `tasks.md`, and gates stay mandatory.
 
 ## Learning Loop
 
-The agent learns how the user works and carries it across projects. Full rules: [learnings.md](references/learnings.md).
+The agent learns how the user works and carries it across projects. Rules: [learnings.md](references/learnings.md) (load when writing).
 
-- **Read** `~/.sdd/LEARNINGS.md` at the start of Specify, Plan, and resume work.
+- **Read** `~/.sdd/LEARNINGS.md` at the start of Specify, Plan, and resume.
 - **Write** at every phase gate, whenever the user corrects the agent, and when a decision reflects a general preference.
-- Project-only learnings go to `STATE.md`; cross-project ones go to `~/.sdd/LEARNINGS.md`.
-- The Markdown file is always written. A memory MCP, if present, is used in addition.
+- Project-only → `STATE.md`. Cross-project → `~/.sdd/LEARNINGS.md`. The Markdown is always written; a memory MCP, if present, is used in addition.
 
 ## Companion Tools (use if available)
 
-These are optional. Detect them; never install or configure them yourself. If one is missing and would help, mention it once and record that you did in `STATE.md` under `Preferences`.
-
-| Tool | What it adds | How the skill uses it |
-|---|---|---|
-| **agentmemory** (MCP) | Automatic cross-session, cross-agent memory with search | Recall the feature topic + project before Specify/Plan; save the same entries written to `LEARNINGS.md` / `STATE.md` |
-| **Context7** (MCP) | Up-to-date library and framework docs | In Plan and Implement, query docs before choosing or using an external library or API — do not rely on memory for versions or signatures |
-| **RTK** (CLI) | Compresses shell command output, cutting token usage | Nothing to do — its hooks rewrite commands automatically. If output looks truncated or garbled, re-run with `rtk bypass <cmd>` |
-
-## Skill Integrations
-
-**All skills in this toolkit are always available.** `spec-driven` is the orchestrator — it activates each skill automatically based on what the project needs. No manual checking. No opt-in prompts. The right tool fires at the right moment.
-
-> **Quick mode** is exempt from all integrations. Zero ceremony.
-
-### Plan Phase — Always Produces
-
-The following are **mandatory outputs** of the Plan phase for Medium/Large/Complex features. They are not optional toolkit activations — they are built into the Plan phase process.
-
-| Output | What | How |
-|---|---|---|
-| **ADR(s)** | One ADR per significant architectural decision | Use `toolkit/create-adr/instructions.md` format. Placed in `docs/adr/`. Required before advancing to Tasks. |
-| **C4 Diagrams** | Architecture diagrams with user-selected levels | Agent validates with user: offer L1 (Context), L2 (Container), L3 (Component). Default: L1+L2. Sequence diagram is optional and always feature-scoped. Use `@toolkit/c4-architect` (`toolkit/c4-architect/instructions.md`). **PNG geração obrigatória** — toolkit não está completo sem os `.png` em `docs/architecture/`. |
-
-### Activation Map (Conditional)
-
-| Phase | Skill | Activates when… |
-|---|---|---|
-| Specify | `business.md` artefact | External stakeholder alignment is needed before spec work |
-| Specify | `create-rfc` | Gray area has high-stakes direction trade-offs requiring stakeholder alignment |
-| Specify | `technical-design-doc-creator` | Feature requires a formal TDD before planning begins |
-| Specify | `skill-architect` | The thing being built IS an AI skill |
-| Plan | `frontend-component-architect` | Feature includes UI components (React, Angular, Vue, etc.) |
-| Plan | `duplication-hunter` | Brownfield project or large codebase — always run before designing new abstractions |
-| Implement | `code-quality-guardian` | Before every commit on Medium/Large features |
-| Implement | `best-practices` | Web project — before every commit touching HTTP, HTML, APIs, cookies, or security |
-| Implement | `accessibility` | Feature introduces or modifies user-facing UI |
-| Implement | `seo` | Feature introduces or modifies public-facing pages, routes, or metadata |
-| Implement | `create-adr` | An unexpected architectural decision emerges during implementation |
-| Implement | `gh-fix-ci` | CI pipeline fails after a commit |
-| Any | `chrome-devtools` | Browser debugging, performance profiling, or rendering issue needs investigation |
-| Any | `mermaid-studio` | Diagram creation or rendering is needed (if installed) |
-| Any | `codenavi` | Code exploration in an existing repo is needed (if installed) |
-| Pre-Specify | `linear` (toolkit) | Usuário usa Linear E MCP está configurado — busca contexto do issue antes do spec |
-| Post-Tasks  | `linear` (toolkit) | Issue Linear foi fornecido — sincroniza spec+plan+tasks ao Linear após gate de Tasks |
-
----
-
-### Business Documentation → `business.md`
-
-**Phase:** Specify — optional artefact, created before `spec.md`, when external stakeholder alignment is needed.
-
-> **Note:** For most features, the Summary and System Process Context sections of `spec.md` are sufficient to communicate business context. The `business.md` artefact is reserved for Large/Complex features where non-technical stakeholders need to review and approve before spec work begins.
-
-Captures the feature from a business perspective: the *why* before the *how*. Written in non-technical language so any stakeholder can understand the full picture.
-
-**Template** (`.specs/features/[feature]/business.md`):
-```markdown
-# [Feature Name] — Business Document
-
-## Overview
-Non-technical description of what will be built.
-
-## Problem / Opportunity
-What motivated this feature? What pain does it solve or opportunity does it capture?
-
-## Personas / Impacted Users
-Who uses it? How do they use it today? How will they use it after?
-
-## User Journey (Start to Finish)
-Narrative walkthrough of the full journey: entry point → actions → expected outcome.
-May include a simplified flow diagram.
-
-## Success Criteria (Business)
-How will we know it worked? Metrics, KPIs, expected behaviours.
-
-## Out of Scope
-What is explicitly NOT included in this version.
-
-## Business Dependencies
-Other teams, processes, or systems that need to be aligned.
-```
-
----
-
-### Architecture Decisions → `create-adr`
-
-**Phase:** Plan (mandatory) + Implement (reactive).
-
-**In the Plan phase, ADR creation is not optional.** Every significant architectural decision made while producing `plan.md` must be recorded as an ADR before the phase gate closes. The agent records decisions inline — no delegation, no skipping.
-
-In the Implement phase, if an unexpected architectural decision emerges during a task, invoke `create-adr` before committing that task.
-
-A decision is "significant" if it involves: choice of library/framework, structural patterns, data model strategy, integration approach, security model, or trade-offs with long-term consequences. Trivial implementation choices (variable names, minor formatting) do not qualify.
-
-**Format:** `toolkit/create-adr/instructions.md`. ADRs are placed in `docs/adr/`.
-
-**Rule:** Do not advance from Plan to Tasks, or commit a task in Implement, if a significant architectural decision was made and not yet recorded as an ADR.
-
----
-
-### Architecture Diagrams → C4
-
-**Phase:** Plan (mandatory for Medium/Large/Complex).
-
-C4 diagrams are a required output of the Plan phase. Before generating, the agent validates with the user:
-
-```
-Which architecture diagrams do you want for this feature?
-1. Context (L1) — always recommended
-2. Container (L2) — for new services/APIs
-3. Component (L3) — for deep architectural features
-4. Sequence diagram — optional, scoped to [current feature name]
-
-Default: 1 + 2 (press Enter to confirm)
-```
-
-**The Sequence diagram is always feature-scoped** — it documents the specific flow triggered by this feature, not the entire system. It is generated after structural diagrams (L1/L2/L3) so the sequence has components to reference.
-
-**Toolkit:** `@toolkit/c4-architect` (`toolkit/c4-architect/instructions.md`). Diagrams are placed in `docs/architecture/`.
-
-**PNG geração é obrigatória.** Para cada diagrama:
-1. Gere o `.puml` via `c4_engine.py`
-2. Renderize com `plantuml -tpng docs/architecture/*.puml` (instale com `brew install graphviz plantuml` se ausente)
-3. Referencie o PNG no `plan.md` com `![Title](docs/architecture/<nome>.png)`
-
-O toolkit não está completo sem os `.png` confirmados em disco.
-
----
-
-### Technical Design Document → `technical-design-doc-creator`
-
-**Phase:** Specify — for features that require formal documentation before planning begins.
-
-Activate when the feature is complex enough to warrant a TDD: new subsystems, cross-team dependencies, infrastructure changes, or public API contracts. The TDD is produced before `plan.md` and feeds directly into it.
-
----
-
-### Stakeholder Alignment → `create-rfc`
-
-**Phase:** Specify — when the `discuss` workflow surfaces a high-stakes direction decision.
-
-Activate when a gray area involves choosing between multiple viable architectural or business directions with significant long-term trade-offs. Draft an RFC before finalizing the spec so the decision can be reviewed by stakeholders. Do not activate for every ambiguity — only when the stakes are high enough to warrant formal alignment.
-
----
-
-### Frontend Component Design → `frontend-component-architect`
-
-**Phase:** Plan — activated for features involving UI components.
-
-For any feature with React, Angular, Vue, or similar UI components, invoke `frontend-component-architect` before writing `plan.md`. This identifies responsibility overload, weak APIs, and missed reuse opportunities before implementation begins.
-
----
-
-### Code Reuse Analysis → `duplication-hunter`
-
-**Phase:** Plan — activated for brownfield projects or large codebases.
-
-Before designing new abstractions in an existing project, invoke `duplication-hunter` to surface existing utilities and shared extraction candidates. Prevents reinventing what already exists.
-
----
-
-### Code Review → `code-quality-guardian`
-
-**Phase:** Implement — before every commit on Medium/Large features.
-
-After implementing a task and before `git commit`, invoke `code-quality-guardian` to review changes for correctness, security, maintainability, and architecture fit. Findings are triaged as Critical (must fix before commit), Warning (address or justify), or Suggestion (optional).
-
----
-
-### Web Standards → `best-practices`
-
-**Phase:** Implement — before every commit in web projects.
-
-For web projects (any feature touching HTTP handlers, HTML, APIs, cookies, or security headers), run `best-practices` as a final gate before committing. Catches security misconfigurations, deprecated APIs, and compatibility issues.
-
----
-
-### Accessibility → `accessibility`
-
-**Phase:** Implement — activated when the feature introduces or modifies user-facing UI.
-
-For any feature with visible UI changes, invoke `accessibility` before closing the task. Audits against WCAG 2.1 AA: keyboard navigation, screen reader support, color contrast, ARIA roles, and focus management. Skip for internal tooling, APIs, or non-visual features.
-
----
-
-### SEO → `seo`
-
-**Phase:** Implement — activated when the feature introduces or modifies public-facing pages.
-
-When a feature adds or changes public routes, metadata, or page content, invoke `seo` before closing the task. Covers meta tags, structured data (JSON-LD), sitemap updates, and crawlability. Skip for authenticated-only features, APIs, and internal dashboards.
-
----
-
-### CI Failures → `gh-fix-ci`
-
-**Phase:** Implement — activated automatically when CI fails after a commit.
-
-When the pipeline breaks, invoke `gh-fix-ci` immediately to inspect logs and draft a targeted fix. Do not proceed to the next task until CI is green.
-
----
-
-### Browser Debugging → `chrome-devtools`
-
-**Phase:** Any — activated when a browser rendering, performance, or JavaScript issue needs investigation.
-
-For runtime errors, layout bugs, performance regressions, or network issues in a web project, delegate debugging to `chrome-devtools` before attempting blind fixes.
-
----
-
-### Skill Building → `skill-architect`
-
-**Phase:** Specify — only when the thing being built IS an AI skill.
-
-When the user is building or designing a new `SKILL.md`, delegate the skill design process to `skill-architect`. It guides through Discovery → Architecture → Craft → Validate → Deliver.
-
----
-
-### Diagrams → `mermaid-studio`
-
-Whenever the workflow requires creating or updating a diagram, check if `mermaid-studio` is installed. If it is, delegate diagram creation and rendering to it. If not, use inline mermaid code blocks.
-
----
-
-### Code Exploration → `codenavi`
-
-Whenever the workflow requires exploring an existing repository (brownfield mapping, pattern identification, dependency tracing), check if `codenavi` is installed. If it is, delegate code exploration to it. If not, use built-in code analysis tools (see [code-analysis.md](references/code-analysis.md)).
-
----
-
-### Linear Integration → `linear`
-
-**Phase:** Pre-Specify (pull) + Post-Tasks (push) — ambos condicionais ao usuário confirmar uso do Linear.
-
-> **Quick mode é isento.** Hooks do Linear não rodam em Quick mode.
-
-**Pre-Specify hook** — antes da fase Specify: verifica se o MCP está acessível via `get_authenticated_user`, pergunta ao usuário se tem um issue Linear para a feature e, se sim, busca o issue via `get_issue` para enriquecer a conversa de spec com requisitos e contexto já capturados. O ID do issue (e seu UUID interno) são armazenados por toda a sessão.
-
-**Post-Tasks hook** — após aprovação do `tasks.md`: lê `spec.md`, `plan.md` e `tasks.md` e então:
-1. Atualiza a descrição do issue pai no Linear com resumo estruturado (Objetivo, Fluxo resumido, Requisitos principais, Decisões de arquitetura, NFRs, Fora de escopo, Ordem de execução).
-2. Cria um sub-issue por task do `tasks.md`, com título `[TASK-ID] — [task title]` e descrição populada com os campos What / Where / Done-when da task.
-3. Atualiza a tabela Sub-issues do issue pai com links para cada sub-issue criado.
-
-**Formato:** `toolkit/linear/instructions.md`
-
-**Skip conditions:**
-- Usuário diz "não" ao Linear → ambos os hooks silenciados para toda a sessão.
-- MCP não configurado → informa o usuário com link de setup, skipa ambos os hooks, SDD continua normalmente.
-- Tasks phase foi skipada (escopo pequeno) → Post-Tasks hook não se aplica; somente o Pre-Specify hook pode ter rodado.
+Optional. Detect them; never install or configure them yourself. If one is missing and would help, mention it once and note that in `STATE.md` under `Preferences`.
+
+| Tool | How the skill uses it |
+|---|---|
+| **agentmemory** (MCP) | Recall feature topic + project before Specify/Plan; save the same entries written to `LEARNINGS.md` / `STATE.md` |
+| **Context7** (MCP) | Plan and Implement: query library docs before choosing or using an external API — never trust memory for versions or signatures |
+| **RTK** (CLI) | Nothing to do — hooks compress command output. Output truncated or garbled → re-run with `rtk bypass <cmd>` |
+| **graphify** (skill/CLI) | Brownfield mapping and "what calls X": query the graph before broad file reads |
+| **PR/CI watcher** (e.g. `pr-watch` MCP, `gh run watch`) | After push in [branch-workflow.md](references/branch-workflow.md): wait on CI instead of polling; on failure, `gh-fix-ci` |
 
 ## Knowledge Verification Chain
 
-When researching, designing, or making any technical decision, follow this chain in strict order. Never skip steps.
+For any technical decision, in strict order:
 
-```
-Step 1: Codebase → check existing code, conventions, and patterns already in use
-Step 2: Project docs → README, docs/, inline comments, .specs/codebase/
-Step 3: Context7 MCP → resolve library ID, then query for current API/patterns
-Step 4: Web search → official docs, reputable sources, community patterns
-Step 5: Flag as uncertain → "I'm not certain about X — here's my reasoning, but verify"
-```
+1. **Codebase** — existing code, conventions, patterns
+2. **Project docs** — README, `docs/`, `.specs/codebase/`
+3. **Context7 MCP** — resolve library ID, then query current API/patterns
+4. **Web search** — official docs, reputable sources
+5. **Flag as uncertain** — "I'm not certain about X — here's my reasoning, but verify"
 
-**Rules:**
-
-- Never skip to Step 5 if Steps 1-4 are available
-- Step 5 is ALWAYS flagged as uncertain — never presented as fact
-- **NEVER assume or fabricate.** If you cannot find an answer, say "I don't know" or "I couldn't find documentation for this". Inventing APIs, patterns, or behaviors causes cascading failures across plan → tasks → implementation. Uncertainty is always preferable to fabrication.
-
-## Output Behavior
-
-**Model guidance:** After completing lightweight tasks (validation, state updates, session handoff), naturally mention once that such tasks work well with faster/cheaper models. Track in STATE.md under `Preferences` to avoid repeating. For heavy tasks (brownfield mapping, complex design), briefly note the reasoning requirements before starting.
-
-Be conversational, not robotic. Don't interrupt workflow—add as a natural closing note. Skip if user seems experienced or has already acknowledged the tip.
-
-## Code Analysis
-
-Use available tools with graceful degradation. See [code-analysis.md](references/code-analysis.md).
+Never skip to step 5 when 1–4 are available. **Never assume or fabricate** — inventing APIs or behavior cascades through plan → tasks → code. "I don't know" beats a guess.

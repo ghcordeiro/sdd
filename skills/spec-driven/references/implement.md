@@ -10,6 +10,14 @@ This is where code gets written. Every task follows the same cycle: plan → imp
 
 ---
 
+## Before the First Task (Medium/Large/Complex)
+
+Isolate the work on a branch or worktree and confirm a green baseline — see [branch-workflow.md](branch-workflow.md). When all tasks are done, finish through the same file.
+
+Independent tasks marked "Parallel OK" in `tasks.md` may run in subagents — see [parallel-execution.md](parallel-execution.md).
+
+---
+
 ## MANDATORY: Before Starting Any Implementation
 
 **Read [coding-principles.md](coding-principles.md) and state:**
@@ -79,12 +87,20 @@ Switch mode: load the WHEN/THEN acceptance criteria from `spec.md` for this user
 
 Confirm each AC from `spec.md` is traceable to the changes in this commit.
 
+**Evidence before claims.** Every PASS needs proof produced in this session: the command you ran and its output (test run, build, curl, screenshot). "Should work", "looks right", or a subagent's report are not evidence. No proof → the criterion is not PASS. Never say done, fixed, or passing without it.
+
+**Conditional checks** (load only when the trigger applies):
+- Change touches auth, external input, secrets, crypto, payments, PII, paths, or shell/SQL execution → [security.md](security.md)
+- A bug or failing test shows up → [debug.md](debug.md) — root cause before fix
+
 ### 6. Self-Check
 
 Ask: "Would senior engineer flag this as overcomplicated?"
 
 - Yes → Simplify before continuing
 - No → Proceed to git commit
+
+Then ask of every changed line: **"Is this line needed for the task?"** Delete what is not — unrequested options, wrappers, "for later" code, defensive checks for impossible cases.
 
 ### 7. Atomic Git Commit
 
@@ -155,6 +171,7 @@ for reuse across multiple endpoints.
 - Description references what was DONE, not what was planned
 - Include only files listed in the task — never sneak in "while I'm here" changes
 - If tests are part of the task, include them in the same commit
+- Body (when needed) explains **why**, not what — the diff already shows what. Keep the subject ≤72 chars
 
 ### 8. Scope Guardrail
 
@@ -214,3 +231,4 @@ Mark task complete in `tasks.md`. Update requirement traceability in `spec.md` i
 - **Commit per task** — Clean git history enables bisect and rollback
 - **Never "while I'm here"** — Scope creep during implementation is the #1 quality killer
 - **Learn from mistakes** — If something goes wrong, add a Lesson Learned to STATE.md
+- **Review comments are claims** — When PR/reviewer feedback arrives, follow [review-response.md](review-response.md)

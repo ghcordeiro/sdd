@@ -41,6 +41,11 @@ export function installSkill(
   try {
     mkdirSync(baseDir, { recursive: true });
     cpSync(skill.dir, destination, { recursive: true, force: true });
+    // Cursor only reads rule files from <project>/.cursor/rules — global rules are not file-based.
+    const rulesSrc = join(skill.dir, 'cursor-rules');
+    if (agent.localRulesDir && mode === 'local' && existsSync(rulesSrc)) {
+      cpSync(rulesSrc, join(cwd, agent.localRulesDir), { recursive: true, force: true });
+    }
     return { skill: skill.id, agent: agent.id, destination, success: true };
   } catch (err) {
     return {

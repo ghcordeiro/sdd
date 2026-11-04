@@ -73,7 +73,7 @@ What MUST be done before this task can start?
 
 ### 4. Create Execution Plan
 
-Group tasks into phases. Identify what can run in parallel.
+Group tasks into phases. Identify what can run in parallel. Mark a phase "Parallel OK" only when its tasks share no files, no dependencies, and no mutable state — those can later run in subagents ([parallel-execution.md](parallel-execution.md)).
 
 ### 5. ASK About MCPs and Skills
 

@@ -59,6 +59,23 @@ Use **WHEN/THEN/SHALL** format - it's precise and testable:
 
 ---
 
+### 5. Spec Readiness Check (Large/Complex)
+
+Before asking for the phase-gate approval, test whether a builder could plan from `spec.md` alone. If the host agent can dispatch subagents, send a fresh subagent only the spec file path with this prompt:
+
+> "You will plan and build this feature with no access to the author. Read the spec. List every question you would need answered before planning, ranked by how much the answer changes what gets built. Do not suggest solutions."
+
+No subagent support → re-read the spec yourself as that builder.
+
+Sort the questions into three piles:
+- **Answered already** in the conversation or the repo → write the answer into `spec.md`.
+- **Minor** (a sensible builder could settle it) → settle it, mark it in the spec as *agent's call*.
+- **User's** (only the user can answer, and it changes what gets built) → ask them in ONE message, most important first.
+
+Update the spec, then present it for approval with the list of *agent's calls* so the user can check them.
+
+---
+
 ## Template: `.specs/features/[feature]/spec.md`
 
 ```markdown
