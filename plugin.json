@@ -1,0 +1,28 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "spec-driven",
+  "version": "1.2.0",
+  "description": "Spec-Driven Development toolkit: drive features through Specify, Plan, Tasks and Implement with ADRs, C4 diagrams, RFCs, TDDs and code review wired in.",
+  "author": {
+    "name": "Guilherme Cordeiro",
+    "url": "https://github.com/ghcordeiro"
+  },
+  "homepage": "https://github.com/ghcordeiro/sdd#readme",
+  "repository": "https://github.com/ghcordeiro/sdd",
+  "license": "CC-BY-4.0",
+  "keywords": [
+    "spec-driven",
+    "sdd",
+    "specify",
+    "spec",
+    "plan",
+    "tasks",
+    "implement",
+    "adr",
+    "c4",
+    "rfc",
+    "tdd",
+    "architecture",
+    "code review"
+  ]
+}

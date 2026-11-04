@@ -4,6 +4,10 @@ import { render } from 'ink';
 import React from 'react';
 import { App } from './app.js';
 import { installCommand } from './commands/install.js';
+import { AGENTS } from '@ghcordeiro/core';
+
+const AGENT_NAMES = AGENTS.map((a) => a.name).join(', ');
+const AGENT_IDS = AGENTS.map((a) => a.id).join(', ');
 
 const program = new Command();
 const CLI_VERSION = JSON.parse(
@@ -12,13 +16,13 @@ const CLI_VERSION = JSON.parse(
 
 program
   .name('sdd')
-  .description('Install Spec-Driven Development skills for Claude Code, Cursor, GitHub Copilot, Gemini CLI, and Antigravity')
+  .description(`Install Spec-Driven Development skills for ${AGENT_NAMES}`)
   .version(CLI_VERSION);
 
 program
   .command('install', { isDefault: true })
   .description('Interactively select and install skills')
-  .option('-a, --agent <agent>', 'Target agent (claude-code, cursor, github-copilot, gemini-cli, antigravity)')
+  .option('-a, --agent <agent>', `Target agent (${AGENT_IDS})`)
   .option('-s, --skills <skills>', 'Comma-separated list of skill IDs to install')
   .option('--global', 'Install globally (default: global)')
   .option('--local', 'Install in current project directory')

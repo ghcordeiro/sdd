@@ -1,5 +1,5 @@
 import { cpSync, mkdirSync, existsSync } from 'fs';
-import { join, resolve, normalize } from 'path';
+import { join, resolve, sep } from 'path';
 import type { AgentDefinition } from './agents.js';
 import type { SkillEntry } from './catalog.js';
 
@@ -14,9 +14,8 @@ export interface InstallResult {
 }
 
 function isPathSafe(base: string, target: string): boolean {
-  const resolved = resolve(target);
-  const normalizedBase = normalize(base);
-  return resolved.startsWith(normalizedBase);
+  // trailing sep so "/a/skills-evil" does not pass as inside "/a/skills"
+  return resolve(target).startsWith(resolve(base) + sep);
 }
 
 export function installSkill(

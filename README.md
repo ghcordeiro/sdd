@@ -4,7 +4,7 @@
 
 **Spec-Driven Development toolkit for AI agents.**
 
-Install battle-tested SDD skills into Claude Code, Cursor, GitHub Copilot, Gemini CLI, and Antigravity — in seconds.
+Install battle-tested SDD skills into Claude Code, Cursor, GitHub Copilot, Gemini CLI, Antigravity, and Kiro — in seconds.
 
 [![npm version](https://img.shields.io/npm/v/@ghcordeiro/sdd?color=crimson&label=npm)](https://www.npmjs.com/package/@ghcordeiro/sdd)
 [![CI](https://github.com/ghcordeiro/sdd/actions/workflows/ci.yml/badge.svg)](https://github.com/ghcordeiro/sdd/actions/workflows/ci.yml)
@@ -53,6 +53,7 @@ The interactive CLI walks you through three steps:
     ○  GitHub Copilot
     ○  Gemini CLI
     ○  Antigravity
+    ○  Kiro
 
   ↑↓ navigate  ·  space toggle  ·  a select all  ·  enter confirm
 
@@ -110,10 +111,45 @@ npx @ghcordeiro/sdd --help
 | Agent | ID | Global install path |
 |---|---|---|
 | [Claude Code](https://claude.ai/code) | `claude-code` | `~/.claude/skills/` |
-| [Cursor](https://cursor.sh) | `cursor` | `~/.cursor/rules/` |
+| [Cursor](https://cursor.sh) | `cursor` | `~/.cursor/skills/` |
 | [GitHub Copilot](https://github.com/features/copilot) | `github-copilot` | `~/.github-copilot/skills/` |
 | [Gemini CLI](https://github.com/google-gemini/gemini-cli) | `gemini-cli` | `~/.gemini/skills/` |
 | [Antigravity](https://antigravity.dev) | `antigravity` | `~/.antigravity/skills/` |
+| [Kiro](https://kiro.dev) | `kiro` | `~/.kiro/skills/` |
+
+### Kiro Power (install from the repo link)
+
+This repository is also a [Kiro Power](https://kiro.dev/docs/powers/) — no CLI needed:
+
+1. Open the **Powers** panel in Kiro
+2. **Add Custom Power** → **Import power from GitHub**
+3. Paste `https://github.com/ghcordeiro/sdd` and click **Install**
+
+The power manifest is [`plugin.json`](plugin.json) at the repo root; the skill lives in [`skills/spec-driven/`](skills/spec-driven/), and [`mcp.json`](mcp.json) adds the Context7 MCP server.
+
+---
+
+## Learning & Companion Tools
+
+### Cross-project learnings
+
+`spec-driven` learns how you work and carries it across projects. It keeps a plain Markdown file at `~/.sdd/LEARNINGS.md` with your preferences, stack and code patterns, mistakes to avoid, and an index of your projects.
+
+- **Read** at the start of Specify, Plan, and when resuming work.
+- **Written** at every phase gate, whenever you correct the agent, and when a decision reflects a general preference.
+- Project-only memory stays in `.specs/project/STATE.md`.
+
+The file needs no extra tooling, and it never stores secrets or credentials. Edit or delete entries any time.
+
+### Recommended companions
+
+`sdd` detects these and shows how to install them. It never installs or configures them for you. The skill uses each one when it is available.
+
+| Tool | What it adds | Install |
+|---|---|---|
+| [agentmemory](https://www.npmjs.com/package/@agentmemory/agentmemory) | Automatic cross-session memory; the skill recalls and saves to it in addition to `LEARNINGS.md` | `npm i -g @agentmemory/agentmemory && agentmemory connect` |
+| [RTK](https://github.com/rtk-ai/rtk) | Compresses command output to cut token usage | `brew install rtk && rtk init -g` (see `rtk init --help` for other agents) |
+| [Context7](https://context7.com) | Up-to-date library docs via MCP, used in Plan and Implement | [Setup per client](https://context7.com/docs/resources/all-clients) — already included in the Kiro Power |
 
 ---
 
@@ -123,56 +159,56 @@ npx @ghcordeiro/sdd --help
 
 | Skill | Description |
 |---|---|
-| [`spec-driven`](packages/skills-catalog/spec-driven/) | Full project & feature planning with 4 adaptive phases: **Specify → Plan → Tasks → Implement**. Orchestrates all other skills. |
-| [`c4-architect`](packages/skills-catalog/spec-driven/toolkit/c4-architect/) | Generates C4 architecture diagrams (Context, Container, Component, Sequence) from source code using PlantUML. |
-| [`frontend-component-architect`](packages/skills-catalog/spec-driven/toolkit/frontend-component-architect/) | Evaluates React/Angular component boundaries, API design quality, state ownership, and reuse opportunities. |
-| [`technical-design-doc-creator`](packages/skills-catalog/spec-driven/toolkit/technical-design-doc-creator/) | Creates comprehensive Technical Design Documents (TDDs) for implementation planning. |
+| [`spec-driven`](skills/spec-driven/) | Full project & feature planning with 4 adaptive phases: **Specify → Plan → Tasks → Implement**. Orchestrates all other skills. |
+| [`c4-architect`](skills/spec-driven/toolkit/c4-architect/) | Generates C4 architecture diagrams (Context, Container, Component, Sequence) from source code using PlantUML. |
+| [`frontend-component-architect`](skills/spec-driven/toolkit/frontend-component-architect/) | Evaluates React/Angular component boundaries, API design quality, state ownership, and reuse opportunities. |
+| [`technical-design-doc-creator`](skills/spec-driven/toolkit/technical-design-doc-creator/) | Creates comprehensive Technical Design Documents (TDDs) for implementation planning. |
 
 ### 📋 Decision & Documentation
 
 | Skill | Description |
 |---|---|
-| [`create-adr`](packages/skills-catalog/spec-driven/toolkit/create-adr/) | Creates immutable Architecture Decision Records (ADRs) in MADR, Nygard, or Y-Statement format. |
-| [`create-rfc`](packages/skills-catalog/spec-driven/toolkit/create-rfc/) | Creates structured Request for Comments (RFCs) to drive stakeholder alignment before committing to a direction. |
+| [`create-adr`](skills/spec-driven/toolkit/create-adr/) | Creates immutable Architecture Decision Records (ADRs) in MADR, Nygard, or Y-Statement format. |
+| [`create-rfc`](skills/spec-driven/toolkit/create-rfc/) | Creates structured Request for Comments (RFCs) to drive stakeholder alignment before committing to a direction. |
 
 ### 🔍 Code Quality
 
 | Skill | Description |
 |---|---|
-| [`code-quality-guardian`](packages/skills-catalog/spec-driven/toolkit/code-quality-guardian/) | Reviews code for correctness, security, maintainability, and architecture fit — findings triaged as Critical / Warning / Suggestion. |
-| [`duplication-hunter`](packages/skills-catalog/spec-driven/toolkit/duplication-hunter/) | Detects exact and semantic code duplication and recommends low-risk shared abstractions with migration steps. |
-| [`best-practices`](packages/skills-catalog/spec-driven/toolkit/best-practices/) | Audits web projects for security misconfigurations, deprecated APIs, and modern code quality standards. |
+| [`code-quality-guardian`](skills/spec-driven/toolkit/code-quality-guardian/) | Reviews code for correctness, security, maintainability, and architecture fit — findings triaged as Critical / Warning / Suggestion. |
+| [`duplication-hunter`](skills/spec-driven/toolkit/duplication-hunter/) | Detects exact and semantic code duplication and recommends low-risk shared abstractions with migration steps. |
+| [`best-practices`](skills/spec-driven/toolkit/best-practices/) | Audits web projects for security misconfigurations, deprecated APIs, and modern code quality standards. |
 
 ### 🌐 Web & Frontend
 
 | Skill | Description |
 |---|---|
-| [`seo`](packages/skills-catalog/spec-driven/toolkit/seo/) | Optimizes pages for search visibility — meta tags, structured data (JSON-LD), sitemaps, and crawlability. |
-| [`accessibility`](packages/skills-catalog/spec-driven/toolkit/accessibility/) | Audits and improves web accessibility following WCAG 2.1 AA guidelines. |
-| [`chrome-devtools`](packages/skills-catalog/spec-driven/toolkit/chrome-devtools/) | Browser debugging, performance profiling, and automation via Chrome DevTools. |
+| [`seo`](skills/spec-driven/toolkit/seo/) | Optimizes pages for search visibility — meta tags, structured data (JSON-LD), sitemaps, and crawlability. |
+| [`accessibility`](skills/spec-driven/toolkit/accessibility/) | Audits and improves web accessibility following WCAG 2.1 AA guidelines. |
+| [`chrome-devtools`](skills/spec-driven/toolkit/chrome-devtools/) | Browser debugging, performance profiling, and automation via Chrome DevTools. |
 
 ### ⚙️ Tooling & Automation
 
 | Skill | Description |
 |---|---|
-| [`gh-fix-ci`](packages/skills-catalog/spec-driven/toolkit/gh-fix-ci/) | Diagnoses and fixes failing GitHub Actions CI checks by inspecting logs and drafting targeted fixes. |
-| [`cursor-subagent-creator`](packages/skills-catalog/spec-driven/toolkit/cursor-subagent-creator/) | Creates Cursor-specific AI subagents with isolated context for complex multi-step workflows. |
-| [`skill-architect`](packages/skills-catalog/spec-driven/toolkit/skill-architect/) | Expert guide for designing and building new AI agent skills from scratch. |
+| [`gh-fix-ci`](skills/spec-driven/toolkit/gh-fix-ci/) | Diagnoses and fixes failing GitHub Actions CI checks by inspecting logs and drafting targeted fixes. |
+| [`cursor-subagent-creator`](skills/spec-driven/toolkit/cursor-subagent-creator/) | Creates Cursor-specific AI subagents with isolated context for complex multi-step workflows. |
+| [`skill-architect`](skills/spec-driven/toolkit/skill-architect/) | Expert guide for designing and building new AI agent skills from scratch. |
 
 ---
 
 ## Repository Structure
 
 ```
-ai-skills/
+sdd/
+├── plugin.json               # Kiro Power manifest (Agent Plugins format)
+├── mcp.json                  # Kiro Power MCP servers (Context7)
+├── skills/
+│   └── spec-driven/          # the skill — SKILL.md + embedded toolkit/
 ├── packages/
-│   ├── cli/                  # @ghcordeiro/sdd — CLI publicado no npm
-│   │   ├── src/              # TypeScript source (Ink + Commander)
-│   │   └── build.mjs         # esbuild bundler script
-│   └── skills-catalog/       # one directory per skill
-│       ├── spec-driven/
-│       ├── create-adr/
-│       └── ...
+│   └── cli/                  # @ghcordeiro/sdd — CLI publicado no npm
+│       ├── src/              # TypeScript source (Ink + Commander)
+│       └── build.mjs         # esbuild bundler script
 ├── libs/
 │   └── core/                 # shared logic (catalog, installer, agent definitions)
 ├── .github/workflows/
@@ -188,7 +224,7 @@ ai-skills/
 
 ### Adding a new skill
 
-1. Create a new directory under `packages/skills-catalog/<skill-name>/`
+1. Create a new directory under `skills/<skill-name>/`
 2. Add a `SKILL.md` with YAML frontmatter (`name`, `description`, `license`)
 3. Open a pull request — the skill is automatically included in the next release
 
@@ -248,20 +284,20 @@ This project's `spec-driven` skill is inspired by prior work from the community 
 
 | Skill | Credits | GitHub source | GitHub local | License |
 |---|---|---|---|---|
-| `accessibility` | External (`web-quality-skills`), adapted locally | [web-accessibility upstream](https://github.com/tech-leads-club/agent-skills/tree/main/packages/skills-catalog/skills/(quality)/web-accessibility) | [sdd/accessibility](https://github.com/ghcordeiro/sdd/tree/main/packages/skills-catalog/spec-driven/toolkit/accessibility) | `MIT` |
-| `best-practices` | External (`web-quality-skills`), adapted locally | [web-best-practices upstream](https://github.com/tech-leads-club/agent-skills/tree/main/packages/skills-catalog/skills/(quality)/web-best-practices) | [sdd/best-practices](https://github.com/ghcordeiro/sdd/tree/main/packages/skills-catalog/spec-driven/toolkit/best-practices) | `MIT` |
-| `c4-architect` | Local author (`ghcordeiro`) | — | [sdd/c4-architect](https://github.com/ghcordeiro/sdd/tree/main/packages/skills-catalog/spec-driven/toolkit/c4-architect) | `CC-BY-4.0` |
-| `chrome-devtools` | External (upstream match), adapted locally | [chrome-devtools upstream](https://github.com/tech-leads-club/agent-skills/tree/main/packages/skills-catalog/skills/(tooling)/chrome-devtools) | [sdd/chrome-devtools](https://github.com/ghcordeiro/sdd/tree/main/packages/skills-catalog/spec-driven/toolkit/chrome-devtools) | `MIT` |
-| `code-quality-guardian` | Credit undeclared in metadata; maintained locally | — | [sdd/code-quality-guardian](https://github.com/ghcordeiro/sdd/tree/main/packages/skills-catalog/spec-driven/toolkit/code-quality-guardian) | `MIT` |
-| `create-adr` | External (Tech Leads Club), adapted locally | [create-adr upstream](https://github.com/tech-leads-club/agent-skills/tree/main/packages/skills-catalog/skills/(creation)/create-adr) | [sdd/create-adr](https://github.com/ghcordeiro/sdd/tree/main/packages/skills-catalog/spec-driven/toolkit/create-adr) | `CC-BY-4.0` |
-| `create-rfc` | External (Tech Leads Club), adapted locally | [create-rfc upstream](https://github.com/tech-leads-club/agent-skills/tree/main/packages/skills-catalog/skills/(creation)/create-rfc) | [sdd/create-rfc](https://github.com/ghcordeiro/sdd/tree/main/packages/skills-catalog/spec-driven/toolkit/create-rfc) | `CC-BY-4.0` |
-| `cursor-subagent-creator` | External (Tech Leads Club), adapted locally | [cursor-subagent-creator upstream](https://github.com/tech-leads-club/agent-skills/tree/main/packages/skills-catalog/skills/(creation)/cursor-subagent-creator) | [sdd/cursor-subagent-creator](https://github.com/ghcordeiro/sdd/tree/main/packages/skills-catalog/spec-driven/toolkit/cursor-subagent-creator) | `CC-BY-4.0` |
-| `duplication-hunter` | Local author (`ghcordeiro`) | — | [sdd/duplication-hunter](https://github.com/ghcordeiro/sdd/tree/main/packages/skills-catalog/spec-driven/toolkit/duplication-hunter) | `CC-BY-4.0` |
-| `frontend-component-architect` | Local author (`ghcordeiro`) | — | [sdd/frontend-component-architect](https://github.com/ghcordeiro/sdd/tree/main/packages/skills-catalog/spec-driven/toolkit/frontend-component-architect) | `CC-BY-4.0` |
-| `gh-fix-ci` | External (Tech Leads Club), adapted locally | [gh-fix-ci upstream](https://github.com/tech-leads-club/agent-skills/tree/main/packages/skills-catalog/skills/(tooling)/gh-fix-ci) | [sdd/gh-fix-ci](https://github.com/ghcordeiro/sdd/tree/main/packages/skills-catalog/spec-driven/toolkit/gh-fix-ci) | `Apache-2.0` |
-| `seo` | External (`web-quality-skills`), adapted locally | [seo upstream](https://github.com/tech-leads-club/agent-skills/tree/main/packages/skills-catalog/skills/(quality)/seo) | [sdd/seo](https://github.com/ghcordeiro/sdd/tree/main/packages/skills-catalog/spec-driven/toolkit/seo) | `MIT` |
-| `skill-architect` | External (Felipe Rodrigues / Tech Leads Club), adapted locally | [skill-architect upstream](https://github.com/tech-leads-club/agent-skills/tree/main/packages/skills-catalog/skills/(creation)/skill-architect) | [sdd/skill-architect](https://github.com/ghcordeiro/sdd/tree/main/packages/skills-catalog/spec-driven/toolkit/skill-architect) | `CC-BY-4.0` |
-| `technical-design-doc-creator` | External (Tech Leads Club), adapted locally | [create-technical-design-doc upstream](https://github.com/tech-leads-club/agent-skills/tree/main/packages/skills-catalog/skills/(creation)/create-technical-design-doc) | [sdd/technical-design-doc-creator](https://github.com/ghcordeiro/sdd/tree/main/packages/skills-catalog/spec-driven/toolkit/technical-design-doc-creator) | `CC-BY-4.0` |
+| `accessibility` | External (`web-quality-skills`), adapted locally | [web-accessibility upstream](https://github.com/tech-leads-club/agent-skills/tree/main/packages/skills-catalog/skills/(quality)/web-accessibility) | [sdd/accessibility](https://github.com/ghcordeiro/sdd/tree/main/skills/spec-driven/toolkit/accessibility) | `MIT` |
+| `best-practices` | External (`web-quality-skills`), adapted locally | [web-best-practices upstream](https://github.com/tech-leads-club/agent-skills/tree/main/packages/skills-catalog/skills/(quality)/web-best-practices) | [sdd/best-practices](https://github.com/ghcordeiro/sdd/tree/main/skills/spec-driven/toolkit/best-practices) | `MIT` |
+| `c4-architect` | Local author (`ghcordeiro`) | — | [sdd/c4-architect](https://github.com/ghcordeiro/sdd/tree/main/skills/spec-driven/toolkit/c4-architect) | `CC-BY-4.0` |
+| `chrome-devtools` | External (upstream match), adapted locally | [chrome-devtools upstream](https://github.com/tech-leads-club/agent-skills/tree/main/packages/skills-catalog/skills/(tooling)/chrome-devtools) | [sdd/chrome-devtools](https://github.com/ghcordeiro/sdd/tree/main/skills/spec-driven/toolkit/chrome-devtools) | `MIT` |
+| `code-quality-guardian` | Credit undeclared in metadata; maintained locally | — | [sdd/code-quality-guardian](https://github.com/ghcordeiro/sdd/tree/main/skills/spec-driven/toolkit/code-quality-guardian) | `MIT` |
+| `create-adr` | External (Tech Leads Club), adapted locally | [create-adr upstream](https://github.com/tech-leads-club/agent-skills/tree/main/packages/skills-catalog/skills/(creation)/create-adr) | [sdd/create-adr](https://github.com/ghcordeiro/sdd/tree/main/skills/spec-driven/toolkit/create-adr) | `CC-BY-4.0` |
+| `create-rfc` | External (Tech Leads Club), adapted locally | [create-rfc upstream](https://github.com/tech-leads-club/agent-skills/tree/main/packages/skills-catalog/skills/(creation)/create-rfc) | [sdd/create-rfc](https://github.com/ghcordeiro/sdd/tree/main/skills/spec-driven/toolkit/create-rfc) | `CC-BY-4.0` |
+| `cursor-subagent-creator` | External (Tech Leads Club), adapted locally | [cursor-subagent-creator upstream](https://github.com/tech-leads-club/agent-skills/tree/main/packages/skills-catalog/skills/(creation)/cursor-subagent-creator) | [sdd/cursor-subagent-creator](https://github.com/ghcordeiro/sdd/tree/main/skills/spec-driven/toolkit/cursor-subagent-creator) | `CC-BY-4.0` |
+| `duplication-hunter` | Local author (`ghcordeiro`) | — | [sdd/duplication-hunter](https://github.com/ghcordeiro/sdd/tree/main/skills/spec-driven/toolkit/duplication-hunter) | `CC-BY-4.0` |
+| `frontend-component-architect` | Local author (`ghcordeiro`) | — | [sdd/frontend-component-architect](https://github.com/ghcordeiro/sdd/tree/main/skills/spec-driven/toolkit/frontend-component-architect) | `CC-BY-4.0` |
+| `gh-fix-ci` | External (Tech Leads Club), adapted locally | [gh-fix-ci upstream](https://github.com/tech-leads-club/agent-skills/tree/main/packages/skills-catalog/skills/(tooling)/gh-fix-ci) | [sdd/gh-fix-ci](https://github.com/ghcordeiro/sdd/tree/main/skills/spec-driven/toolkit/gh-fix-ci) | `Apache-2.0` |
+| `seo` | External (`web-quality-skills`), adapted locally | [seo upstream](https://github.com/tech-leads-club/agent-skills/tree/main/packages/skills-catalog/skills/(quality)/seo) | [sdd/seo](https://github.com/ghcordeiro/sdd/tree/main/skills/spec-driven/toolkit/seo) | `MIT` |
+| `skill-architect` | External (Felipe Rodrigues / Tech Leads Club), adapted locally | [skill-architect upstream](https://github.com/tech-leads-club/agent-skills/tree/main/packages/skills-catalog/skills/(creation)/skill-architect) | [sdd/skill-architect](https://github.com/ghcordeiro/sdd/tree/main/skills/spec-driven/toolkit/skill-architect) | `CC-BY-4.0` |
+| `technical-design-doc-creator` | External (Tech Leads Club), adapted locally | [create-technical-design-doc upstream](https://github.com/tech-leads-club/agent-skills/tree/main/packages/skills-catalog/skills/(creation)/create-technical-design-doc) | [sdd/technical-design-doc-creator](https://github.com/ghcordeiro/sdd/tree/main/skills/spec-driven/toolkit/technical-design-doc-creator) | `CC-BY-4.0` |
 
 ---
 

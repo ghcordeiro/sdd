@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Text, useApp } from 'ink';
-import { loadCatalog, installSkill, type AgentDefinition, type InstallMode } from '@ghcordeiro/core';
+import { detectCompanions, loadCatalog, installSkill, type AgentDefinition, type InstallMode } from '@ghcordeiro/core';
 import { AgentSelector } from './components/AgentSelector.js';
 import { ModeSelector } from './components/ModeSelector.js';
 import { ConfirmStep } from './components/ConfirmStep.js';
@@ -148,6 +148,29 @@ export function App() {
         <Box paddingLeft={2}>
           <Text color="cyan">Tip  </Text>
           <Text dimColor>/spec-driven works best at the start of a new task.</Text>
+        </Box>
+
+        {/* Recommended companions — detected only, never installed */}
+        <Box paddingLeft={2} marginTop={1}>
+          <Text bold>Recommended companions</Text>
+        </Box>
+        <Box flexDirection="column" paddingLeft={2}>
+          {detectCompanions().map((c) => (
+            <Box key={c.id} flexDirection="column">
+              <Box>
+                <Text color={c.installed ? 'green' : undefined} dimColor={!c.installed}>
+                  {c.installed ? '✓ ' : '○ '}
+                </Text>
+                <Text>{c.name}</Text>
+                <Text dimColor>  {c.purpose}</Text>
+              </Box>
+              {!c.installed && (
+                <Box paddingLeft={4}>
+                  <Text color="cyan">{c.install}</Text>
+                </Box>
+              )}
+            </Box>
+          ))}
         </Box>
 
         {/* Installed paths */}

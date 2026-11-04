@@ -4,7 +4,7 @@ import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const catalogSrc = resolve(__dirname, '../../packages/skills-catalog');
+const catalogSrc = resolve(__dirname, '../../skills');
 const catalogDest = resolve(__dirname, 'dist/skills-catalog');
 
 // Limpar catalog anterior

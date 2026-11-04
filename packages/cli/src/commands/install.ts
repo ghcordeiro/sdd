@@ -1,5 +1,5 @@
 import chalk from 'chalk';
-import { getAgent, loadCatalog, installSkill, type InstallMode } from '@ghcordeiro/core';
+import { AGENTS, detectCompanions, getAgent, loadCatalog, installSkill, type InstallMode } from '@ghcordeiro/core';
 
 interface InstallOptions {
   agentId: string;
@@ -11,7 +11,7 @@ export async function installCommand({ agentId, skillIds, mode }: InstallOptions
   const agent = getAgent(agentId);
   if (!agent) {
     console.error(chalk.red(`Unknown agent: ${agentId}`));
-    console.error(`Available: claude-code, cursor, github-copilot, gemini-cli, antigravity`);
+    console.error(`Available: ${AGENTS.map((a) => a.id).join(', ')}`);
     process.exit(1);
     return;
   }
@@ -38,6 +38,13 @@ export async function installCommand({ agentId, skillIds, mode }: InstallOptions
     } else {
       console.log(`  ${chalk.red('✗')} ${skill.id}  ${chalk.dim(result.error ?? '')}`);
     }
+  }
+
+  console.log(chalk.bold('\nRecommended companions\n'));
+  for (const c of detectCompanions()) {
+    const mark = c.installed ? chalk.green('✓') : chalk.dim('○');
+    const hint = c.installed ? chalk.dim('installed') : chalk.cyan(c.install);
+    console.log(`  ${mark} ${c.name}  ${chalk.dim(c.purpose)}\n      ${hint}`);
   }
 
   console.log();

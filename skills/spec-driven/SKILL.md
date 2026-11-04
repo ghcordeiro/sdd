@@ -116,6 +116,7 @@ Humans set intentions, constraints, and approvals. Agents execute, generate, and
         └── SUMMARY.md
 ```
 
+**Cross-project learnings:** `~/.sdd/LEARNINGS.md` (global — preferences, stack, mistakes to avoid, projects; see [learnings.md](references/learnings.md))
 **Architecture decisions:** `docs/adr/` (created during Plan phase — mandatory)
 **Architecture diagrams:** `docs/architecture/` (C4 diagrams from Plan phase)
 
@@ -154,6 +155,7 @@ Humans set intentions, constraints, and approvals. Agents execute, generate, and
 - `PROJECT.md` (if exists)
 - `ROADMAP.md` (when planning/working on features)
 - `STATE.md` (persistent memory)
+- `~/.sdd/LEARNINGS.md` (cross-project memory — at start of Specify, Plan, and resume; no-op if absent)
 
 **On-demand load:**
 
@@ -187,6 +189,7 @@ Humans set intentions, constraints, and approvals. Agents execute, generate, and
 | Map codebase, analyze existing code | [brownfield-mapping.md](references/brownfield-mapping.md) |
 | Document concerns, find tech debt, what's risky | [concerns.md](references/concerns.md) |
 | Record decision, log blocker, add todo | [state-management.md](references/state-management.md) |
+| Remember preference, learn this, always/never do X | [learnings.md](references/learnings.md) |
 | Pause work, end session | [session-handoff.md](references/session-handoff.md) |
 | Resume work, continue | [session-handoff.md](references/session-handoff.md) |
 
@@ -200,6 +203,25 @@ Humans set intentions, constraints, and approvals. Agents execute, generate, and
 | Implement task, build, execute | [implement.md](references/implement.md) |
 | Validate, verify, test, UAT, walk me through it | [validate.md](references/validate.md) |
 | Quick fix, quick task, small change, bug fix | [quick-mode.md](references/quick-mode.md) |
+
+## Learning Loop
+
+The agent learns how the user works and carries it across projects. Full rules: [learnings.md](references/learnings.md).
+
+- **Read** `~/.sdd/LEARNINGS.md` at the start of Specify, Plan, and resume work.
+- **Write** at every phase gate, whenever the user corrects the agent, and when a decision reflects a general preference.
+- Project-only learnings go to `STATE.md`; cross-project ones go to `~/.sdd/LEARNINGS.md`.
+- The Markdown file is always written. A memory MCP, if present, is used in addition.
+
+## Companion Tools (use if available)
+
+These are optional. Detect them; never install or configure them yourself. If one is missing and would help, mention it once and record that you did in `STATE.md` under `Preferences`.
+
+| Tool | What it adds | How the skill uses it |
+|---|---|---|
+| **agentmemory** (MCP) | Automatic cross-session, cross-agent memory with search | Recall the feature topic + project before Specify/Plan; save the same entries written to `LEARNINGS.md` / `STATE.md` |
+| **Context7** (MCP) | Up-to-date library and framework docs | In Plan and Implement, query docs before choosing or using an external library or API — do not rely on memory for versions or signatures |
+| **RTK** (CLI) | Compresses shell command output, cutting token usage | Nothing to do — its hooks rewrite commands automatically. If output looks truncated or garbled, re-run with `rtk bypass <cmd>` |
 
 ## Skill Integrations
 

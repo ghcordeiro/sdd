@@ -17,13 +17,13 @@ export interface SkillEntry {
   dir: string;
 }
 
-// Em dev: libs/core/src/ → ../../../packages/skills-catalog
+// Em dev: libs/core/src/ → ../../../skills  (raiz do repo, também lida pelo Kiro power)
 // Em bundle (dist/index.js): ./skills-catalog  (copiado pelo build)
 const __dir = dirname(fileURLToPath(import.meta.url));
 const CATALOG_DIR =
   __dir.endsWith('dist')
     ? join(__dir, 'skills-catalog')
-    : join(__dir, '../../../packages/skills-catalog');
+    : join(__dir, '../../../skills');
 
 export function loadCatalog(): SkillEntry[] {
   const entries: SkillEntry[] = [];

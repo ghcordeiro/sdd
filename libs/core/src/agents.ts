@@ -39,6 +39,12 @@ export const AGENTS: AgentDefinition[] = [
     globalSkillsDir: join(homedir(), '.antigravity', 'skills'),
     localSkillsDir: join('.antigravity', 'skills'),
   },
+  {
+    id: 'kiro',
+    name: 'Kiro',
+    globalSkillsDir: join(homedir(), '.kiro', 'skills'),
+    localSkillsDir: join('.kiro', 'skills'),
+  },
 ];
 
 export function getAgent(id: string): AgentDefinition | undefined {
