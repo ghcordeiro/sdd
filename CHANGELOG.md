@@ -1,3 +1,9 @@
+## [1.4.1](https://github.com/ghcordeiro/sdd/compare/v1.4.0...v1.4.1) (2026-11-04)
+
+### Bug Fixes
+
+* **cursor:** route E2E and mobile testing to playwright and mobile toolkits ([39ccf05](https://github.com/ghcordeiro/sdd/commit/39ccf059e802828e4bf6646815687510e0d77e63))
+
 ## [1.4.0](https://github.com/ghcordeiro/sdd/compare/v1.3.0...v1.4.0) (2026-11-04)
 
 ### Features
