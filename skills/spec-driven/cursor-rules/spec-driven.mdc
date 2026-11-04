@@ -1,5 +1,5 @@
 ---
-description: Spec-Driven Development (sdd). Use for any feature, project setup, codebase mapping, planning, tasks, implementation, validation, bug fix, debugging, review feedback, or pause/resume work. Drives Specify → Plan → Tasks → Implement with human phase gates, auto-sized by complexity.
+description: Spec-Driven Development (sdd). Use for any feature, project setup, codebase mapping, planning, tasks, implementation, validation, E2E or mobile app testing, bug fix, debugging, review feedback, or pause/resume work. Drives Specify → Plan → Tasks → Implement with human phase gates, auto-sized by complexity.
 globs:
 alwaysApply: false
 ---
@@ -18,6 +18,7 @@ If the skill files are not installed, apply the essentials below and suggest `np
 - **Plan always produces** ADRs (`docs/adr/`) for significant decisions and C4 diagrams with PNGs (`docs/architecture/`) for Medium+.
 - **Implement:** one task at a time · branch, not the default branch · Builder → Verifier against the WHEN/THEN ACs · atomic Conventional Commit per task · touch only listed files.
 - **Evidence before claims:** never say done, fixed, or passing without command output from this session.
+- **Verify UI yourself before asking the user:** web flows and mobile web → Playwright MCP (`toolkit/playwright`, `--device` for phones); native iOS/Android → mobile-mcp or Maestro (`toolkit/mobile`). Screenshot or snapshot per acceptance criterion as evidence.
 - **Bugs:** root cause before fix. 3 failed fixes → stop and rethink.
 - **Never fabricate:** codebase → project docs → Context7 MCP → web → "I'm not certain".
 
