@@ -1,6 +1,6 @@
 ---
 name: chrome-devtools
-description: Browser debugging, performance profiling, and automation via Chrome DevTools MCP. Use when user says "debug this page", "take a screenshot", "check network requests", "profile performance", "inspect console errors", or "analyze page load". Do NOT use for full E2E test suites (use playwright-skill) or non-browser debugging.
+description: Browser debugging, performance profiling, and automation via Chrome DevTools MCP. Use when user says "debug this page", "take a screenshot", "check network requests", "profile performance", "inspect console errors", or "analyze page load". Do NOT use for full E2E test suites or mobile-web device checks (use toolkit/playwright), native mobile apps (use toolkit/mobile), or non-browser debugging.
 license: MIT
 ---
 

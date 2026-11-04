@@ -71,6 +71,8 @@ For each changed file, verify against [coding-principles.md](coding-principles.m
 
 ### 6. Interactive UAT (if user-facing feature)
 
+**Automate what you can first.** If a browser or device MCP is available, verify each AC yourself before asking the user: web → `toolkit/playwright` (add device emulation for mobile web), native app → `toolkit/mobile`. Ask the user only for what automation cannot judge (feel, copy, visual taste) or could not reach.
+
 For each testable deliverable, present one test at a time:
 
 ```

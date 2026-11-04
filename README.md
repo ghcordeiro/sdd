@@ -151,6 +151,9 @@ The file needs no extra tooling, and it never stores secrets or credentials. Edi
 | [agentmemory](https://www.npmjs.com/package/@agentmemory/agentmemory) | Automatic cross-session memory; the skill recalls and saves to it in addition to `LEARNINGS.md` | `npm i -g @agentmemory/agentmemory && agentmemory connect` |
 | [RTK](https://github.com/rtk-ai/rtk) | Compresses command output to cut token usage | `brew install rtk && rtk init -g` (see `rtk init --help` for other agents) |
 | [Context7](https://context7.com) | Up-to-date library docs via MCP, used in Plan and Implement | [Setup per client](https://context7.com/docs/resources/all-clients) — already included in the Kiro Power |
+| [Playwright MCP](https://playwright.dev/mcp/configuration/options) | Browser automation for AC verification, mobile-web emulation and E2E tests | `claude mcp add playwright -- npx @playwright/mcp@latest` |
+| [mobile-mcp](https://github.com/mobile-next/mobile-mcp) | Native iOS/Android device control for verification | `claude mcp add mobile-mcp -- npx -y @mobilenext/mobile-mcp@latest` |
+| [Maestro](https://docs.maestro.dev/getting-started/maestro-mcp) | Repeatable mobile E2E flows in YAML; MCP via `maestro mcp` | `curl -fsSL "https://get.maestro.mobile.dev" \| bash` |
 
 ---
 
@@ -200,6 +203,8 @@ The file needs no extra tooling, and it never stores secrets or credentials. Edi
 |---|---|
 | [`seo`](skills/spec-driven/toolkit/seo/) | Optimizes pages for search visibility — meta tags, structured data (JSON-LD), sitemaps, and crawlability. |
 | [`accessibility`](skills/spec-driven/toolkit/accessibility/) | Audits and improves web accessibility following WCAG 2.1 AA guidelines. |
+| [`playwright`](skills/spec-driven/toolkit/playwright/) | Verifies web flows against acceptance criteria in Chromium, Firefox and WebKit, checks mobile web with device emulation, and writes E2E tests — via Playwright MCP. |
+| [`mobile`](skills/spec-driven/toolkit/mobile/) | Verifies native iOS/Android apps (React Native, Expo, Flutter, Swift, Kotlin) on simulators, emulators or devices via mobile-mcp, and writes repeatable Maestro flows. |
 | [`chrome-devtools`](skills/spec-driven/toolkit/chrome-devtools/) | Browser debugging, performance profiling, and automation via Chrome DevTools. |
 
 ### ⚙️ Tooling & Automation
@@ -331,6 +336,8 @@ This project's `spec-driven` skill is inspired by prior work from the community 
 | `accessibility` | External (`web-quality-skills`), adapted locally | [web-accessibility upstream](https://github.com/tech-leads-club/agent-skills/tree/main/packages/skills-catalog/skills/(quality)/web-accessibility) | [sdd/accessibility](https://github.com/ghcordeiro/sdd/tree/main/skills/spec-driven/toolkit/accessibility) | `MIT` |
 | `best-practices` | External (`web-quality-skills`), adapted locally | [web-best-practices upstream](https://github.com/tech-leads-club/agent-skills/tree/main/packages/skills-catalog/skills/(quality)/web-best-practices) | [sdd/best-practices](https://github.com/ghcordeiro/sdd/tree/main/skills/spec-driven/toolkit/best-practices) | `MIT` |
 | `c4-architect` | Local author (`ghcordeiro`) | — | [sdd/c4-architect](https://github.com/ghcordeiro/sdd/tree/main/skills/spec-driven/toolkit/c4-architect) | `CC-BY-4.0` |
+| `playwright` | Local author (`ghcordeiro`) | — | [sdd/playwright](https://github.com/ghcordeiro/sdd/tree/main/skills/spec-driven/toolkit/playwright) | `CC-BY-4.0` |
+| `mobile` | Local author (`ghcordeiro`) | — | [sdd/mobile](https://github.com/ghcordeiro/sdd/tree/main/skills/spec-driven/toolkit/mobile) | `CC-BY-4.0` |
 | `chrome-devtools` | External (upstream match), adapted locally | [chrome-devtools upstream](https://github.com/tech-leads-club/agent-skills/tree/main/packages/skills-catalog/skills/(tooling)/chrome-devtools) | [sdd/chrome-devtools](https://github.com/ghcordeiro/sdd/tree/main/skills/spec-driven/toolkit/chrome-devtools) | `MIT` |
 | `code-quality-guardian` | Credit undeclared in metadata; maintained locally | — | [sdd/code-quality-guardian](https://github.com/ghcordeiro/sdd/tree/main/skills/spec-driven/toolkit/code-quality-guardian) | `MIT` |
 | `create-adr` | External (Tech Leads Club), adapted locally | [create-adr upstream](https://github.com/tech-leads-club/agent-skills/tree/main/packages/skills-catalog/skills/(creation)/create-adr) | [sdd/create-adr](https://github.com/ghcordeiro/sdd/tree/main/skills/spec-driven/toolkit/create-adr) | `CC-BY-4.0` |

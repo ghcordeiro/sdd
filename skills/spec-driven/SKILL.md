@@ -140,6 +140,8 @@ Quick mode is exempt from all activations.
 | Implement | `toolkit/accessibility/instructions.md` | User-facing UI is added or changed |
 | Implement | `toolkit/seo/instructions.md` | Public pages, routes, or metadata change |
 | Implement | `toolkit/gh-fix-ci/instructions.md` | CI fails after a push — do not start the next task until green |
+| Implement | `toolkit/playwright/instructions.md` | A user-facing web flow must be verified against ACs, the UI must work on mobile browsers, or `tasks.md` has web E2E test tasks |
+| Implement | `toolkit/mobile/instructions.md` | The feature touches a native/cross-platform app (React Native, Expo, Flutter, Swift, Kotlin) and needs device verification or mobile E2E flows |
 | Any | `toolkit/chrome-devtools/instructions.md` | Browser rendering, performance, network, or JS runtime issue |
 
 ## Host Skill First
@@ -158,6 +160,8 @@ If the host agent has one of these, use it **instead of** the sdd file (do not l
 | Parallel subagents | `subagent-driven-development`, `dispatching-parallel-agents` | [parallel-execution.md](references/parallel-execution.md) |
 | Diagrams beyond C4 (flow, sequence, state, ER) | `archify`, `mermaid-studio` | inline Mermaid in `plan.md` |
 | Code exploration | `graphify`, `codenavi` | [code-analysis.md](references/code-analysis.md) |
+| Web E2E / mobile-web checks | a Playwright skill | `toolkit/playwright` |
+| Native mobile testing | a mobile testing skill | `toolkit/mobile` |
 
 The host's skill replaces the sdd file's *method*, never the sdd *outputs*: specs, ADRs, C4 PNGs, `tasks.md`, and gates stay mandatory.
 
@@ -178,6 +182,8 @@ Optional. Detect them; never install or configure them yourself. If one is missi
 | **agentmemory** (MCP) | Recall feature topic + project before Specify/Plan; save the same entries written to `LEARNINGS.md` / `STATE.md` |
 | **Context7** (MCP) | Plan and Implement: query library docs before choosing or using an external API — never trust memory for versions or signatures |
 | **RTK** (CLI) | Nothing to do — hooks compress command output. Output truncated or garbled → re-run with `rtk bypass <cmd>` |
+| **Playwright MCP** (`@playwright/mcp`) | Drives browsers for AC verification, mobile-web emulation (`--device`), and E2E tests — see `toolkit/playwright` |
+| **mobile-mcp** / **Maestro** | Native iOS/Android verification and repeatable YAML flows — see `toolkit/mobile` |
 | **graphify** (skill/CLI) | Brownfield mapping and "what calls X": query the graph before broad file reads |
 | **PR/CI watcher** (e.g. `pr-watch` MCP, `gh run watch`) | After push in [branch-workflow.md](references/branch-workflow.md): wait on CI instead of polling; on failure, `gh-fix-ci` |
 
