@@ -1,3 +1,15 @@
+## [1.3.0](https://github.com/ghcordeiro/sdd/compare/v1.2.0...v1.3.0) (2026-11-04)
+
+### Features
+
+* add ea-service-docs skill ([e6db508](https://github.com/ghcordeiro/sdd/commit/e6db5083ce443d4928e2a5ee5bc1cac674455301))
+* add Kiro support, cross-project learnings and companion tools ([94eb3b9](https://github.com/ghcordeiro/sdd/commit/94eb3b95e650750a57a8878180be47acc29915af))
+* **spec-driven:** lazy-loading router, new workflows and lean Cursor rule ([fc6de83](https://github.com/ghcordeiro/sdd/commit/fc6de83f26ead75e7044f1f5b3fac6b0845389a6))
+
+### Reverts
+
+* remove ea-service-docs — company-specific skill, not for public toolkit ([e31710f](https://github.com/ghcordeiro/sdd/commit/e31710fef4c57707bb8ace26e855719e36f0bead))
+
 ## [1.2.0](https://github.com/ghcordeiro/sdd/compare/v1.1.0...v1.2.0) (2026-04-01)
 
 ### Features
